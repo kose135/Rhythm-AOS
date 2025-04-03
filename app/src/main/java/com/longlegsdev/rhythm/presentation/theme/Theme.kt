@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.ui.theme
+package com.longlegsdev.rhythm.presentation.theme
 
 import android.app.Activity
 import android.os.Build
