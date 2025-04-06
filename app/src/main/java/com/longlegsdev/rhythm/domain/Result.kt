@@ -18,6 +18,7 @@ sealed class Result<out T> {
         }
     }
 }
+
 fun <T,R> Flow<Result<T>>.mapper(transform: (T) -> R) : Flow<Result<R>> {
     return this.map {
         it.result(transform)

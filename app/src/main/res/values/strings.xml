@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Rhythm</string>
+
+    <string name="tab_channel">Channel</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_storage">Storage</string>
+
 </resources>

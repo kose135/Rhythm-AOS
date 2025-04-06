@@ -1,11 +1,10 @@
-package com.longlegsdev.rhythm.data.remote.response
+package com.longlegsdev.rhythm.data.remote.model
 
-import com.longlegsdev.rhythm.data.remote.model.Channel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ChannelListResponse(
+data class ChannelList(
     @field:Json(name = "status")
     val status: String,
     @field:Json(name = "total")

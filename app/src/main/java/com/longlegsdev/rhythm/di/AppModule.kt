@@ -1,10 +1,13 @@
 package com.longlegsdev.rhythm.di
 
+import android.content.Context
+import androidx.media3.exoplayer.ExoPlayer
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -12,7 +15,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // NetworkModule과 DatabaseModule에서 공통으로 사용
     @Provides
     @Singleton
     fun providesMoshi(): Moshi = Moshi
@@ -21,4 +23,13 @@ object AppModule {
             add(KotlinJsonAdapterFactory())
             build()
         }
+
+    @Provides
+    @Singleton
+    fun providesExoplayer(
+        @ApplicationContext app: Context
+    ): ExoPlayer = ExoPlayer
+        .Builder(app)
+        .build()
+
 }

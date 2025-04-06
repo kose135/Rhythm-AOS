@@ -6,7 +6,8 @@ import androidx.room.Entity
 data class MusicEntity(
     val id: Int,
     val title: String,
-    val artist: String?,
+    val artist: String,
+    val album: String,
     val duration: Int,
     val lyrics: String,
     val url: String,

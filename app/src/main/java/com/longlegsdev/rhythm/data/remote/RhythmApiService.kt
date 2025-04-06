@@ -1,13 +1,12 @@
 package com.longlegsdev.rhythm.data.remote
 
-import com.longlegsdev.rhythm.data.remote.response.ApplyResponse
-import com.longlegsdev.rhythm.data.remote.response.ChannelListResponse
-import com.longlegsdev.rhythm.data.remote.response.MusicInfoResponse
-import com.longlegsdev.rhythm.data.remote.response.MusicListResponse
+import com.longlegsdev.rhythm.data.remote.model.Apply
+import com.longlegsdev.rhythm.data.remote.model.ChannelList
+import com.longlegsdev.rhythm.data.remote.model.MusicInfo
+import com.longlegsdev.rhythm.data.remote.model.MusicList
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -20,27 +19,27 @@ interface RhythmApiService {
     suspend fun getChannelList(
         @Query("page") page: Int,
         @Query("offset") offset: Int
-    ): Response<ChannelListResponse>
+    ): Response<ChannelList>
 
     @GET("channel/recommended")
     suspend fun getChannelRecommendedList(
         @Query("limit") limit: Int,
-    ): Response<ChannelListResponse>
+    ): Response<ChannelList>
 
     @GET("channel/{channelId}/musics")
     suspend fun getChannelMusicList(
-        @Path("channelId") channelId: String
-    ): Response<MusicListResponse>
+        @Path("channelId") channelId: Int
+    ): Response<MusicList>
 
     @POST("channel/{channelId}/like")
     suspend fun addChannelLike(
-        @Path("channelId") channelId: String
-    ): Response<ApplyResponse>
+        @Path("channelId") channelId: Int
+    ): Response<Apply>
 
     @DELETE("channel/{channelId}/unlike")
     suspend fun deleteChannelLike(
-        @Path("channelId") channelId: String
-    ): Response<ApplyResponse>
+        @Path("channelId") channelId: Int
+    ): Response<Apply>
 
 
     /* music */
@@ -48,22 +47,22 @@ interface RhythmApiService {
     @GET("music/{musicId}")
     suspend fun getMusicInfo(
         @Path("musicId") musicId: Int,
-    ): Response<MusicInfoResponse>
+    ): Response<MusicInfo>
 
     @GET("music/best")
     suspend fun getMusicBest(
         @Query("limit") limit: Int,
-    ): Response<MusicListResponse>
+    ): Response<MusicList>
 
     @POST("music/{musicId}/like")
     suspend fun addMusicLike(
-        @Path("musicId") musicId: String
-    ): Response<ApplyResponse>
+        @Path("musicId") musicId: Int
+    ): Response<Apply>
 
     @DELETE("music/{musicId}/unlike")
     suspend fun deleteMusicLike(
-        @Path("musicId") musicId: String
-    ): Response<ApplyResponse>
+        @Path("musicId") musicId: Int
+    ): Response<Apply>
 
 
 }

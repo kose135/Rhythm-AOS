@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     // add
-//    id("kotlin-kapt")
-//    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -24,7 +24,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val baseUrl: String = project.findProperty("baseUrl") as String? ?: "https://default.url/"
+        val baseUrl: String = getApiKey("BASE_URL")
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
@@ -44,13 +44,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     buildFeatures {
         buildConfig = true
         compose = true
     }
 }
-
-val baseUrl: String = project.findProperty("BASE_URL") as String? ?: ""
 
 dependencies {
 
@@ -72,10 +73,11 @@ dependencies {
 
     /* add dependency */
     // hilt
-    // https://github.com/google/dagger
-    val hilt_version = "2.56.1"
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    annotationProcessor("com.google.dagger:hilt-compiler:$hilt_version")
+    // how to use: https://developer.android.com/training/dependency-injection/hilt-android
+    // latest version: https://github.com/google/dagger
+    val hilt_version = "2.51.1"
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // hilt navigation compose
     // https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
@@ -87,7 +89,7 @@ dependencies {
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
     // coroutine
     val coroutine_version = "1.10.1"
@@ -127,4 +129,26 @@ dependencies {
     // git: https://github.com/square/moshi
     val moshi_version = "1.15.2"
     implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
+
+    // media3
+    // https://developer.android.com/media/implement/playback-app
+    val media3_version = "1.6.0"
+    implementation("androidx.media3:media3-exoplayer:$media3_version")
+    implementation("androidx.media3:media3-ui:$media3_version")
+    implementation("androidx.media3:media3-common:$media3_version")
+    implementation("androidx.media3:media3-session:$media3_version")
+
+
+    // skydoves
+    implementation("com.github.skydoves:orbital:0.4.0")
+
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
 }

@@ -2,7 +2,6 @@ package com.longlegsdev.rhythm.di
 
 import android.content.Context
 import androidx.room.Room
-import com.longlegsdev.rhythm.data.local.NoteDatabase
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.Module
 import dagger.Provides
@@ -16,19 +15,19 @@ import kotlin.jvm.java
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    @Provides
-    @Singleton
-    fun provideDatabase(
-        @ApplicationContext app: Context,
-    ): NoteDatabase {
-        return Room.databaseBuilder(
-            app,
-            NoteDatabase::class.java,
-            Rhythm.DATABASE_NAME
-        ).run {
-            build()
-        }
-    }
+//    @Provides
+//    @Singleton
+//    fun provideDatabase(
+//        @ApplicationContext app: Context,
+//    ): RhythmDatabase {
+//        return Room.databaseBuilder(
+//            app,
+//            RhythmDatabase::class.java,
+//            Rhythm.DATABASE_NAME
+//        ).run {
+//            build()
+//        }
+//    }
 
 
 }

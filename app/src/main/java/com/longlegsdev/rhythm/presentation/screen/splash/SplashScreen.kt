@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,13 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
+import com.longlegsdev.rhythm.util.Rhythm
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    backgroundColor: Color = Color.White,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     logo: ImageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
-    duration: Int = 2000,
+    duration: Int = Rhythm.SPLASH_DURATION,
     tintColor: Color = Color.Gray,
     scale: Dp = 160.dp,
     todo: () -> Unit
