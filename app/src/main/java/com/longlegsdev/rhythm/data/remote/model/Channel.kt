@@ -11,6 +11,8 @@ data class Channel(
     val title: String,
     @Json(name = "cover_url")
     val url: String,
+    @Json(name = "description")
+    val description: String,
     @Json(name = "size")
     val size: Int,
     @Json(name = "likes")

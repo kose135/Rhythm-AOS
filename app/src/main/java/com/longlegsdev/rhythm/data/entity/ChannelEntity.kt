@@ -7,6 +7,7 @@ data class ChannelEntity(
     val id: Int,
     val title: String,
     val url: String,
+    val description: String,
     val size: Int,
     val likes: Int = -1,
     val liked: Boolean

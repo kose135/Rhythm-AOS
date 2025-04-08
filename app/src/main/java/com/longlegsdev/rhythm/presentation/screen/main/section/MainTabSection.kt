@@ -1,11 +1,6 @@
-package com.longlegsdev.rhythm.presentation.screen.main.component
+package com.longlegsdev.rhythm.presentation.screen.main.section
 
-import android.graphics.drawable.Icon
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -16,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import com.longlegsdev.rhythm.presentation.screen.main.component.TabIndicator
+import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
 import com.longlegsdev.rhythm.presentation.theme.TabBackground
 import com.longlegsdev.rhythm.presentation.theme.TabIconSelected
 import com.longlegsdev.rhythm.presentation.theme.TabIconUnselected

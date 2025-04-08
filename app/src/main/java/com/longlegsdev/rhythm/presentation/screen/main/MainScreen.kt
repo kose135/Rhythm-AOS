@@ -2,27 +2,28 @@ package com.longlegsdev.rhythm.presentation.screen.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.longlegsdev.rhythm.presentation.screen.main.component.PageSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.PageSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.PlayBarSection
 import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
-import com.longlegsdev.rhythm.presentation.screen.main.component.TabSection
-import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.screen.main.section.TabSection
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,16 +50,11 @@ fun MainScreen(
     )
     val scope = rememberCoroutineScope()
 
+    val isPlay by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.background,
-                        Color.White
-                    )
-                )
-            ),
+            .fillMaxSize(),
         bottomBar = {
             TabSection(
                 selectedTabIndex = pagerState.currentPage,
@@ -70,6 +66,39 @@ fun MainScreen(
             )
         }
     ) {
-        PageSection(pages, pagerState)
+        val bottomHeight = it.calculateBottomPadding()
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+
+            PageSection(
+                pages = pages,
+                pagerState = pagerState,
+                modifier = Modifier.weight(1f)
+            )
+
+            AnimatedVisibility(
+                visible = isPlay,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+
+                PlayBarSection(
+                    height = bottomHeight,
+                    imageUrl = "http://10.0.2.2:8100/cover/IU.jpg",
+                    title = "노래 제목",
+                    artist = "아티스트",
+                    onPlayPauseClick = {
+
+                    }
+                )
+            }
+
+        }
+
     }
 }
+

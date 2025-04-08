@@ -139,8 +139,16 @@ dependencies {
     implementation("androidx.media3:media3-session:$media3_version")
 
 
-    // skydoves
+    // landscapist of skydoves
+    // git: https://github.com/skydoves/landscapist
+    val landscapist_version = "1.6.0"
+    implementation("com.github.skydoves:landscapist-coil:$landscapist_version")
+    // orbital
     implementation("com.github.skydoves:orbital:0.4.0")
+
+
+    // 임시
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.0")
 
 }
 

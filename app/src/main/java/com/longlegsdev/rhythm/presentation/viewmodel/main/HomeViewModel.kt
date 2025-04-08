@@ -24,7 +24,7 @@ import kotlin.collections.plusAssign
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
 //    arguments: SavedStateHandle,
     private val channelUseCase: ChannelUseCase,
     private val musicUseCase: MusicUseCase,
@@ -57,12 +57,12 @@ class MainViewModel @Inject constructor(
                     Timber.d("API Call Success")
 
                     channelList += it.channels
-                    _channelListState.value = _channelListState.value.copy(channels = channelList)
+                    _channelListState.value = _channelListState.value.copy(channels = channelList, isLoading = false)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
                     _channelListState.value =
-                        ChannelListState(errorMessage = it.localizedMessage, channels = channelList)
+                        ChannelListState(errorMessage = it.localizedMessage, channels = channelList, isLoading = false)
 
                 }
                 .doOnLoading {
@@ -83,11 +83,11 @@ class MainViewModel @Inject constructor(
 
                     musicList += it.musics
                     _musicListState.value =
-                        _musicListState.value.copy(musics = musicList.toList(), errorMessage = null)
+                        _musicListState.value.copy(musics = musicList.toList(), errorMessage = null, isLoading = false)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _musicListState.value = MusicListState(errorMessage = it.localizedMessage)
+                    _musicListState.value = MusicListState(errorMessage = it.localizedMessage, isLoading = false)
 
                 }
                 .doOnLoading {

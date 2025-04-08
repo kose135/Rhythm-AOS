@@ -5,4 +5,12 @@
     <string name="tab_home">Home</string>
     <string name="tab_storage">Storage</string>
 
+    <string name="home_recommended">추천 채널</string>
+    <string name="home_best">인기곡</string>
+
+    <string name="str_count_music">%d곡</string>
+
+
+    <string name="err_network">네트워크를 확인하시길 바랍니다</string>
+
 </resources>

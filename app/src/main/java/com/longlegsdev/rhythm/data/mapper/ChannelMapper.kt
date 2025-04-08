@@ -11,6 +11,7 @@ object ChannelMapper: EntityMapper<List<Channel>, List<ChannelEntity>> {
                 title = channel.title,
                 url = channel.url,
                 size = channel.size,
+                description = channel.description,
                 likes = channel.likes,
                 liked = channel.liked
             )
@@ -23,6 +24,7 @@ object ChannelMapper: EntityMapper<List<Channel>, List<ChannelEntity>> {
                 id = channelEntity.id,
                 title = channelEntity.title,
                 url = channelEntity.url,
+                description = channelEntity.description,
                 size = channelEntity.size,
                 likes = channelEntity.likes,
                 liked = channelEntity.liked
