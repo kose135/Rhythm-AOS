@@ -28,8 +28,6 @@ fun HomeTab(
     val channelListState = viewModel.channelListState.value
     val musicListState = viewModel.musicListState.value
 
-
-
     Column(
         modifier = Modifier
             .background(Color.Transparent)

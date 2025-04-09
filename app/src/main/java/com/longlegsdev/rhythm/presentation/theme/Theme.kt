@@ -20,7 +20,7 @@ val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1C1C),
     surface = Color(0xFFF7F7F7),
     onSurface = Color(0xFF333333),
-    error = Color(0xFFB00020)
+    error = Color(0x0F000000)
 )
 
 val DarkColorScheme = darkColorScheme(

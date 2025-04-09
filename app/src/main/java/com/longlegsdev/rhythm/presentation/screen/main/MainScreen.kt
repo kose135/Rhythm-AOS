@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -25,6 +26,7 @@ import com.longlegsdev.rhythm.presentation.screen.main.section.PlayBarSection
 import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
 import com.longlegsdev.rhythm.presentation.screen.main.section.TabSection
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -50,7 +52,7 @@ fun MainScreen(
     )
     val scope = rememberCoroutineScope()
 
-    val isPlay by remember { mutableStateOf(false) }
+    var isPlay by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -75,9 +77,11 @@ fun MainScreen(
         ) {
 
             PageSection(
+                modifier = Modifier
+                    .weight(1f),
                 pages = pages,
                 pagerState = pagerState,
-                modifier = Modifier.weight(1f)
+                scrollEnable = false,
             )
 
             AnimatedVisibility(

@@ -30,9 +30,6 @@ class HomeViewModel @Inject constructor(
     private val musicUseCase: MusicUseCase,
 ) : ViewModel() {
 
-    private var channelList: ArrayList<ChannelEntity> = arrayListOf()
-    private var musicList: ArrayList<MusicEntity> = arrayListOf()
-
     private val _channelListState: MutableState<ChannelListState> =
         mutableStateOf(ChannelListState())
     val channelListState: State<ChannelListState> = _channelListState
@@ -56,17 +53,15 @@ class HomeViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    channelList += it.channels
-                    _channelListState.value = _channelListState.value.copy(channels = channelList, isLoading = false)
+                    _channelListState.value = ChannelListState(channels = it.channels)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _channelListState.value =
-                        ChannelListState(errorMessage = it.localizedMessage, channels = channelList, isLoading = false)
+                    _channelListState.value = ChannelListState(errorMessage = it.localizedMessage)
 
                 }
                 .doOnLoading {
-                    _channelListState.value = _channelListState.value.copy(isLoading = true)
+                    _channelListState.value = ChannelListState(isLoading = true)
                 }.collect()
         }
     }
@@ -81,18 +76,16 @@ class HomeViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    musicList += it.musics
-                    _musicListState.value =
-                        _musicListState.value.copy(musics = musicList.toList(), errorMessage = null, isLoading = false)
+                    _musicListState.value = MusicListState(musics = it.musics)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _musicListState.value = MusicListState(errorMessage = it.localizedMessage, isLoading = false)
+                    _musicListState.value =
+                        MusicListState(errorMessage = it.localizedMessage, isLoading = false)
 
                 }
                 .doOnLoading {
-                    _musicListState.value =
-                        _musicListState.value.copy(isLoading = true, errorMessage = null)
+                    _musicListState.value = MusicListState(isLoading = true)
                 }.collect()
 
         }

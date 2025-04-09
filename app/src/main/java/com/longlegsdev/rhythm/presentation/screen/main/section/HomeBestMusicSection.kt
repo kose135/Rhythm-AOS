@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.ChannelEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
+import com.longlegsdev.rhythm.presentation.screen.common.LoadingProgress
 import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MusicListState
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
@@ -84,20 +85,25 @@ fun HomeMusicSection(
                 state.isLoading -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator()
+                        LoadingProgress()
                     }
                 }
 
                 state.errorMessage != null -> {
-                    Text(
-                        text = stringResource(R.string.err_network),
-                        color = Color.Red,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.err_network),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
 
                 else -> {
@@ -145,7 +151,8 @@ fun MusicItem(
             modifier = Modifier
                 .clip(RoundedCornerShape(5.dp))
                 .size(60.dp),
-            imageModel = url
+//            imageModel = url
+            imageModel = "http://10.0.2.2:8100/cover/IU.jpg"
         )
 
         Spacer(modifier = Modifier.width(10.dp))

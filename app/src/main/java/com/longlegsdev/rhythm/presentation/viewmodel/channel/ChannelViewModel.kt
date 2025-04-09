@@ -26,7 +26,6 @@ class ChannelViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var currentPage = 1
-    private var channelList: ArrayList<ChannelEntity> = arrayListOf()
 
     private val _channelListState: MutableState<ChannelListState> =
         mutableStateOf(ChannelListState())
@@ -47,19 +46,15 @@ class ChannelViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    channelList += it.channels
-                    _channelListState.value = _channelListState.value.copy(channels = channelList)
-
-                    currentPage++
+                    _channelListState.value = ChannelListState(channels = it.channels + it.channels + it.channels + it.channels)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _channelListState.value =
-                        ChannelListState(errorMessage = it.localizedMessage, channels = channelList)
+                    _channelListState.value = ChannelListState(errorMessage = it.localizedMessage)
 
                 }
                 .doOnLoading {
-                    _channelListState.value = _channelListState.value.copy(isLoading = true)
+                    _channelListState.value = ChannelListState(isLoading = true)
                 }.collect()
         }
     }
