@@ -11,6 +11,7 @@ import java.io.IOException
 import com.longlegsdev.rhythm.domain.Result
 
 abstract class BaseRepository {
+
     suspend fun <T> safeApiCall(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         apiCall: suspend () -> Response<T>,

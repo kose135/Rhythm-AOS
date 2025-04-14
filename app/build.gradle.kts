@@ -76,8 +76,8 @@ dependencies {
     // how to use: https://developer.android.com/training/dependency-injection/hilt-android
     // latest version: https://github.com/google/dagger
     val hilt_version = "2.51.1"
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     // hilt navigation compose
     // https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
@@ -86,13 +86,14 @@ dependencies {
 
     // room
     // https://developer.android.com/training/data-storage/room?hl=ko#kts
-    val room_version = "2.6.1"
+    val room_version = "2.7.0"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
 
     // coroutine
-    val coroutine_version = "1.10.1"
+    // git: https://github.com/Kotlin/kotlinx.coroutines
+    val coroutine_version = "1.10.2"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version")
 
@@ -150,6 +151,12 @@ dependencies {
     // 임시
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.0")
 
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
+    }
 }
 
 // Allow references to generated code

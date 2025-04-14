@@ -5,14 +5,20 @@
     <string name="tab_home">Home</string>
     <string name="tab_storage">Storage</string>
 
-    <string name="channel_list">채널 목록</string>
+    <string name="str_channel_list">채널 목록</string>
 
-    <string name="home_recommended">추천 채널</string>
-    <string name="home_best">인기곡</string>
+    <string name="str_recommended_music">추천 채널</string>
+    <string name="str_best_music">인기곡</string>
+
+    <string name="str_recent_music">최근 재생곡</string>
+    <string name="str_favorite_music">즐겨찾기 음악</string>
+    <string name="str_favorite_channel">즐겨찾기 채널</string>
 
     <string name="str_count_music">%d곡</string>
 
-
     <string name="err_network">네트워크를 확인하시길 바랍니다</string>
+    <string name="err_recently_played_music">최근 재생 된 음악이 없습니다</string>
+    <string name="err_favorite_music">즐겨찾기한 음악이 없습니다</string>
+    <string name="err_favorite_channel">즐겨찾기한 채널이 없습니다</string>
 
 </resources>

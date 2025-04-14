@@ -5,5 +5,8 @@ data class ChannelUseCase(
     val getRecommendedList: GetChannelRecommendedUseCase,
     val getMusicList: GetChannelMusicListUseCase,
     val addLike: AddChannelLikeUseCase,
-    val delLike: DeleteChannelLikeUseCase
+    val delLike: DeleteChannelLikeUseCase,
+    val addFavorite: AddFavoriteChannelUseCase,
+    val delFavorite: DeleteFavoriteChannelUseCase,
+    val getAllFavorite: GetAllFavoriteChannelUseCase,
 )

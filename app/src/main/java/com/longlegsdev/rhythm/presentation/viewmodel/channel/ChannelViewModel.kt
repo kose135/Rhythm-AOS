@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import androidx.compose.runtime.State
+import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
+import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 
 
 @HiltViewModel
@@ -27,9 +29,9 @@ class ChannelViewModel @Inject constructor(
 
     private var currentPage = 1
 
-    private val _channelListState: MutableState<ChannelListState> =
-        mutableStateOf(ChannelListState())
-    val channelListState: State<ChannelListState> = _channelListState
+    private val _channelListState: MutableState<UiState<List<ChannelEntity>>> =
+        mutableStateOf(UiState<List<ChannelEntity>>())
+    val channelListState: State<UiState<List<ChannelEntity>>> = _channelListState
 
 
     init {
@@ -46,15 +48,15 @@ class ChannelViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    _channelListState.value = ChannelListState(channels = it.channels + it.channels + it.channels + it.channels)
+                    _channelListState.value = UiState<List<ChannelEntity>>(onSuccess = true, data = it.channels + it.channels + it.channels + it.channels)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _channelListState.value = ChannelListState(errorMessage = it.localizedMessage)
+                    _channelListState.value = UiState<List<ChannelEntity>>(errorMessage = it.localizedMessage)
 
                 }
                 .doOnLoading {
-                    _channelListState.value = ChannelListState(isLoading = true)
+                    _channelListState.value = UiState<List<ChannelEntity>>(isLoading = true)
                 }.collect()
         }
     }

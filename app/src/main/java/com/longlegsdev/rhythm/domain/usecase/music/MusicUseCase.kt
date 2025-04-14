@@ -5,4 +5,9 @@ data class MusicUseCase(
     val getBestList: GetMusicBestListUseCase,
     val addLike: AddMusicLikeUseCase,
     val delLike: DeleteMusicLikeUseCase,
+    val getRecentList: GetRecentMusicListUseCase,
+    val addRecent: AddRecentMusicUseCase,
+    val addFavorite: AddFavoriteMusicUseCase,
+    val delFavorite: DeleteFavoriteMusicUseCase,
+    val getAllFavorite: GetAllFavoriteMusicUseCase,
 )

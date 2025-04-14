@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.util
 
+import android.annotation.SuppressLint
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -18,6 +19,7 @@ object Time {
     }
 }
 
+@SuppressLint("DefaultLocale")
 fun Int.toTimeFormat(): String {
     val minutes = this / 60
     val seconds = this % 60

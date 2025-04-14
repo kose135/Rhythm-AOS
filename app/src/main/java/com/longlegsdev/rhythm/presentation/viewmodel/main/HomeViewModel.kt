@@ -14,6 +14,7 @@ import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
 import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MusicListState
+import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -30,13 +31,13 @@ class HomeViewModel @Inject constructor(
     private val musicUseCase: MusicUseCase,
 ) : ViewModel() {
 
-    private val _channelListState: MutableState<ChannelListState> =
-        mutableStateOf(ChannelListState())
-    val channelListState: State<ChannelListState> = _channelListState
+    private val _channelListState: MutableState<UiState<List<ChannelEntity>>> =
+        mutableStateOf(UiState<List<ChannelEntity>>())
+    val channelListState: State<UiState<List<ChannelEntity>>> = _channelListState
 
-    private val _musicListState: MutableState<MusicListState> =
-        mutableStateOf(MusicListState())
-    val musicListState: State<MusicListState> = _musicListState
+    private val _musicListState: MutableState<UiState<List<MusicEntity>>> =
+        mutableStateOf(UiState<List<MusicEntity>>())
+    val musicListState: State<UiState<List<MusicEntity>>> = _musicListState
 
     init {
         fetchChannelRecommended()
@@ -53,15 +54,17 @@ class HomeViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    _channelListState.value = ChannelListState(channels = it.channels)
+                    _channelListState.value =
+                        UiState<List<ChannelEntity>>(onSuccess = true, data = it.channels)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _channelListState.value = ChannelListState(errorMessage = it.localizedMessage)
+                    _channelListState.value =
+                        UiState<List<ChannelEntity>>(errorMessage = it.localizedMessage)
 
                 }
                 .doOnLoading {
-                    _channelListState.value = ChannelListState(isLoading = true)
+                    _channelListState.value = UiState<List<ChannelEntity>>(isLoading = true)
                 }.collect()
         }
     }
@@ -76,16 +79,20 @@ class HomeViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    _musicListState.value = MusicListState(musics = it.musics)
+                    _musicListState.value =
+                        UiState<List<MusicEntity>>(onSuccess = true, data = it.musics)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
                     _musicListState.value =
-                        MusicListState(errorMessage = it.localizedMessage, isLoading = false)
+                        UiState<List<MusicEntity>>(
+                            errorMessage = it.localizedMessage,
+                            isLoading = false
+                        )
 
                 }
                 .doOnLoading {
-                    _musicListState.value = MusicListState(isLoading = true)
+                    _musicListState.value = UiState<List<MusicEntity>>(isLoading = true)
                 }.collect()
 
         }

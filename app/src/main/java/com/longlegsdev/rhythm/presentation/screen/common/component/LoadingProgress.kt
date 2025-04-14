@@ -1,6 +1,5 @@
-package com.longlegsdev.rhythm.presentation.screen.common
+package com.longlegsdev.rhythm.presentation.screen.common.component
 
-import android.R.attr.strokeWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
