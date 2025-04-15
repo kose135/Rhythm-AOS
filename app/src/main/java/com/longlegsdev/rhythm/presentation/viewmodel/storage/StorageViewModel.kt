@@ -13,9 +13,7 @@ import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
 import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
-import com.longlegsdev.rhythm.presentation.viewmodel.storage.state.RecentMusicListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -39,7 +37,8 @@ class StorageViewModel @Inject constructor(
 
     private val _favoriteChannelListState: MutableState<UiState<List<FavoriteChannelEntity>>> =
         mutableStateOf(UiState<List<FavoriteChannelEntity>>())
-    val favoriteChannelListState: State<UiState<List<FavoriteChannelEntity>>> = _favoriteChannelListState
+    val favoriteChannelListState: State<UiState<List<FavoriteChannelEntity>>> =
+        _favoriteChannelListState
 
     init {
         fetchRecentMusicList()
@@ -55,12 +54,14 @@ class StorageViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("Get data from database")
 
-                    _recentMusicListState.value = UiState<List<RecentMusicEntity>>(onSuccess = true, data = it)
+                    _recentMusicListState.value =
+                        UiState<List<RecentMusicEntity>>(onSuccess = true, data = it)
                 }
                 .doOnFailure {
                     Timber.d("Failed to retrieve data from database")
 
-                    _recentMusicListState.value = UiState<List<RecentMusicEntity>>(errorMessage = it.localizedMessage)
+                    _recentMusicListState.value =
+                        UiState<List<RecentMusicEntity>>(errorMessage = it.localizedMessage)
                 }
                 .doOnLoading {
                     Timber.d("loading...")
@@ -76,12 +77,14 @@ class StorageViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("Get data from database")
 
-                    _favoriteMusicListState.value = UiState<List<FavoriteMusicEntity>>(onSuccess = true, data = it)
+                    _favoriteMusicListState.value =
+                        UiState<List<FavoriteMusicEntity>>(onSuccess = true, data = it)
                 }
                 .doOnFailure {
                     Timber.d("Failed to retrieve data from database")
 
-                    _favoriteMusicListState.value = UiState<List<FavoriteMusicEntity>>(errorMessage = it.localizedMessage)
+                    _favoriteMusicListState.value =
+                        UiState<List<FavoriteMusicEntity>>(errorMessage = it.localizedMessage)
                 }
                 .doOnLoading {
 
@@ -97,12 +100,14 @@ class StorageViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("Get data from database")
 
-                    _favoriteChannelListState.value = UiState<List<FavoriteChannelEntity>>(onSuccess = true, data = it)
+                    _favoriteChannelListState.value =
+                        UiState<List<FavoriteChannelEntity>>(onSuccess = true, data = it)
                 }
                 .doOnFailure {
                     Timber.d("Failed to retrieve data from database")
 
-                    _favoriteChannelListState.value = UiState<List<FavoriteChannelEntity>>(errorMessage = it.localizedMessage)
+                    _favoriteChannelListState.value =
+                        UiState<List<FavoriteChannelEntity>>(errorMessage = it.localizedMessage)
                 }
                 .doOnLoading {
 

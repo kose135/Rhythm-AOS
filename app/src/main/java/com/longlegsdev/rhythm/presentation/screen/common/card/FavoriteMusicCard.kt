@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
 import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
+import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
 import com.longlegsdev.rhythm.util.toTimeFormat
@@ -47,13 +48,11 @@ fun FavoriteMusicCard(
         verticalArrangement = Arrangement.Center
     ) {
 
-        CoilImage(
+        AlbumCoverImage(
             modifier = Modifier
                 .size(150.dp)
                 .clip(RoundedCornerShape(5.dp)),
-            imageModel = albumImageUrl,
-            placeHolder = ImageBitmap.imageResource(R.drawable.rhythm_cover),
-            error = ImageBitmap.imageResource(R.drawable.rhythm_cover)
+            url = albumImageUrl
         )
 
         Space(height = 6.dp)

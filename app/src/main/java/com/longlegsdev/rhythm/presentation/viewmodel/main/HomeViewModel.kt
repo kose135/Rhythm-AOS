@@ -12,8 +12,6 @@ import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
 import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
-import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MusicListState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.hilt.android.lifecycle.HiltViewModel

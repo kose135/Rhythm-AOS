@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.tab
+package com.longlegsdev.rhythm.presentation.screen.main.page
 
 
 import androidx.compose.foundation.background
@@ -16,7 +16,7 @@ import com.longlegsdev.rhythm.util.Space
 import timber.log.Timber
 
 @Composable
-fun HomeTab(
+fun HomePage(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val channelListState = viewModel.channelListState.value

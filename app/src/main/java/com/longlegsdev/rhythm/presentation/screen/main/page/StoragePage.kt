@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.tab
+package com.longlegsdev.rhythm.presentation.screen.main.page
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import com.longlegsdev.rhythm.presentation.screen.main.section.storage.RecentlyP
 import com.longlegsdev.rhythm.presentation.viewmodel.storage.StorageViewModel
 
 @Composable
-fun StorageTab(
+fun StoragePage(
     viewModel: StorageViewModel = hiltViewModel()
 ) {
     Column(

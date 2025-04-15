@@ -39,7 +39,6 @@ fun TabIndicator(
         tabPositions[it].right
     }
 
-    // indicator
     Box(
         Modifier
             .wrapContentSize(align = Alignment.BottomStart)

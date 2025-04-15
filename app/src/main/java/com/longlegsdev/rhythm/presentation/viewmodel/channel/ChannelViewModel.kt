@@ -10,7 +10,6 @@ import com.longlegsdev.rhythm.domain.doOnFailure
 import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
 import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect

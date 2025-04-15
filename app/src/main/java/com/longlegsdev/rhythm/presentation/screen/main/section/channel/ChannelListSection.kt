@@ -25,7 +25,6 @@ import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.ChannelEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.ChannelCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 
 @SuppressLint("UnusedBoxWithConstraintsScope")

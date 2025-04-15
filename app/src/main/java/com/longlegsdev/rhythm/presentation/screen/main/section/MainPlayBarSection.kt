@@ -24,9 +24,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.presentation.screen.common.component.ProgressBar
 import com.longlegsdev.rhythm.util.Space
-import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
 fun PlayBarSection(
@@ -51,11 +51,11 @@ fun PlayBarSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // album image
-            CoilImage(
+            AlbumCoverImage(
                 modifier = Modifier
                     .size(height)
                     .clip(RoundedCornerShape(5.dp)),
-                imageModel = imageUrl
+                url = imageUrl
             )
 
             Space(width = 8.dp)
@@ -109,8 +109,9 @@ fun PlayBarSection(
         // progress bar
         ProgressBar(
             current = 200,
-            max = 300,
-            height = progressBarHeight
+            duration = 300,
+            height = progressBarHeight,
+            seekTo = { }
         )
     }
 }

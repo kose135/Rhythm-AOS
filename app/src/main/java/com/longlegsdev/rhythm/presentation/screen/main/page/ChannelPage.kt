@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.tab
+package com.longlegsdev.rhythm.presentation.screen.main.page
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import com.longlegsdev.rhythm.presentation.viewmodel.channel.ChannelViewModel
 import timber.log.Timber
 
 @Composable
-fun ChannelTab(
+fun ChannelPage(
     viewModel: ChannelViewModel = hiltViewModel(),
 ) {
 

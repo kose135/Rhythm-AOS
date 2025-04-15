@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
+import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PageSection(
-    pages: List<TabPage>,
+    pages: List<PageScreen>,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     scrollEnable: Boolean = false
@@ -36,6 +36,6 @@ fun PageSection(
             )
             .fillMaxSize()
     ) { pagePosition ->
-        pages[pagePosition].Screen()
+        pages[pagePosition].Content()
     }
 }

@@ -1,9 +1,11 @@
 package com.longlegsdev.rhythm.presentation.screen.common.card
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,16 +25,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.request.ImageRequest
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.ChannelEntity
+import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
 import com.skydoves.landscapist.coil.CoilImage
+import com.skydoves.landscapist.coil.CoilImageState
 
 @Composable
 fun ChannelCard(
@@ -56,16 +64,15 @@ fun ChannelCard(
             modifier = Modifier
                 .size(width),
         ) {
-            CoilImage(
+
+            AlbumCoverImage(
                 modifier = Modifier
+                    .fillMaxSize()
                     .clip(RoundedCornerShape(5.dp)),
-                imageModel = coverImageUrl,
-                placeHolder = ImageBitmap.imageResource(R.drawable.rhythm_cover),
-                error = ImageBitmap.imageResource(R.drawable.rhythm_cover)
+                url = coverImageUrl
             )
 
             if (liked != null) {
-
                 Icon(
                     modifier = Modifier
                         .size(30.dp)

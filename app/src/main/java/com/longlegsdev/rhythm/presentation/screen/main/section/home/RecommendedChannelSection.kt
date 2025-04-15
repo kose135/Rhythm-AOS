@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.data.entity.ChannelEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.ChannelCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.state.ChannelListState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import com.longlegsdev.rhythm.util.Space
 

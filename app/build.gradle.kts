@@ -142,8 +142,9 @@ dependencies {
 
     // landscapist of skydoves
     // git: https://github.com/skydoves/landscapist
-    val landscapist_version = "1.6.0"
+    val landscapist_version = "2.4.7"
     implementation("com.github.skydoves:landscapist-coil:$landscapist_version")
+    implementation("com.github.skydoves:landscapist-palette:$landscapist_version")
     // orbital
     implementation("com.github.skydoves:orbital:0.4.0")
 

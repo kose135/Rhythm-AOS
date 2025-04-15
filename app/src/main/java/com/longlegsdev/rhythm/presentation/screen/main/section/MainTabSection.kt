@@ -11,16 +11,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.component.TabIndicator
-import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
 import com.longlegsdev.rhythm.presentation.theme.TabBackground
 import com.longlegsdev.rhythm.presentation.theme.TabIconSelected
 import com.longlegsdev.rhythm.presentation.theme.TabIconUnselected
 
 @Composable
 fun TabSection(
+    pages: List<PageScreen>,
     selectedTabIndex: Int,
-    onSelectedTab: (TabPage) -> Unit,
+    onSelectedTab: (Int) -> Unit,
     backgroundColor: Color = TabBackground,
     selectedColor: Color = TabIconSelected,
     unselectedColor: Color = TabIconUnselected,
@@ -34,20 +35,20 @@ fun TabSection(
             )
         }
     ) {
-        TabPage.entries.forEachIndexed { index, tabPage ->
+        pages.forEachIndexed { index, tabPage ->
             Tab(
                 selected = index == selectedTabIndex,
-                onClick = { onSelectedTab(tabPage) },
+                onClick = { onSelectedTab(index) },
                 modifier = Modifier
                     .background(backgroundColor),
                 text = {
                     Text(
-                        text = stringResource(tabPage.titleResId)
+                        text = stringResource(tabPage.title)
                     )
                 },
                 icon = {
                     Icon(
-                        imageVector = ImageVector.vectorResource(tabPage.iconResId),
+                        imageVector = ImageVector.vectorResource(tabPage.icon),
                         contentDescription = null
                     )
                 },

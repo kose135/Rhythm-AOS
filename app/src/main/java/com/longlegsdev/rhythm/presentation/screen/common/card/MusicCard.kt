@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.data.entity.MusicEntity
+import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.click
 import com.skydoves.landscapist.coil.CoilImage
 
@@ -46,12 +47,12 @@ fun MusicCard(
             .click { onMusicItemClick(musicId) }
             .width(width)
     ) {
-        CoilImage(
+        AlbumCoverImage(
+//            url = albumImageUrl
             modifier = Modifier
-                .clip(RoundedCornerShape(5.dp))
-                .size(60.dp),
-//            imageModel = albumImageUrl
-            imageModel = "http://10.0.2.2:8100/cover/IU.jpg"
+                .size(60.dp)
+                .clip(RoundedCornerShape(5.dp)),
+            url = "http://10.0.2.2:8100/cover/IU.jpg"
         )
 
         Spacer(modifier = Modifier.width(10.dp))

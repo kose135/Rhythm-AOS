@@ -29,8 +29,8 @@ val TextDisabled = Color(0xFFBDBDBD)
 val PlayerBackground = Color(0xFFF5EDE4)
 
 val TabBackground = Color(0xFFFBEAE7)
-val TabIconSelected = Color(0xFFE35246)
-val TabIconUnselected = Color(0xFFD0A8A5)
+val TabIconSelected = Color(0xFFE56155)
+val TabIconUnselected = Color(0xFF9B9696)
 
 val Success = Color(0xFF2196F3)
 val Warning = Color(0xFFFFC107)

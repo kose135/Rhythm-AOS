@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -21,12 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.MusicEntity
-import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
-import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MusicListState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 
 @SuppressLint("UnusedBoxWithConstraintsScope")

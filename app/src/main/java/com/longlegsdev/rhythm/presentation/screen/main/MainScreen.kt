@@ -3,14 +3,14 @@ package com.longlegsdev.rhythm.presentation.screen.main
 import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.layout.Column
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,13 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.section.PageSection
-import com.longlegsdev.rhythm.presentation.screen.main.section.PlayBarSection
-import com.longlegsdev.rhythm.presentation.screen.main.component.TabPage
 import com.longlegsdev.rhythm.presentation.screen.main.section.TabSection
+import com.longlegsdev.rhythm.presentation.screen.main.page.PlayerPage
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
@@ -45,62 +45,60 @@ fun MainScreen(
 //        }
 //    }
 
-    val pages = TabPage.entries.toList()
+    val pages = listOf(PageScreen.Channel, PageScreen.Home, PageScreen.Storage)
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { pages.size }
     )
     val scope = rememberCoroutineScope()
 
-    var isPlay by remember { mutableStateOf(false) }
+    var showPlayer by remember { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         bottomBar = {
             TabSection(
+                pages = pages,
                 selectedTabIndex = pagerState.currentPage,
-                onSelectedTab = {
+                onSelectedTab = { selectedPage ->
                     scope.launch {
-                        pagerState.animateScrollToPage(it.ordinal)
+                        pagerState.animateScrollToPage(selectedPage)
                     }
                 }
             )
         }
     ) {
-        val bottomHeight = it.calculateBottomPadding()
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-
             PageSection(
-                modifier = Modifier
-                    .weight(1f),
+                modifier = Modifier,
                 pages = pages,
                 pagerState = pagerState,
                 scrollEnable = false,
             )
 
             AnimatedVisibility(
-                visible = isPlay,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+                visible = showPlayer,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(durationMillis = 1000)
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = { it },
+                    animationSpec = tween(durationMillis = 500)
+                ),
+                modifier = Modifier.fillMaxSize()
             ) {
-
-                PlayBarSection(
-                    height = bottomHeight,
-                    imageUrl = "http://10.0.2.2:8100/cover/IU.jpg",
-                    title = "노래 제목",
-                    artist = "아티스트",
-                    onPlayPauseClick = {
-
-                    }
+                PlayerPage(
+                    padding = it,
+                    sharedAlbumImage = { }
                 )
             }
-
         }
 
     }
