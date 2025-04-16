@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.section
+package com.longlegsdev.rhythm.presentation.screen.main.section.main
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable

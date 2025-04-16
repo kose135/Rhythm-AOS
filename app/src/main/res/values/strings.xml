@@ -5,6 +5,10 @@
     <string name="tab_home">Home</string>
     <string name="tab_storage">Storage</string>
 
+    <string name="tab_player">Player</string>
+    <string name="tab_track">Track</string>
+    <string name="tab_lyrics">Lyrics</string>
+
     <string name="str_channel_list">채널 목록</string>
 
     <string name="str_recommended_music">추천 채널</string>

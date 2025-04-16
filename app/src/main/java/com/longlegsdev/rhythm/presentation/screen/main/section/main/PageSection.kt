@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.section
+package com.longlegsdev.rhythm.presentation.screen.main.section.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,11 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.longlegsdev.rhythm.presentation.screen.main.component.Page
+import com.longlegsdev.rhythm.presentation.screen.main.component.Page.*
 import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PageSection(
+    type: Page = Page.MAIN,
     pages: List<PageScreen>,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
@@ -36,6 +39,11 @@ fun PageSection(
             )
             .fillMaxSize()
     ) { pagePosition ->
-        pages[pagePosition].Content()
+
+        when(type) {
+            MAIN -> pages[pagePosition].MainContent()
+            MUSIC -> pages[pagePosition].MusicContent()
+        }
+
     }
 }

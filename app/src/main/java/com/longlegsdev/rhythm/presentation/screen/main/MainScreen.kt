@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
-import com.longlegsdev.rhythm.presentation.screen.main.section.PageSection
-import com.longlegsdev.rhythm.presentation.screen.main.section.TabSection
-import com.longlegsdev.rhythm.presentation.screen.main.page.PlayerPage
+import com.longlegsdev.rhythm.presentation.screen.main.page.MusicPage
+import com.longlegsdev.rhythm.presentation.screen.main.section.main.PageSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.main.TabSection
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,9 +76,9 @@ fun MainScreen(
                 .padding(it)
         ) {
             PageSection(
-                modifier = Modifier,
                 pages = pages,
                 pagerState = pagerState,
+                modifier = Modifier,
                 scrollEnable = false,
             )
 
@@ -94,8 +94,7 @@ fun MainScreen(
                 ),
                 modifier = Modifier.fillMaxSize()
             ) {
-                PlayerPage(
-                    padding = it,
+                MusicPage(
                     sharedAlbumImage = { }
                 )
             }
