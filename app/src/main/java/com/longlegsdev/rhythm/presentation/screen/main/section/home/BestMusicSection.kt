@@ -77,7 +77,7 @@ fun HomeMusicSection(
                 }
 
                 state.onSuccess == true -> {
-                    val musics = state.data!!
+                    val musicList = state.data!!
 
                     LazyHorizontalGrid(
                         modifier = Modifier.fillMaxSize(),
@@ -86,7 +86,7 @@ fun HomeMusicSection(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        itemsIndexed(musics) { index, music ->
+                        itemsIndexed(musicList) { index, music ->
                             val musicId = music.id
                             val title = music.title
                             val albumImageUrl = music.album

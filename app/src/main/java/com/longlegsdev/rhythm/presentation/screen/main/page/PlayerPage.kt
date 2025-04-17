@@ -16,10 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.AlbumSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.LikeFavoriteSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.PlayerSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.ProgressSection
+import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import com.longlegsdev.rhythm.util.MUSICENTITY_LIST
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.Time.currentTime
@@ -27,7 +29,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerPage(
-
+    viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val musics = MUSICENTITY_LIST
 

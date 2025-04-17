@@ -28,24 +28,26 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.click
+import com.longlegsdev.rhythm.util.toTimeFormat
 import com.skydoves.landscapist.coil.CoilImage
 
 
 @Composable
-fun MusicCard(
+fun TrackMusicCard(
     musicId: Int,
     title: String,
     albumImageUrl: String,
     artist: String,
+    duration: Int,
     liked: Boolean?,
-    width: Dp,
-    onMusicItemClick: (Int) -> Unit
+    onMusicItemClick: (Int) -> Unit,
+    isCurrent: Boolean,
 ) {
 
     Row(
         modifier = Modifier
             .click { onMusicItemClick(musicId) }
-            .width(width)
+            .fillMaxWidth()
     ) {
         AlbumCoverImage(
             modifier = Modifier
@@ -83,7 +85,7 @@ fun MusicCard(
                     modifier = Modifier
                         .weight(1f)
                         .basicMarquee(iterations = Int.MAX_VALUE),
-                    text = artist,
+                    text = "$artist · ${duration.toTimeFormat()}",
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 1,
                     overflow = TextOverflow.Visible,

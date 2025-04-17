@@ -52,7 +52,7 @@ fun MainScreen(
     )
     val scope = rememberCoroutineScope()
 
-    var showPlayer by remember { mutableStateOf(true) }
+    var expandedPlayer by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -83,7 +83,7 @@ fun MainScreen(
             )
 
             AnimatedVisibility(
-                visible = showPlayer,
+                visible = expandedPlayer,
                 enter = slideInVertically(
                     initialOffsetY = { it },
                     animationSpec = tween(durationMillis = 1000)
@@ -95,7 +95,8 @@ fun MainScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 MusicPage(
-                    sharedAlbumImage = { }
+                    sharedAlbumImage = { },
+
                 )
             }
         }
