@@ -36,7 +36,7 @@ fun FavoriteMusicCard(
     title: String,
     albumImageUrl: String,
     artist: String,
-    duration: Int,
+    duration: Long,
     onFavoriteMusicClick: (Int) -> Unit = {}
 ) {
 

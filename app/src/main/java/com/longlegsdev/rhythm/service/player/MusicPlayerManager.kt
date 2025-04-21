@@ -1,136 +1,156 @@
 package com.longlegsdev.rhythm.service.player
 
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
+import android.content.Context
+import android.content.Intent
+import androidx.annotation.OptIn
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import com.longlegsdev.rhythm.data.entity.MusicEntity
+import com.longlegsdev.rhythm.service.RhythmService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.getOrNull
-import kotlin.collections.map
 
 class MusicPlayerManager @Inject constructor(
+    private val context: Context,
     private val musicPlayer: MusicPlayer,
 ) {
-    private val _playbackState = MutableStateFlow<PlaybackState?>(null)
-    val playbackState: StateFlow<PlaybackState?> = _playbackState.asStateFlow()
 
-    private val _currentMusic = MutableStateFlow<MusicEntity?>(null)
-    val currentMusic: StateFlow<MusicEntity?> = _currentMusic.asStateFlow()
+    private val _playbackState = MutableStateFlow<PlaybackState>(PlaybackState.IDLE)
+    val playbackState: StateFlow<PlaybackState> = _playbackState.asStateFlow()
 
-    private val _currentPosition = MutableStateFlow(0)
-    val currentPosition: StateFlow<Int> = _currentPosition.asStateFlow()
+    private val _isPlaying = MutableStateFlow<Boolean>(false)
+    val isPlaying: StateFlow<Boolean> = _isPlaying.asStateFlow()
 
-    private val _duration = MutableStateFlow(0)
-    val duration: StateFlow<Int> = _duration.asStateFlow()
+    private val _currentIndex = MutableStateFlow(0)
+    val currentIndex: StateFlow<Int> = _currentIndex.asStateFlow()
 
-    private var currentList: List<MusicEntity> = emptyList()
-    private var currentIndex: Int = 0
+    private val _currentMusic = MutableStateFlow(MusicEntity.EMPTY)
+    val currentMusic: StateFlow<MusicEntity> = _currentMusic.asStateFlow()
+
+    private val _currentPosition = MutableStateFlow(0L)
+    val currentPosition: StateFlow<Long> = _currentPosition.asStateFlow()
+
+    private val _bufferedPosition = MutableStateFlow(0L)
+    val bufferedPosition: StateFlow<Long> = _bufferedPosition.asStateFlow()
+
+    private val _duration = MutableStateFlow(0L)
+    val duration: StateFlow<Long> = _duration.asStateFlow()
+
+    private val _musicList = MutableStateFlow(emptyList<MusicEntity>())
+    val musicList: StateFlow<List<MusicEntity>> = _musicList.asStateFlow()
 
     private var positionJob: Job? = null
 
-    private val player = musicPlayer.getPlayer()
-
     init {
-        player.addListener(object : Player.Listener {
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                updateState()
-                if (isPlaying) startTrackingPosition() else stopTrackingPosition()
-            }
-
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                updateState()
-            }
-
-            override fun onPlaybackStateChanged(state: Int) {
-                if (state == Player.STATE_ENDED) {
-                    next()
-                }
-            }
-        })
+        observePlaybackEvents()
+        observeMediaItemChanged()
     }
 
+    @OptIn(UnstableApi::class)
     fun play(list: List<MusicEntity>, index: Int) {
-        currentList = list
-        currentIndex = index
+        val serviceIntent = Intent(context, RhythmService::class.java)
+        context.startForegroundService(serviceIntent)
 
-        val items = list.map { music ->
-            MediaItem.Builder()
-                .setUri(music.url)
-                .setMediaId(music.id.toString())
-                .setMediaMetadata(
-                    MediaMetadata.Builder()
-                        .setTitle(music.title)
-                        .setArtist(music.artist)
-                        .build()
-                )
-                .build()
-        }
+        _musicList.value = list
+        _currentIndex.value = index
 
-        player.setMediaItems(items, index, 0L)
-        player.prepare()
-        player.play()
+        musicPlayer.setMediaItems(list, index)
+        musicPlayer.play()
 
-        _currentMusic.value = list[index]
-        _duration.value = player.duration.toInt()
+        updateState()
     }
 
     fun playPause() {
-
-        if (player.isPlaying) {
-            player.pause()
+        if (isPlaying.value) {
+            musicPlayer.pause()
         } else {
-            player.play()
+            musicPlayer.play()
         }
+        updateState()
     }
 
     fun next() {
         musicPlayer.next()
-        _currentMusic.value = currentList.getOrNull(getPlayer().currentMediaItemIndex)
+        updateState()
     }
 
     fun previous() {
         musicPlayer.previous()
-        _currentMusic.value = currentList.getOrNull(getPlayer().currentMediaItemIndex)
+        updateState()
     }
 
     fun seekTo(positionMs: Long) {
-        musicPlayer.getPlayer().seekTo(positionMs)
-        _currentPosition.value = positionMs.toInt()
+        musicPlayer.seekTo(positionMs)
+//        _currentPosition.value = positionMs
+        _currentPosition.value = musicPlayer.getCurrentPosition()
     }
 
     private fun updateState() {
-        val player = musicPlayer.getPlayer()
-        val currentItem = player.currentMediaItem ?: return
-        val index = player.currentMediaItemIndex
-        _currentMusic.value = currentList.getOrNull(index)
-        _duration.value = player.duration.toInt()
+        val index = musicPlayer.getCurrentIndex()
+        val duration = musicPlayer.getDuration()
+
+        _currentIndex.value = index
+        _currentMusic.value = _musicList.value.getOrNull(index) ?: MusicEntity.EMPTY
+        _duration.value = if (duration < 0L) _currentMusic.value.duration * 1000 else duration // metadata를 가져오지 못하는 상황 발생
         _playbackState.value = musicPlayer.getState()
     }
 
-    private fun startTrackingPosition() {
-        stopTrackingPosition()
+
+    fun startUpdatingCurrentPosition() {
+        if (positionJob?.isActive == true) return
+
         positionJob = CoroutineScope(Dispatchers.Main).launch {
-            while (true) {
-                _currentPosition.value = musicPlayer.getPlayer().currentPosition.toInt()
-                delay(1000L)
+            while (isActive) {
+                if (_isPlaying.value && _playbackState.value == PlaybackState.PLAYING) {
+                    val position = musicPlayer.getCurrentPosition()
+                    val buffer = musicPlayer.getBuffer()
+
+                    _currentPosition.value = position
+                    _bufferedPosition.value = buffer
+
+                    val delayMs = 1000 - (position % 1000) + 100;
+                    delay(delayMs) // 1초마다 업데이트
+                } else {
+                    delay(1000L)
+                }
+
             }
         }
     }
 
-    private fun stopTrackingPosition() {
+    fun stopUpdatingCurrentPosition() {
         positionJob?.cancel()
-        positionJob = null
     }
 
     fun getPlayer(): Player = musicPlayer.getPlayer()
 
+    private fun observePlaybackEvents() {
+        musicPlayer.setOnPlaybackStateChangedListener { newState ->
+            _playbackState.value = newState
+        }
+
+        musicPlayer.setOnIsPlayingChangedListener { isPlaying ->
+            _isPlaying.value = isPlaying
+            if (isPlaying) {
+                startUpdatingCurrentPosition()
+            } else {
+                stopUpdatingCurrentPosition()
+            }
+        }
+    }
+
+    private fun observeMediaItemChanged() {
+        musicPlayer.setOnMediaItemChangedListener {
+            updateState()
+        }
+    }
 }

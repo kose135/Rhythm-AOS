@@ -10,7 +10,7 @@ data class RecentMusicEntity(
     val title: String,
     val artist: String,
     val album: String,
-    val duration: Int,
+    val duration: Long,
     val lyrics: String,
     val url: String,
     val playedAt: Long = System.currentTimeMillis() // 마지막 재생시간

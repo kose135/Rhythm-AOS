@@ -13,13 +13,13 @@ import com.longlegsdev.rhythm.domain.doOnSuccess
 import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.service.player.MusicPlayerManager
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.collections.plusAssign
 
 
 @HiltViewModel
@@ -27,6 +27,7 @@ class HomeViewModel @Inject constructor(
 //    arguments: SavedStateHandle,
     private val channelUseCase: ChannelUseCase,
     private val musicUseCase: MusicUseCase,
+    private val musicPlayerManager: MusicPlayerManager,
 ) : ViewModel() {
 
     private val _channelListState: MutableState<UiState<List<ChannelEntity>>> =
@@ -78,7 +79,7 @@ class HomeViewModel @Inject constructor(
                     Timber.d("API Call Success")
 
                     _musicListState.value =
-                        UiState<List<MusicEntity>>(onSuccess = true, data = it.musics)
+                        UiState<List<MusicEntity>>(onSuccess = true, data = it.musicList)
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
@@ -93,6 +94,22 @@ class HomeViewModel @Inject constructor(
                     _musicListState.value = UiState<List<MusicEntity>>(isLoading = true)
                 }.collect()
 
+        }
+    }
+
+    fun playChannel(channelId: Int) {
+        viewModelScope.launch {
+            channelUseCase.getMusicList(channelId)
+                .doOnSuccess {
+                    Timber.d("API Call Success")
+                    musicPlayerManager.play(it.musicList, 0)
+                }
+                .doOnFailure {
+                    Timber.d("API Call Failed: ${it.localizedMessage}")
+                }
+                .doOnLoading {
+                    Timber.d("Loading...")
+                }.collect()
         }
     }
 

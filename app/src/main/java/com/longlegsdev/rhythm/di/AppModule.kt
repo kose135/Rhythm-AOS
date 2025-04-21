@@ -45,9 +45,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMusicPlayerManager(
-        player: MusicPlayer
+        @ApplicationContext app: Context,
+        musicPlayer: MusicPlayer
     ): MusicPlayerManager {
-        return MusicPlayerManager(player)
+        return MusicPlayerManager(app, musicPlayer)
     }
 
 }

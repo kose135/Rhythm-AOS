@@ -25,3 +25,12 @@ fun Int.toTimeFormat(): String {
     val seconds = this % 60
     return String.format("%d:%02d", minutes, seconds)
 }
+
+@SuppressLint("DefaultLocale")
+fun Long.toTimeFormat(): String {
+    val secondTime = this / 1000L
+
+    val minutes = secondTime / 60
+    val seconds = secondTime % 60
+    return String.format("%d:%02d", minutes, seconds)
+}

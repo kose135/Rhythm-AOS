@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.main
 
+import android.R.attr.duration
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,28 +20,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.presentation.screen.common.component.ProgressBar
 import com.longlegsdev.rhythm.util.Space
+import com.longlegsdev.rhythm.util.click
+import timber.log.Timber
 
 @Composable
-fun PlayBarSection(
+fun MiniPlayBarSection(
     height: Dp = 56.dp,
+    isPlay: Boolean = false,
     imageUrl: String = "",
     title: String = "",
     artist: String = "",
-    onPlayPauseClick: () -> Unit = {}
+    currentPosition: Long,
+    bufferedPosition: Long,
+    duration: Long,
+    onPlayPauseClick: () -> Unit,
+    onMiniPlayerBarClick: () -> Unit,
 ) {
     val progressBarHeight = 4.dp
 
     Column(
         modifier = Modifier
             .height(height + progressBarHeight)
+            .click(onMiniPlayerBarClick)
             .fillMaxWidth()
     ) {
         Row(
@@ -96,7 +107,7 @@ fun PlayBarSection(
 
             // play or pause button
             Icon(
-                imageVector = Icons.Default.PlayArrow,
+                painter = if(isPlay) painterResource(R.drawable.btn_pause) else painterResource(R.drawable.btn_play),
                 contentDescription = "Play or Pause Button",
                 modifier = Modifier
                     .padding(5.dp)
@@ -106,22 +117,17 @@ fun PlayBarSection(
             )
         }
 
+        Timber.d("currentPosition = $currentPosition")
+        Timber.d("duration = $duration")
+
         // progress bar
         ProgressBar(
-            current = 200,
-            duration = 300,
+            current = currentPosition,
+            buffer = bufferedPosition,
+            duration = duration,
             height = progressBarHeight,
             seekTo = { }
         )
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PlayBarSectionPreView() {
-    PlayBarSection(
-        imageUrl = "http://10.0.2.2:8100/cover/IU.jpg",
-        title = "라일락",
-        artist = "IU"
-    )
-}

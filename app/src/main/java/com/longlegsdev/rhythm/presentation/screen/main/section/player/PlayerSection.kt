@@ -26,6 +26,7 @@ import com.longlegsdev.rhythm.util.click
 @Composable
 fun PlayerSection(
     modifier: Modifier = Modifier,
+    isPlay: Boolean = false,
     pre: () -> Unit,
     playPause: () -> Unit,
     next: () -> Unit,
@@ -64,7 +65,7 @@ fun PlayerSection(
             ) {
 
                 Image(
-                    painter = painterResource(R.drawable.btn_play),
+                    painter = if(isPlay) painterResource(R.drawable.btn_pause) else painterResource(R.drawable.btn_play),
                     contentDescription = "play or pause",
                     modifier = Modifier.size(iconSize * 1.5f)
                 )

@@ -10,9 +10,23 @@ data class MusicEntity(
     val title: String,
     val artist: String,
     val album: String,
-    val duration: Int,
+    val duration: Long,
     val lyrics: String,
     val url: String,
     val likes: Int,
     val liked: Boolean
-)
+) {
+    companion object {
+        val EMPTY = MusicEntity(
+            id = -1,
+            title = "",
+            artist = "",
+            album = "",
+            duration = 0,
+            lyrics = "",
+            url = "",
+            likes = 0,
+            liked = false
+        )
+    }
+}

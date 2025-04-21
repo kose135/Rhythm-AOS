@@ -14,7 +14,7 @@ data class Music(
     @Json(name = "album")
     val album: String?,
     @Json(name = "duration")
-    val duration: Int,
+    val duration: Long,
     @Json(name = "lyrics")
     val lyrics: String,
     @Json(name = "url")

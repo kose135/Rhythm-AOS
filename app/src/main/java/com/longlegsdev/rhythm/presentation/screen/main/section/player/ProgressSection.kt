@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,9 +18,10 @@ import com.longlegsdev.rhythm.util.toTimeFormat
 
 @Composable
 fun ProgressSection(
-    currentTime: Int,
-    duration: Int,
-    seekTo: (Int) -> Unit,
+    currentTime: Long,
+    bufferedTime: Long,
+    duration: Long,
+    seekTo: (Long) -> Unit,
 ) {
 
     Column(
@@ -34,6 +34,7 @@ fun ProgressSection(
         ProgressBar(
             height = 2.dp,
             current = currentTime,
+            buffer = bufferedTime,
             duration = duration,
             changeEnable = true,
             seekTo = { seekTo(it) },

@@ -27,6 +27,7 @@ fun ChannelPage(
             state = channelListState,
             onChannelClick = { channelId ->
                 Timber.d("click channel id = $channelId")
+                viewModel.playChannel(channelId)
             }
         )
 

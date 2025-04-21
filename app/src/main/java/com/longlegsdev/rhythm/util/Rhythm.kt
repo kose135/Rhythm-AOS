@@ -4,6 +4,13 @@ import com.longlegsdev.rhythm.BuildConfig
 
 object Rhythm {
 
+    /* Notification values */
+    const val NOTIFICATION_ID = 100001
+    const val CHANNEL_ID = "rhythm_channel_id"
+    const val CHANNEL_NAME = "rhythm_channel_name"
+    const val CHANNEL_DESCRIPTION = "Controls for music playback"
+
+
     /* DI values */
 
     const val BASE_URL = BuildConfig.BASE_URL

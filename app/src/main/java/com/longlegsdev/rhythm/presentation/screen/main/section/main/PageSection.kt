@@ -25,7 +25,7 @@ fun PageSection(
 ) {
     HorizontalPager(
         state = pagerState,
-        beyondViewportPageCount = 1,
+        beyondViewportPageCount = 2,
         userScrollEnabled = scrollEnable,
         modifier = modifier
             .background(

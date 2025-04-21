@@ -7,7 +7,7 @@ object MusicListMapper : EntityMapper<MusicList, MusicListEntity> {
     override fun asEntity(domain: MusicList): MusicListEntity {
         return MusicListEntity(
             size = domain.size ?: domain.list.size,
-            musics = domain.list.asEntity()
+            musicList = domain.list.asEntity()
         )
     }
 
@@ -15,7 +15,7 @@ object MusicListMapper : EntityMapper<MusicList, MusicListEntity> {
         return MusicList(
             status = "Success Music List",
             size = entity.size,
-            list = entity.musics.asDomain()
+            list = entity.musicList.asDomain()
         )
     }
 }

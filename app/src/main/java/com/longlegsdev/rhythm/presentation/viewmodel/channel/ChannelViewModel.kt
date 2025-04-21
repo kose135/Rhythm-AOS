@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.longlegsdev.rhythm.data.entity.ChannelEntity
-import com.longlegsdev.rhythm.data.remote.model.ChannelList
 import com.longlegsdev.rhythm.domain.doOnFailure
 import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
@@ -17,13 +16,14 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import androidx.compose.runtime.State
-import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.service.player.MusicPlayerManager
 
 
 @HiltViewModel
 class ChannelViewModel @Inject constructor(
     private val channelUseCase: ChannelUseCase,
+    private val musicPlayerManager: MusicPlayerManager,
 ) : ViewModel() {
 
     private var currentPage = 1
@@ -47,15 +47,35 @@ class ChannelViewModel @Inject constructor(
                 .doOnSuccess {
                     Timber.d("API Call Success")
 
-                    _channelListState.value = UiState<List<ChannelEntity>>(onSuccess = true, data = it.channels + it.channels + it.channels + it.channels)
+                    _channelListState.value = UiState<List<ChannelEntity>>(
+                        onSuccess = true,
+                        data = it.channels + it.channels + it.channels + it.channels
+                    )
                 }
                 .doOnFailure {
                     Timber.d("API Call Failed: ${it.localizedMessage}")
-                    _channelListState.value = UiState<List<ChannelEntity>>(errorMessage = it.localizedMessage)
+                    _channelListState.value =
+                        UiState<List<ChannelEntity>>(errorMessage = it.localizedMessage)
 
                 }
                 .doOnLoading {
                     _channelListState.value = UiState<List<ChannelEntity>>(isLoading = true)
+                }.collect()
+        }
+    }
+
+    fun playChannel(channelId: Int) {
+        viewModelScope.launch {
+            channelUseCase.getMusicList(channelId)
+                .doOnSuccess {
+                    Timber.d("API Call Success")
+                    musicPlayerManager.play(it.musicList, 0)
+                }
+                .doOnFailure {
+                    Timber.d("API Call Failed: ${it.localizedMessage}")
+                }
+                .doOnLoading {
+                    Timber.d("Loading...")
                 }.collect()
         }
     }

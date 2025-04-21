@@ -38,7 +38,7 @@ fun TrackMusicCard(
     title: String,
     albumImageUrl: String,
     artist: String,
-    duration: Int,
+    duration: Long,
     liked: Boolean?,
     onMusicItemClick: (Int) -> Unit,
     isCurrent: Boolean,

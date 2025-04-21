@@ -1,6 +1,7 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,10 +15,8 @@ import com.longlegsdev.rhythm.util.MUSICENTITY_LIST
 fun TrackPage(
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
-    val musics = MUSICENTITY_LIST
-
-    var currentIndex by remember { mutableStateOf(0) }
-    var currentMusic by remember { mutableStateOf(musics[currentIndex]) }
+    val musics by viewModel.musicList.collectAsState()
+    val currentIndex by viewModel.currentIndex.collectAsState()
 
     TrackSection(
         musicList = musics,

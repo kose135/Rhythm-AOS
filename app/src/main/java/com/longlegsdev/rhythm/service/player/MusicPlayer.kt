@@ -1,28 +1,15 @@
 package com.longlegsdev.rhythm.service.player
 
-import androidx.core.app.PendingIntentCompat.send
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Player.RepeatMode
+import androidx.media3.datasource.HttpDataSource.HttpDataSourceException
+import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import androidx.media3.exoplayer.ExoPlayer
-import com.longlegsdev.rhythm.service.player.PlaybackState
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.remote.model.Music
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flattenMerge
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,34 +19,12 @@ class MusicPlayer @Inject constructor(
     private val player: ExoPlayer
 ) : Player.Listener {
 
-    private var currentIndex: Int = 0
-    private var playlist: List<MusicEntity> = emptyList()
     private var playerState = PlaybackState.IDLE
 
-    private var playbackStateListener: ((PlaybackState) -> Unit)? = null
-    private var currentMediaItemListener: ((MediaItem?) -> Unit)? = null
+    private var onPlaybackStateChanged: ((PlaybackState) -> Unit)? = null
+    private var onIsPlayingChanged: ((Boolean) -> Unit)? = null
+    private var onMediaItemChanged: (() -> Unit)? = null
 
-    val isPlayingFlow = MutableStateFlow(false)
-    val currentMusicFlow = MutableStateFlow<Music?>(null)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val currentPositionFlow = currentMusicFlow
-        .combine(isPlayingFlow) { currentMusic, isPlaying ->
-            channelFlow {
-                while (isPlaying && coroutineContext.isActive) {
-                    delay(250L)
-                    val position = withContext(Dispatchers.Main) { player.currentPosition }
-                    send(position)
-                }
-            }
-        }.flattenMerge()
-        .flowOn(Dispatchers.IO)
-    //빠르게 변경되면 이전 flow가 취소되지 않은 상태에서 두 flow가 병렬로 실행될 수 있음.
-    //그래서 flattenMerge로 병합함.
-
-    val durationFlow = MutableStateFlow(0L)
-
-    val currentMusicIndexFlow = MutableStateFlow(player.currentMediaItemIndex)
 //    val musicCountFlow = MutableStateFlow(0)
 //    val repeatModeFlow = MutableStateFlow(RepeatMode.NONE)
 //    val isShuffleFlow = MutableStateFlow(false)
@@ -73,42 +38,35 @@ class MusicPlayer @Inject constructor(
         player.addListener(this)
     }
 
-    fun setPlaylist(
-        musics: List<MusicEntity>,
+    fun setMediaItems(
+        musicList: List<MusicEntity>,
         startIndex: Int = 0
     ) {
-        playlist = musics
-        currentIndex = startIndex
         player.clearMediaItems()
 
-        musics.forEach { music ->
-            player.addMediaItem(MediaItem.fromUri(music.url))
+        val items = musicList.map { music ->
+            MediaItem.Builder()
+                .setUri(music.url)
+                .setMediaId(music.id.toString())
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setTitle(music.title)
+                        .setArtist(music.artist)
+                        .build()
+                )
+                .build()
         }
 
-        player.seekTo(startIndex, 0)
+        player.setMediaItems(items, startIndex, 0L)
+    }
+
+    fun prepare() {
         player.prepare()
     }
 
     fun play() {
+        prepare()
         player.playWhenReady = true
-    }
-
-    fun play(
-        musics: List<MusicEntity>,
-        startIndex: Int = 0
-    ) {
-        playlist = musics
-        currentIndex = startIndex
-        player.clearMediaItems()
-
-        musics.forEach { music ->
-            player.addMediaItem(MediaItem.fromUri(music.url))
-        }
-
-        player.seekTo(startIndex, 0)
-        player.prepare()
-
-        play()
     }
 
     fun pause() {
@@ -116,19 +74,14 @@ class MusicPlayer @Inject constructor(
     }
 
     fun next() {
-        if (currentIndex < playlist.size - 1) {
-            currentIndex++
-            player.seekTo(currentIndex, 0)
-            play()
+        if (player.hasNextMediaItem()) {
+            player.seekToNext()
         }
     }
 
     fun previous() {
-        if (currentIndex > 0) {
-            currentIndex--
-
-            player.seekTo(currentIndex, 0)
-            play()
+        if (player.hasPreviousMediaItem()) {
+            player.seekToPrevious()
         }
     }
 
@@ -136,11 +89,13 @@ class MusicPlayer @Inject constructor(
         player.seekTo(position)
     }
 
-    fun isPlaying(): Boolean = player.isPlaying
+    fun getCurrentIndex(): Int = player.currentMediaItemIndex
 
     fun getCurrentPosition(): Long = player.currentPosition
 
     fun getDuration(): Long = player.duration
+
+    fun getBuffer(): Long = player.bufferedPosition
 
     fun release() {
         player.release()
@@ -150,21 +105,34 @@ class MusicPlayer @Inject constructor(
 
     fun getPlayer(): ExoPlayer = player
 
+    fun setOnPlaybackStateChangedListener(listener: (PlaybackState) -> Unit) {
+        onPlaybackStateChanged = listener
+    }
+
+    fun setOnIsPlayingChangedListener(listener: (Boolean) -> Unit) {
+        onIsPlayingChanged = listener
+    }
+
+    fun setOnMediaItemChangedListener(listener: () -> Unit) {
+        onMediaItemChanged = listener
+    }
+
     /*
     * 재생 상태(state)가 바뀔 때 호출
     */
     override fun onPlaybackStateChanged(state: Int) {
         playerState = when (state) {
-            Player.STATE_IDLE -> PlaybackState.IDLE // 준비 안 됨 (재생할 수 없음)
-            Player.STATE_BUFFERING -> PlaybackState.BUFFERING // 데이터를 로드 중
-            Player.STATE_READY -> { // 준비 완료, playWhenReady가 true면 바로 재생
+            Player.STATE_IDLE -> PlaybackState.IDLE
+            Player.STATE_BUFFERING -> PlaybackState.BUFFERING
+            Player.STATE_READY -> {
                 if (player.isPlaying) PlaybackState.PLAYING else PlaybackState.PAUSED
             }
-            Player.STATE_ENDED -> PlaybackState.ENDED // 재생 종료
+
+            Player.STATE_ENDED -> PlaybackState.ENDED
             else -> PlaybackState.IDLE
         }
 
-        playbackStateListener?.invoke(playerState)
+        onPlaybackStateChanged?.invoke(playerState)
     }
 
     /*
@@ -176,18 +144,16 @@ class MusicPlayer @Inject constructor(
     * MEDIA_ITEM_TRANSITION_REASON_REPEAT: 반복 재생
     */
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-        currentMediaItemListener?.invoke(mediaItem)
+        onMediaItemChanged?.invoke()
     }
 
     /*
     * ExoPlayer가 실제 재생 중인지 여부가 바뀔 때 호출됨
-    *
     * pause/play 상태 전환 등에서 유용
     */
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-        isPlayingFlow.value = isPlaying
-        durationFlow.value = player.duration
+        onIsPlayingChanged?.invoke(isPlaying)
     }
 
     /*
@@ -196,6 +162,20 @@ class MusicPlayer @Inject constructor(
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
 
+        val cause = error.cause
+        if (cause is HttpDataSourceException) {
+            // An HTTP error occurred.
+            val httpError = cause
+            // It's possible to find out more about the error both by casting and by querying
+            // the cause.
+            if (httpError is InvalidResponseCodeException) {
+                // Cast to InvalidResponseCodeException and retrieve the response code, message
+                // and headers.
+            } else {
+                // Try calling httpError.getCause() to retrieve the underlying cause, although
+                // note that it may be null.
+            }
+        }
     }
 
     /*
@@ -221,5 +201,6 @@ class MusicPlayer @Inject constructor(
 //        super.onShuffleModeEnabledChanged(shuffleModeEnabled)
 //
 //    }
+
 
 }

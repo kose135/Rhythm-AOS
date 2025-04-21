@@ -10,7 +10,7 @@ data class FavoriteMusicEntity(
     val title: String,
     val artist: String,
     val album: String,
-    val duration: Int,
+    val duration: Long,
     val lyrics: String,
     val url: String,
     val favoriteAt: Long = System.currentTimeMillis()
