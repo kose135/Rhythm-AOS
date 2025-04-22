@@ -24,5 +24,7 @@
     <string name="err_recently_played_music">최근 재생 된 음악이 없습니다</string>
     <string name="err_favorite_music">즐겨찾기한 음악이 없습니다</string>
     <string name="err_favorite_channel">즐겨찾기한 채널이 없습니다</string>
+    <string name="err_track_first">첫 번째 곡입니다.</string>
+    <string name="err_track_last">마지막 곡입니다.</string>
 
 </resources>

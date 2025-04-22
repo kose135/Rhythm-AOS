@@ -33,9 +33,9 @@ fun ProgressSection(
 
         ProgressBar(
             height = 2.dp,
-            current = currentTime,
-            buffer = bufferedTime,
-            duration = duration,
+            progress = currentTime,
+            secondaryProgress = bufferedTime,
+            total = duration,
             changeEnable = true,
             seekTo = { seekTo(it) },
         )

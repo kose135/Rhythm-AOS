@@ -1,9 +1,12 @@
 package com.longlegsdev.rhythm.service.player
 
+import androidx.annotation.OptIn
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.HttpDataSource.HttpDataSourceException
 import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import androidx.media3.exoplayer.ExoPlayer
@@ -20,14 +23,7 @@ class MusicPlayer @Inject constructor(
 ) : Player.Listener {
 
     private var playerState = PlaybackState.IDLE
-
-    private var onPlaybackStateChanged: ((PlaybackState) -> Unit)? = null
-    private var onIsPlayingChanged: ((Boolean) -> Unit)? = null
-    private var onMediaItemChanged: (() -> Unit)? = null
-
-//    val musicCountFlow = MutableStateFlow(0)
-//    val repeatModeFlow = MutableStateFlow(RepeatMode.NONE)
-//    val isShuffleFlow = MutableStateFlow(false)
+    private var playerEventListener: MusicPlayerEventListener? = null
 
     init {
         Timber.d("Music Player init")
@@ -69,21 +65,28 @@ class MusicPlayer @Inject constructor(
         player.playWhenReady = true
     }
 
+    fun play(index: Int) {
+        player.seekTo(index, C.TIME_UNSET)
+        prepare()
+        player.playWhenReady = true
+    }
+
     fun pause() {
         player.playWhenReady = false
     }
 
+    fun hasNext(): Boolean = player.hasNextMediaItem()
+
     fun next() {
-        if (player.hasNextMediaItem()) {
-            player.seekToNext()
-        }
+        player.seekToNext()
     }
 
+    fun hasPrevious(): Boolean = player.hasPreviousMediaItem()
+
     fun previous() {
-        if (player.hasPreviousMediaItem()) {
-            player.seekToPrevious()
-        }
+        player.seekToPrevious()
     }
+
 
     fun seekTo(position: Long) {
         player.seekTo(position)
@@ -105,22 +108,16 @@ class MusicPlayer @Inject constructor(
 
     fun getPlayer(): ExoPlayer = player
 
-    fun setOnPlaybackStateChangedListener(listener: (PlaybackState) -> Unit) {
-        onPlaybackStateChanged = listener
-    }
-
-    fun setOnIsPlayingChangedListener(listener: (Boolean) -> Unit) {
-        onIsPlayingChanged = listener
-    }
-
-    fun setOnMediaItemChangedListener(listener: () -> Unit) {
-        onMediaItemChanged = listener
+    fun setMusicPlayerEventListener(listener: MusicPlayerEventListener) {
+        playerEventListener = listener
     }
 
     /*
     * 재생 상태(state)가 바뀔 때 호출
     */
     override fun onPlaybackStateChanged(state: Int) {
+        Timber.d("Playback state changed: $state")
+
         playerState = when (state) {
             Player.STATE_IDLE -> PlaybackState.IDLE
             Player.STATE_BUFFERING -> PlaybackState.BUFFERING
@@ -132,7 +129,7 @@ class MusicPlayer @Inject constructor(
             else -> PlaybackState.IDLE
         }
 
-        onPlaybackStateChanged?.invoke(playerState)
+        playerEventListener?.onPlaybackStateChanged(playerState)
     }
 
     /*
@@ -144,7 +141,8 @@ class MusicPlayer @Inject constructor(
     * MEDIA_ITEM_TRANSITION_REASON_REPEAT: 반복 재생
     */
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-        onMediaItemChanged?.invoke()
+        Timber.d("Media item changed: $mediaItem")
+        playerEventListener?.onMediaItemChanged(mediaItem)
     }
 
     /*
@@ -153,27 +151,41 @@ class MusicPlayer @Inject constructor(
     */
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-        onIsPlayingChanged?.invoke(isPlaying)
+        Timber.d("Is playing: $isPlaying")
+        playerEventListener?.onIsPlayingChanged(isPlaying)
     }
 
     /*
     * 오류 발생 시 호출 (파일 재생 불가, 네트워크 문제 등)
     */
+    @OptIn(UnstableApi::class)
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
 
-        val cause = error.cause
-        if (cause is HttpDataSourceException) {
-            // An HTTP error occurred.
-            val httpError = cause
+        // 외부 리스너에 위임
+        playerEventListener?.onPlayerError(error)
+
+        // 기본 오류 로그 출력
+        Timber.e(error, "Playback error occurred: ${error.message}")
+        Timber.e("Stack trace:\n${error.stackTraceToString()}")
+
+        // An HTTP error occurred.
+        when (val cause = error.cause) {
             // It's possible to find out more about the error both by casting and by querying
             // the cause.
-            if (httpError is InvalidResponseCodeException) {
-                // Cast to InvalidResponseCodeException and retrieve the response code, message
-                // and headers.
-            } else {
-                // Try calling httpError.getCause() to retrieve the underlying cause, although
-                // note that it may be null.
+            is InvalidResponseCodeException -> {
+                Timber.e("InvalidResponseCodeException: ${cause.responseCode}")
+                Timber.e("Response headers: ${cause.headerFields}")
+            }
+            // Cast to InvalidResponseCodeException and retrieve the response code, message
+            // and headers.
+            is HttpDataSourceException -> {
+                Timber.e("HttpDataSourceException occurred: ${cause.message} | Cause: ${cause.cause}")
+            }
+            // Try calling httpError.getCause() to retrieve the underlying cause, although
+            // note that it may be null.
+            else -> {
+                Timber.e("Unknown playback error cause: ${cause?.message ?: "No additional info"}")
             }
         }
     }

@@ -12,13 +12,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.AlbumCard
+import timber.log.Timber
 import kotlin.math.absoluteValue
 
 @Composable
 fun AlbumSection(
     modifier: Modifier,
     pagerState: PagerState,
-    musics: List<MusicEntity>,
+    musicList: List<MusicEntity>,
     contentPadding: Dp = 40.dp,
     pageSpacing: Dp = (-90).dp,
     startAlphaRatio: Float = 0.5f,
@@ -29,14 +30,29 @@ fun AlbumSection(
         modifier = modifier
             .fillMaxWidth(),
         state = pagerState,
-        key = { musics[it].id },
+        key = { musicList[it].id },
         contentPadding = PaddingValues(horizontal = contentPadding),
         pageSpacing = pageSpacing,
         beyondViewportPageCount = 1,
-        userScrollEnabled = false
-    ) { index ->
+        userScrollEnabled = false,
+    ) { pageNum ->
+        val pageOffset = (pagerState.currentPage - pageNum) + pagerState.currentPageOffsetFraction
 
-        val music = musics[index]
+        // animation value
+        // alpha
+        val alpha = lerp(
+            start = startAlphaRatio,
+            stop = 1f,
+            fraction = 1f - pageOffset.absoluteValue
+        )
+        // scale
+        val scale = lerp(
+            start = startScaleSizeRatio,
+            stop = 1f,
+            fraction = 1f - pageOffset.absoluteValue
+        )
+
+        val music = musicList[pageNum]
         var url = if (music.album.isNotBlank()) music.album else music.url
         val title = music.title
         val artist = music.artist
@@ -44,24 +60,9 @@ fun AlbumSection(
         AlbumCard(
             modifier = Modifier
                 .graphicsLayer {
-                    val pageOffset =
-                        (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
-
-                    alpha = lerp(
-                        start = startAlphaRatio,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-                    )
-
-                    val scale = lerp(
-                        start = startScaleSizeRatio,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-                    )
-
+                    this.alpha = alpha
                     scaleX = scale
                     scaleY = scale
-
                 },
             albumUrl = url,
             title = title,

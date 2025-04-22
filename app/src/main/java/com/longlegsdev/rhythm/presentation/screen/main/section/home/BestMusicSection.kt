@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.MusicEntity
@@ -29,85 +30,81 @@ import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun HomeMusicSection(
+fun BestMusicSection(
     modifier: Modifier = Modifier,
     state: UiState<List<MusicEntity>>,
+    itemWidth: Dp,
     onMusicClick: (Int) -> Unit
 ) {
-    BoxWithConstraints(
+    Column(
         modifier = modifier
-            .background(Color.Transparent)
-            .fillMaxSize()
     ) {
-        val screenWidth = maxWidth
-        val itemWidth = screenWidth * 3 / 4
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 8.dp),
+            text = stringResource(R.string.str_best_music),
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall
+        )
 
-        Column {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp),
-                text = stringResource(R.string.str_best_music),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            when {
-                state.isLoading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        LoadingProgress()
-                    }
+        when {
+            state.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LoadingProgress()
                 }
+            }
 
-                state.errorMessage != null -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.err_network),
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp)
+            state.errorMessage != null -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.err_network),
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+
+            state.onSuccess == true -> {
+                val musicList = state.data!!
+
+                LazyHorizontalGrid(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    rows = GridCells.Fixed(5),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    itemsIndexed(musicList) { index, music ->
+                        val musicId = music.id
+                        val title = music.title
+                        val albumImageUrl = music.album
+                        val artist = music.artist
+                        val liked = music.liked
+
+                        MusicCard(
+                            musicId = musicId,
+                            title = title,
+                            albumImageUrl = albumImageUrl,
+                            artist = artist,
+                            liked = liked,
+                            itemWidth = itemWidth,
+                            onMusicItemClick = { musicId ->
+                                onMusicClick(musicId)
+                            }
                         )
-                    }
-                }
-
-                state.onSuccess == true -> {
-                    val musicList = state.data!!
-
-                    LazyHorizontalGrid(
-                        modifier = Modifier.fillMaxSize(),
-                        rows = GridCells.Fixed(5),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        itemsIndexed(musicList) { index, music ->
-                            val musicId = music.id
-                            val title = music.title
-                            val albumImageUrl = music.album
-                            val artist = music.artist
-                            val liked = music.liked
-
-                            MusicCard(
-                                musicId = musicId,
-                                title = title,
-                                albumImageUrl = albumImageUrl,
-                                artist = artist,
-                                liked = liked,
-                                width = itemWidth,
-                                onMusicItemClick = { musicId ->
-                                    onMusicClick(musicId)
-                                }
-                            )
-                        }
                     }
                 }
             }
         }
     }
 }
+

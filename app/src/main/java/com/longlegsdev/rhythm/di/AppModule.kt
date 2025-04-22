@@ -2,6 +2,7 @@ package com.longlegsdev.rhythm.di
 
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
+import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.service.player.MusicPlayer
 import com.longlegsdev.rhythm.service.player.MusicPlayerManager
 import com.squareup.moshi.Moshi
@@ -46,9 +47,10 @@ object AppModule {
     @Singleton
     fun provideMusicPlayerManager(
         @ApplicationContext app: Context,
-        musicPlayer: MusicPlayer
+        musicPlayer: MusicPlayer,
+        musicUseCase: MusicUseCase
     ): MusicPlayerManager {
-        return MusicPlayerManager(app, musicPlayer)
+        return MusicPlayerManager(app, musicPlayer, musicUseCase)
     }
 
 }

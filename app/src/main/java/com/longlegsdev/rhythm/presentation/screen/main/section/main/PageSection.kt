@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.longlegsdev.rhythm.presentation.screen.main.component.Page
-import com.longlegsdev.rhythm.presentation.screen.main.component.Page.*
-import com.longlegsdev.rhythm.presentation.screen.main.component.PageScreen
+import com.longlegsdev.rhythm.presentation.screen.common.page.Page
+import com.longlegsdev.rhythm.presentation.screen.common.page.Page.*
+import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

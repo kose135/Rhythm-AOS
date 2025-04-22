@@ -1,8 +1,5 @@
 package com.longlegsdev.rhythm.presentation.screen.common.card
 
-import android.R.attr.fontWeight
-import android.R.attr.maxWidth
-import android.R.attr.text
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,7 +13,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,17 +36,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.util.FileType
 import com.longlegsdev.rhythm.util.Space
@@ -85,8 +77,10 @@ fun AlbumCard(
         label = "Infinite Colors"
     )
 
+    val firstDomainColor = MaterialTheme.colorScheme.background
+
     // 색상 및 이미지 상태
-    var domainColor by remember { mutableStateOf(Color.DarkGray) }
+    var domainColor by remember { mutableStateOf(firstDomainColor) }
     var mutedColor by remember { mutableStateOf(Color.LightGray) }
     var vibrantColor by remember { mutableStateOf(Color.Gray) }
     var lightColor by remember { mutableStateOf(Color.White) }
@@ -140,6 +134,7 @@ fun AlbumCard(
                 // albumBitmap이 null이 아닌 경우 Bitmap을 사용하고, null인 경우 albumUrl 사용
                 CoilImage(
                     modifier = Modifier
+                        .background(domainColor)
                         .size(imageSize)
                         .clip(shape),
                     imageModel = { if (FileType.fromUrl(albumUrl) == FileType.IMAGE) albumUrl else albumBitmap },
@@ -204,10 +199,10 @@ suspend fun extractAlbumArtFromUrl(context: Context, url: String): Bitmap =
             if (picture != null) {
                 BitmapFactory.decodeByteArray(picture, 0, picture.size)
             } else {
-                BitmapFactory.decodeResource(context.resources, R.drawable.rhythm_cover)
+                BitmapFactory.decodeResource(context.resources, R.drawable.ic_cover)
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to extract album art from MP3")
-            BitmapFactory.decodeResource(context.resources, R.drawable.rhythm_cover)
+            BitmapFactory.decodeResource(context.resources, R.drawable.ic_cover)
         }
     }

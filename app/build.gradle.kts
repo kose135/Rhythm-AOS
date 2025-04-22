@@ -110,7 +110,8 @@ dependencies {
 
     // compose base
     // https://developer.android.com/jetpack/androidx/releases/compose-foundation?hl=ko
-    val foundation_version = "1.7.8"
+//    val foundation_version = "1.7.8"
+    val foundation_version = "1.8.0-rc03"
     implementation("androidx.compose.foundation:foundation:$foundation_version")
 
     // timber

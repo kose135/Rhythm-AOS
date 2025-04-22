@@ -1,7 +1,5 @@
 package com.longlegsdev.rhythm.presentation.theme
 
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -28,9 +26,13 @@ val TextDisabled = Color(0xFFBDBDBD)
 
 val PlayerBackground = Color(0xFFF5EDE4)
 
-val TabBackground = Color(0xFFFBEAE7)
-val TabIconSelected = Color(0xFFE56155)
-val TabIconUnselected = Color(0xFF9B9696)
+val BottomTabBackground = Color(0xFF9A6DFD).copy(alpha = 0.8f)
+val BottomTabSelected = Color(0xFF2245A8)
+val BottomTabUnselected = Color(0xFFD7CDCD)
+
+val TopTabBackground = Color(0xFF7F39FB).copy(alpha = 0.8f)
+val TopTabSelected = Color(0xFF3F03C9).copy(alpha = 0.8f)
+val TopTabUnselected = Color(0xFFFAF8F8)
 
 val Success = Color(0xFF2196F3)
 val Warning = Color(0xFFFFC107)

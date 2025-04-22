@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.common.card
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,21 +41,28 @@ fun TrackMusicCard(
     artist: String,
     duration: Long,
     liked: Boolean?,
-    onMusicItemClick: (Int) -> Unit,
+    onMusicItemClick: () -> Unit,
     isCurrent: Boolean,
 ) {
 
     Row(
         modifier = Modifier
-            .click { onMusicItemClick(musicId) }
+            .click { onMusicItemClick() }
             .fillMaxWidth()
+            .background(
+                if (isCurrent)
+                    MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                else
+                    Color.Transparent
+            )
     ) {
+        // image
         AlbumCoverImage(
             modifier = Modifier
                 .size(60.dp)
                 .clip(RoundedCornerShape(5.dp)),
 //            url = albumImageUrl,
-            url = "http://10.0.2.2:8100/cover/IU.jpg",
+            url = "http://192.168.0.2:8100/cover/IU.jpg",
         )
 
         Spacer(modifier = Modifier.width(10.dp))
@@ -65,6 +73,7 @@ fun TrackMusicCard(
                 .weight(1f)
                 .padding(7.dp)
         ) {
+            // title
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,6 +90,7 @@ fun TrackMusicCard(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // artist & duration
                 Text(
                     modifier = Modifier
                         .weight(1f)
@@ -91,6 +101,7 @@ fun TrackMusicCard(
                     overflow = TextOverflow.Visible,
                 )
 
+                // liked icon
                 if (liked != null) {
                     Icon(
                         modifier = Modifier.size(20.dp),

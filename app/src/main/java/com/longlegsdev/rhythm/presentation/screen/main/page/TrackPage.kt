@@ -20,7 +20,10 @@ fun TrackPage(
 
     TrackSection(
         musicList = musics,
-        currentIndex = currentIndex
+        currentIndex = currentIndex,
+        onMusicItemClick = { index ->
+            viewModel.play(index)
+        }
     )
 
 }

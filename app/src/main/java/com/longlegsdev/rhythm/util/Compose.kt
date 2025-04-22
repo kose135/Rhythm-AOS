@@ -1,10 +1,12 @@
 package com.longlegsdev.rhythm.util
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,15 +33,6 @@ fun Space(height: Dp = 0.dp, width: Dp = 0.dp) = Spacer(
         .height(height)
         .width(width)
 )
-
-val NavController.canGoBack: Boolean
-    get() = this.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
-
-fun NavController.back() {
-    if (this.canGoBack) {
-        this.popBackStack()
-    }
-}
 
 inline fun Modifier.click(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(

@@ -14,18 +14,20 @@ import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.remote.model.MusicList
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.card.TrackMusicCard
+import timber.log.Timber
 
 @Composable
 fun TrackSection(
     musicList: List<MusicEntity>,
     currentIndex: Int,
+    onMusicItemClick: (Int) -> Unit,
 ) {
 
     LazyColumn(
         modifier = Modifier
             .padding(top = 7.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         itemsIndexed(musicList) { index, music ->
             val musicId = music.id
@@ -34,6 +36,9 @@ fun TrackSection(
             val artist = music.artist
             val duration = music.duration
             val liked = music.liked
+            val isCurrent = index == currentIndex
+
+            Timber.d("duration= $duration")
 
             TrackMusicCard(
                 musicId = musicId,
@@ -42,10 +47,10 @@ fun TrackSection(
                 artist = artist,
                 duration = duration,
                 liked = liked,
-                onMusicItemClick = { musicId ->
-
+                onMusicItemClick = {
+                    onMusicItemClick(index)
                 },
-                isCurrent = currentIndex == index,
+                isCurrent = isCurrent,
             )
         }
 

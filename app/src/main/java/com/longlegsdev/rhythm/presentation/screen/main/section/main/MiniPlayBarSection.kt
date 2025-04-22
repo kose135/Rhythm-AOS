@@ -1,8 +1,8 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.main
 
-import android.R.attr.duration
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
@@ -31,7 +28,6 @@ import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverIma
 import com.longlegsdev.rhythm.presentation.screen.common.component.ProgressBar
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
-import timber.log.Timber
 
 @Composable
 fun MiniPlayBarSection(
@@ -52,7 +48,8 @@ fun MiniPlayBarSection(
         modifier = Modifier
             .height(height + progressBarHeight)
             .click(onMiniPlayerBarClick)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center
     ) {
         Row(
             modifier = Modifier
@@ -117,14 +114,11 @@ fun MiniPlayBarSection(
             )
         }
 
-        Timber.d("currentPosition = $currentPosition")
-        Timber.d("duration = $duration")
-
         // progress bar
         ProgressBar(
-            current = currentPosition,
-            buffer = bufferedPosition,
-            duration = duration,
+            progress = currentPosition,
+            secondaryProgress = bufferedPosition,
+            total = duration,
             height = progressBarHeight,
             seekTo = { }
         )

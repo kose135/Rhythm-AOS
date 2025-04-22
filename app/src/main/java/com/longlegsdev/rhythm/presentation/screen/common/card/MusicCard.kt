@@ -38,21 +38,20 @@ fun MusicCard(
     albumImageUrl: String,
     artist: String,
     liked: Boolean?,
-    width: Dp,
+    itemWidth: Dp,
     onMusicItemClick: (Int) -> Unit
 ) {
 
     Row(
         modifier = Modifier
+            .width(itemWidth)
             .click { onMusicItemClick(musicId) }
-            .width(width)
     ) {
         AlbumCoverImage(
             modifier = Modifier
                 .size(60.dp)
                 .clip(RoundedCornerShape(5.dp)),
-//            url = albumImageUrl,
-            url = "http://10.0.2.2:8100/cover/IU.jpg",
+            url = albumImageUrl,
         )
 
         Spacer(modifier = Modifier.width(10.dp))

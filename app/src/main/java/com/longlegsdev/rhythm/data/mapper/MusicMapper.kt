@@ -10,7 +10,7 @@ object MusicMapper : EntityMapper<Music, MusicEntity> {
             title = domain.title,
             artist = domain.artist,
             album = domain.album ?: "",
-            duration = domain.duration,
+            duration = domain.duration * 1000, // 서버는 second 기준
             lyrics = domain.lyrics,
             url = domain.url,
             likes = domain.likes,

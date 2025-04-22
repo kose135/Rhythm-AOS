@@ -3,29 +3,41 @@ package com.longlegsdev.rhythm.service.player
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.OptIn
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.HttpDataSource.HttpDataSourceException
+import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import com.longlegsdev.rhythm.data.entity.MusicEntity
+import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.service.RhythmService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
-import kotlin.collections.getOrNull
 
 class MusicPlayerManager @Inject constructor(
     private val context: Context,
     private val musicPlayer: MusicPlayer,
-) {
+    private val musicUseCase: MusicUseCase,
+) : MusicPlayerEventListener {
 
     private val _playbackState = MutableStateFlow<PlaybackState>(PlaybackState.IDLE)
     val playbackState: StateFlow<PlaybackState> = _playbackState.asStateFlow()
+
+    private val _playbackEvents = MutableSharedFlow<PlaybackEvent>()
+    val playbackEvents: SharedFlow<PlaybackEvent> = _playbackEvents.asSharedFlow()
 
     private val _isPlaying = MutableStateFlow<Boolean>(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying.asStateFlow()
@@ -51,8 +63,7 @@ class MusicPlayerManager @Inject constructor(
     private var positionJob: Job? = null
 
     init {
-        observePlaybackEvents()
-        observeMediaItemChanged()
+        musicPlayer.setMusicPlayerEventListener(this)
     }
 
     @OptIn(UnstableApi::class)
@@ -69,6 +80,10 @@ class MusicPlayerManager @Inject constructor(
         updateState()
     }
 
+    fun play(index: Int) {
+        musicPlayer.play(index)
+    }
+
     fun playPause() {
         if (isPlaying.value) {
             musicPlayer.pause()
@@ -79,18 +94,31 @@ class MusicPlayerManager @Inject constructor(
     }
 
     fun next() {
-        musicPlayer.next()
-        updateState()
+        if (musicPlayer.hasNext()) {
+            musicPlayer.next()
+            updateState()
+        } else {
+            emitPlaybackEvent(PlaybackEvent.EndOfPlaylist)
+        }
     }
 
     fun previous() {
-        musicPlayer.previous()
-        updateState()
+        if (musicPlayer.hasPrevious()) {
+            musicPlayer.previous()
+            updateState()
+        } else {
+            emitPlaybackEvent(PlaybackEvent.StartOfPlaylist)
+        }
+    }
+
+    private fun emitPlaybackEvent(event: PlaybackEvent) {
+        CoroutineScope(Dispatchers.Main).launch {
+            _playbackEvents.emit(event)
+        }
     }
 
     fun seekTo(positionMs: Long) {
         musicPlayer.seekTo(positionMs)
-//        _currentPosition.value = positionMs
         _currentPosition.value = musicPlayer.getCurrentPosition()
     }
 
@@ -100,7 +128,10 @@ class MusicPlayerManager @Inject constructor(
 
         _currentIndex.value = index
         _currentMusic.value = _musicList.value.getOrNull(index) ?: MusicEntity.EMPTY
-        _duration.value = if (duration < 0L) _currentMusic.value.duration * 1000 else duration // metadata를 가져오지 못하는 상황 발생
+        _currentPosition.value = 0L
+        _bufferedPosition.value = 0L
+        _duration.value =
+            if (duration < 0L) _currentMusic.value.duration * 1000 else duration // metadata를 가져오지 못하는 상황 발생
         _playbackState.value = musicPlayer.getState()
     }
 
@@ -133,24 +164,43 @@ class MusicPlayerManager @Inject constructor(
 
     fun getPlayer(): Player = musicPlayer.getPlayer()
 
-    private fun observePlaybackEvents() {
-        musicPlayer.setOnPlaybackStateChangedListener { newState ->
-            _playbackState.value = newState
-        }
+    override fun onPlaybackStateChanged(state: PlaybackState) {
+        _playbackState.value = state
+    }
 
-        musicPlayer.setOnIsPlayingChangedListener { isPlaying ->
-            _isPlaying.value = isPlaying
-            if (isPlaying) {
-                startUpdatingCurrentPosition()
-            } else {
-                stopUpdatingCurrentPosition()
-            }
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+        _isPlaying.value = isPlaying
+        if (isPlaying) {
+            startUpdatingCurrentPosition()
+        } else {
+            stopUpdatingCurrentPosition()
         }
     }
 
-    private fun observeMediaItemChanged() {
-        musicPlayer.setOnMediaItemChangedListener {
-            updateState()
+    override fun onMediaItemChanged(mediaItem: MediaItem?) {
+        updateState()
+        // 최근 재생곡 추가
+        addToRecentlyPlayed(_currentMusic.value)
+    }
+
+    override fun onPlayerError(error: PlaybackException) {
+        val message = when (val cause = error.cause) {
+            is InvalidResponseCodeException -> "서버 오류: ${cause.responseCode}"
+            is HttpDataSourceException -> "네트워크 오류 발생"
+            else -> "알 수 없는 오류가 발생했습니다"
+        }
+        emitPlaybackEvent(PlaybackEvent.PlaybackError(message))
+
+        // 다음곡 재생
+        next()
+    }
+
+    private fun addToRecentlyPlayed(music: MusicEntity) {
+        if (music == MusicEntity.EMPTY) return
+
+        CoroutineScope(Dispatchers.IO).launch {
+            musicUseCase.addRecent(music)
         }
     }
+
 }

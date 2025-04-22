@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.component
+package com.longlegsdev.rhythm.presentation.screen.common.page
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

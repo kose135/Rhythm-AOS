@@ -1,8 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.common.component
 
-import android.R.attr.duration
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -15,10 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,86 +22,91 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.longlegsdev.rhythm.util.Time.currentTime
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ProgressBar(
     modifier: Modifier = Modifier,
     height: Dp = 4.dp,
-    current: Long,
-    buffer: Long,
-    duration: Long,
+    progress: Long,
+    secondaryProgress: Long,
+    total: Long,
     changeEnable: Boolean = false,
-    progressColor: Color = Color.Red,
-    backgroundColor: Color = Color.Yellow.copy(alpha = 0.5f),
+    progressColor: Color = MaterialTheme.colorScheme.background.copy(alpha = 0.7f),
+    secondaryProgressColor: Color = Color.LightGray,
+    backgroundColor: Color = Color.Black.copy(alpha = 0.5f),
     thumbColor: Color = Color.Gray,
     seekTo: (Long) -> Unit,
 ) {
-    val coercedCurrent = current.coerceAtMost(duration)
-    val coercedBuffer = buffer.coerceAtMost(duration)
-    val progress = if (duration > 0) coercedCurrent.toFloat() / duration else 0f
-    val secondaryProgress = if (duration > 0) coercedBuffer.toFloat() / duration else 0f
+    val coercedProgress = progress.coerceAtMost(total)
+    val coercedSecondaryProgress = secondaryProgress.coerceAtMost(total)
+
+    val progressRatio = if (total > 0) coercedProgress.toFloat() / total else 0f
+    val secondaryRatio = if (total > 0) coercedSecondaryProgress.toFloat() / total else 0f
 
     var isDragging by remember { mutableStateOf(false) }
-    var dragProgress by remember { mutableStateOf(progress) }
+    var dragRatio by remember { mutableStateOf(progressRatio) }
 
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .height(height + 16.dp) // Thumb 공간 확보
+            .height(height + 5.dp) // Thumb 공간 확보
             .pointerInput(changeEnable) {
                 if (changeEnable) {
                     detectTapGestures { offset ->
                         val clickedRatio = offset.x / size.width
-                        seekTo((clickedRatio * duration).toLong())
+                        seekTo((clickedRatio * total).toLong())
                     }
                 }
             }
     ) {
-        val boxWidth = constraints.maxWidth.toFloat()
+        val boxWidthPx = constraints.maxWidth.toFloat()
 
-        // background
+        val currentRatio = if (isDragging) dragRatio else progressRatio
+        val thumbRadius = 5.dp
+        val thumbPx = with(LocalDensity.current) { thumbRadius.toPx() }
+
+        // Background
         Box(
             Modifier
                 .fillMaxSize()
+                .clip(RoundedCornerShape(50))
                 .background(backgroundColor)
         )
 
-        // buffer (secondary progress)
+        // Secondary progress
         Box(
             Modifier
-                .fillMaxWidth(secondaryProgress.coerceIn(0f, 1f))
+                .fillMaxWidth(secondaryRatio.coerceIn(0f, 1f))
                 .fillMaxHeight()
-                .background(Color.LightGray)
+                .clip(RoundedCornerShape(50))
+                .background(secondaryProgressColor)
         )
 
-        // progress
+        // Primary progress
         Box(
             Modifier
-                .fillMaxWidth((if (isDragging) dragProgress else progress).coerceIn(0f, 1f))
+                .fillMaxWidth(currentRatio.coerceIn(0f, 1f))
                 .fillMaxHeight()
+                .clip(RoundedCornerShape(50))
                 .background(progressColor)
         )
 
-        // Thumb (draggable circle)
+        // Thumb
         if (changeEnable) {
-            val thumbX = (if (isDragging) dragProgress else progress) * boxWidth
-
             Box(
                 Modifier
-                    .offset { IntOffset((thumbX - 12.dp.toPx()).toInt(), 0) }
-                    .size(24.dp)
+                    .offset {
+                        val x = (currentRatio * boxWidthPx - thumbPx).toInt().coerceIn(0, constraints.maxWidth - thumbPx.toInt())
+                        IntOffset(x, 0)
+                    }
+                    .size(thumbRadius)
                     .clip(CircleShape)
                     .background(thumbColor)
                     .pointerInput(Unit) {
@@ -114,12 +115,12 @@ fun ProgressBar(
                                 isDragging = true
                             },
                             onDrag = { change, dragAmount ->
-                                val newX = (thumbX + dragAmount.x).coerceIn(0f, boxWidth)
-                                dragProgress = newX / boxWidth
+                                val newX = (currentRatio * boxWidthPx + dragAmount.x).coerceIn(0f, boxWidthPx)
+                                dragRatio = newX / boxWidthPx
                             },
                             onDragEnd = {
                                 isDragging = false
-                                seekTo((dragProgress * duration).toLong())
+                                seekTo((dragRatio * total).toLong())
                             },
                             onDragCancel = {
                                 isDragging = false

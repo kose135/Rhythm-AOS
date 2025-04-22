@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 fun PlayerPage(
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
-    val musics by viewModel.musicList.collectAsState()
+    val musicList by viewModel.musicList.collectAsState()
     val currentIndex by viewModel.currentIndex.collectAsState()
     val currentMusic by viewModel.currentMusic.collectAsState()
     val currentPosition by viewModel.currentPosition.collectAsState()
@@ -35,20 +36,26 @@ fun PlayerPage(
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = currentIndex,
-        pageCount = { musics.size }
+        pageCount = { musicList.size }
     )
 
     LaunchedEffect(currentIndex) {
         scope.launch {
-            pagerState.animateScrollToPage(currentIndex)
+            pagerState.animateScrollToPage(
+                currentIndex,
+                animationSpec = tween(500)
+            )
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         AlbumSection(
             modifier = Modifier.weight(2f),
             pagerState = pagerState,
-            musics = musics
+            musicList = musicList
         )
 
         Space(height = 30.dp)

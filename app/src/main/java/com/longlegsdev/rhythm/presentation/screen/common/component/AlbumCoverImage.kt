@@ -5,7 +5,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.request.CachePolicy
@@ -19,8 +18,8 @@ fun AlbumCoverImage(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     url: String,
-    @DrawableRes loadingRes: Int? = R.drawable.rhythm_cover,
-    @DrawableRes errorRes: Int? = R.drawable.rhythm_cover,
+    @DrawableRes loadingRes: Int? = R.drawable.ic_cover,
+    @DrawableRes errorRes: Int? = R.drawable.ic_cover,
 ) {
     CoilImage(
         imageModel = {
