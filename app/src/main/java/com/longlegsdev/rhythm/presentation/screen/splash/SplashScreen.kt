@@ -29,11 +29,11 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
-    logo: ImageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
+    backgroundColor: Color = MaterialTheme.colorScheme.secondary,
+    icon: ImageVector = ImageVector.vectorResource(R.drawable.ic_splash_rhythm),
     duration: Int = Rhythm.SPLASH_DURATION,
-    tintColor: Color = Color.Gray,
-    scale: Dp = 160.dp,
+    tintColor: Color = Color.Unspecified,
+    scale: Dp = 320.dp,
     todo: () -> Unit
 ) {
     var startAnimation by remember { mutableStateOf(false) }
@@ -55,7 +55,7 @@ fun SplashScreen(
         backgroundColor,
         tintColor,
         scaleAnim.value.dp,
-        logo,
+        icon,
     )
 }
 
@@ -77,7 +77,7 @@ fun Splash(
             modifier = Modifier
                 .size(scale),
             imageVector = logo,
-            contentDescription = "Logo Icon",
+            contentDescription = "splash Icon",
             tint = tintColor
         )
     }

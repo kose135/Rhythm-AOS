@@ -133,6 +133,9 @@ class MusicPlayerManager @Inject constructor(
         _duration.value =
             if (duration < 0L) _currentMusic.value.duration * 1000 else duration // metadata를 가져오지 못하는 상황 발생
         _playbackState.value = musicPlayer.getState()
+
+        Timber.d("change playbackstate: ${_playbackState.value}")
+
     }
 
 

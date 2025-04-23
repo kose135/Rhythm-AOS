@@ -110,7 +110,7 @@ dependencies {
 
     // compose base
     // https://developer.android.com/jetpack/androidx/releases/compose-foundation?hl=ko
-//    val foundation_version = "1.7.8"
+    // val foundation_version = "1.7.8"
     val foundation_version = "1.8.0-rc03"
     implementation("androidx.compose.foundation:foundation:$foundation_version")
 
@@ -139,6 +139,8 @@ dependencies {
     implementation("androidx.media3:media3-ui:$media3_version")
     implementation("androidx.media3:media3-common:$media3_version")
     implementation("androidx.media3:media3-session:$media3_version")
+    implementation("androidx.media3:media3-datasource:$media3_version")
+    implementation("androidx.media3:media3-datasource-okhttp:$media3_version")
 
 
     // landscapist of skydoves

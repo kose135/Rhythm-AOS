@@ -122,9 +122,11 @@ class MusicPlayer @Inject constructor(
             Player.STATE_IDLE -> PlaybackState.IDLE
             Player.STATE_BUFFERING -> PlaybackState.BUFFERING
             Player.STATE_READY -> {
-                if (player.isPlaying) PlaybackState.PLAYING else PlaybackState.PAUSED
+                if (player.isPlaying)
+                    PlaybackState.PLAYING
+                else
+                    PlaybackState.PAUSED
             }
-
             Player.STATE_ENDED -> PlaybackState.ENDED
             else -> PlaybackState.IDLE
         }

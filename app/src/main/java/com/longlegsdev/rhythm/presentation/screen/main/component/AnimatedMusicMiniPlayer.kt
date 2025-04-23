@@ -30,7 +30,8 @@ fun AnimatedMusicMiniPlayer(
             targetOffsetY = { it },
             animationSpec = tween(durationMillis = 200)
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ) {
         MiniPlayBarSection(
             height = bottomPadding,

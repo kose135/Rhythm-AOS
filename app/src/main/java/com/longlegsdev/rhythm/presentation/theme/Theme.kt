@@ -23,7 +23,10 @@ val LightColorScheme = lightColorScheme(
     surface = Color(0xFFE0E0E0),        // 카드, 컨트롤 배경
     onSurface = Color(0xFF212121),      // 카드 위 텍스트
 
-    error = Color(0xFFB00020)           // 에러 상태
+    error = Color(0xFFB00020),           // 에러 상태
+
+    secondary = Color(0xFF2143A6),       // 2번째 배경 색상
+    onSecondary = Color(0xFFFFFFFF),   // 배경 위 텍스트
 )
 
 val DarkColorScheme = darkColorScheme(
@@ -36,7 +39,10 @@ val DarkColorScheme = darkColorScheme(
     surface = Color(0xFF1C1C2E),        // 카드나 패널 배경
     onSurface = Color(0xFFF6F6F6),      // 카드 위 텍스트
 
-    error = Color(0xFFFF6F61)           // 에러 (약간 형광 주황)
+    error = Color(0xFFFF6F61),           // 에러 (약간 형광 주황)
+
+    secondary = Color(0xFF2143A6),       // 2번째 배경 색상
+    onSecondary = Color(0xFFFFFFFF),   // 배경 위 텍스트
 )
 
 @Composable

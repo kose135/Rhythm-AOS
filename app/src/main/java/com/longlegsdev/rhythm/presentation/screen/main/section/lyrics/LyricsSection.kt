@@ -14,9 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.longlegsdev.rhythm.presentation.viewmodel.player.event.AlignmentEvent
 
 @Composable
-fun LyricsSection(lyrics: String) {
+fun LyricsSection(
+    textAlign: TextAlign,
+    lyrics: String,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,7 +35,7 @@ fun LyricsSection(lyrics: String) {
                 fontWeight = FontWeight.Normal,
                 color = Color.DarkGray
             ),
-            textAlign = TextAlign.Center
+            textAlign = textAlign
         )
     }
 }

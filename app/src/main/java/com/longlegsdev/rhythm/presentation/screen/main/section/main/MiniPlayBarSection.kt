@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +48,7 @@ fun MiniPlayBarSection(
     Column(
         modifier = Modifier
             .height(height + progressBarHeight)
+            .background(MaterialTheme.colorScheme.secondary)
             .click(onMiniPlayerBarClick)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center
@@ -110,7 +112,7 @@ fun MiniPlayBarSection(
                     .padding(5.dp)
                     .size(height)
                     .clickable { onPlayPauseClick() },
-                tint = Color.White
+                tint = Color.White,
             )
         }
 
