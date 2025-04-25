@@ -1,6 +1,5 @@
 package com.longlegsdev.rhythm.presentation.screen.common.card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,26 +22,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.request.ImageRequest
-import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
-import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.coil.CoilImageState
 
 @Composable
 fun ChannelCard(
-    channelId: Int,
     title: String,
     coverImageUrl: String,
     description: String,
@@ -51,12 +39,12 @@ fun ChannelCard(
     likes: Int? = null,
     liked: Boolean? = null,
     width: Dp,
-    onChannelItemClick: (Int) -> Unit
+    onTrackItemClick: () -> Unit
 ) {
 
     Column(
         modifier = Modifier
-            .click { onChannelItemClick(channelId) }
+            .click { onTrackItemClick() }
             .wrapContentSize()
     ) {
 

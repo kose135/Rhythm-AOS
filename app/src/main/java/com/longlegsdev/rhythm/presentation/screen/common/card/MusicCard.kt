@@ -33,19 +33,28 @@ import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
 fun MusicCard(
-    musicId: Int,
     title: String,
     albumImageUrl: String,
     artist: String,
     liked: Boolean?,
-    itemWidth: Dp,
-    onMusicItemClick: (Int) -> Unit
+    itemWidth: Dp? = null,
+    onMusicItemClick: () -> Unit
 ) {
 
     Row(
-        modifier = Modifier
-            .width(itemWidth)
-            .click { onMusicItemClick(musicId) }
+        modifier = if (itemWidth != null) {
+            Modifier
+                .width(itemWidth)
+                .click {
+                    onMusicItemClick()
+                }
+        } else {
+            Modifier
+                .fillMaxWidth()
+                .click {
+                    onMusicItemClick()
+                }
+        }
     ) {
         AlbumCoverImage(
             modifier = Modifier

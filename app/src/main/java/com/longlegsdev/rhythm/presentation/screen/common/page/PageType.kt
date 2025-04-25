@@ -1,6 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.common.page
 
-enum class Page {
+enum class PageType {
     MAIN,
     MUSIC
 }

@@ -91,18 +91,8 @@ class ChannelRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllFavoriteMusicList(): Flow<Result<List<FavoriteChannelEntity>>> =
-        flow {
-            val channels = favoriteChannelDao.getAllFavoriteChannelList()
+    override suspend fun getAllFavoriteMusicList(): Flow<List<FavoriteChannelEntity>> =
+        favoriteChannelDao.getAllFavoriteChannelList()
 
-            if (!channels.isEmpty()) {
-                emit(Result.Success(channels))
-            } else {
-                emit(Result.Failure(Throwable("즐겨찾기한 채널이 없습니다")))
-            }
-        }.catch { e ->
-            e.printStackTrace()
-            emit(Result.Failure(e))
-        }.flowOn(Dispatchers.IO)
 
 }

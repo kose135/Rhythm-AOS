@@ -26,6 +26,6 @@ interface ChannelRepository {
 
     suspend fun deleteFavoriteMusic(channelId: Int)
 
-    suspend fun getAllFavoriteMusicList(): Flow<Result<List<FavoriteChannelEntity>>>
+    suspend fun getAllFavoriteMusicList(): Flow<List<FavoriteChannelEntity>>
 
 }

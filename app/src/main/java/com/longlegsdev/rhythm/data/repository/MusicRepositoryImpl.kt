@@ -29,7 +29,6 @@ class MusicRepositoryImpl @Inject constructor(
     private val service: RhythmApiService,
     private val recentMusicDao: RecentMusicDao,
     private val favoriteMusicDao: FavoriteMusicDao,
-
 ) : BaseRepository(), MusicRepository {
 
     override suspend fun getMusicInfo(
@@ -68,23 +67,8 @@ class MusicRepositoryImpl @Inject constructor(
         recentMusicDao.trimToRecentLimit()
     }
 
-    override suspend fun getRecentMusicList(): Flow<Result<List<RecentMusicEntity>>> =
-        flow {
-            emit(Result.Loading)
-
-            val musics = recentMusicDao.getAllRecentMusicList()
-            Timber.d("music list: $musics")
-
-            if (!musics.isEmpty()) {
-                emit(Result.Success(musics))
-            } else {
-                emit(Result.Failure(Throwable("최근 듣을 음악이 없습니다")))
-            }
-
-        }.catch { e ->
-            e.printStackTrace()
-            emit(Result.Failure(e))
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getRecentMusicList(): Flow<List<RecentMusicEntity>> =
+        recentMusicDao.getAllRecentMusicList()
 
     override suspend fun addFavoriteMusic(music: MusicEntity) {
         try {
@@ -106,18 +90,7 @@ class MusicRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllFavoriteMusicList(): Flow<Result<List<FavoriteMusicEntity>>> =
-        flow {
-            val musics = favoriteMusicDao.getAllFavoriteMusicList()
-
-            if (!musics.isEmpty()) {
-                emit(Result.Success(musics))
-            } else {
-                emit(Result.Failure(Throwable("즐겨찾기한 음악이 없습니다")))
-            }
-        }.catch { e ->
-            e.printStackTrace()
-            emit(Result.Failure(e))
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getAllFavoriteMusicList(): Flow<List<FavoriteMusicEntity>> =
+        favoriteMusicDao.getAllFavoriteMusicList()
 
 }

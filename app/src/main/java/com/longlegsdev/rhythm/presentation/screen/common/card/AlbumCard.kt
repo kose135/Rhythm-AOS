@@ -199,10 +199,10 @@ suspend fun extractAlbumArtFromUrl(context: Context, url: String): Bitmap =
             if (picture != null) {
                 BitmapFactory.decodeByteArray(picture, 0, picture.size)
             } else {
-                BitmapFactory.decodeResource(context.resources, R.drawable.ic_cover)
+                BitmapFactory.decodeResource(context.resources, R.drawable.img_cover)
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to extract album art from MP3")
-            BitmapFactory.decodeResource(context.resources, R.drawable.ic_cover)
+            BitmapFactory.decodeResource(context.resources, R.drawable.img_cover)
         }
     }

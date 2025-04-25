@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.longlegsdev.rhythm.presentation.screen.common.page.Page
+import com.longlegsdev.rhythm.presentation.screen.common.page.PageType
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.PageSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.TabSection
@@ -24,7 +24,7 @@ import timber.log.Timber
 fun MusicPage(
     onSwipeDown: () -> Unit,
 ) {
-    val pages = listOf(PageScreen.Player, PageScreen.Track, PageScreen.Lyrics)
+    val pages = listOf(PageScreen.Player, PageScreen.PlaybackTrack, PageScreen.Lyrics)
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { pages.size }
@@ -64,7 +64,7 @@ fun MusicPage(
                 },
         ) {
             PageSection(
-                type = Page.MUSIC,
+                type = PageType.MUSIC,
                 pages = pages,
                 pagerState = pagerState,
                 modifier = Modifier,

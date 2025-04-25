@@ -110,9 +110,12 @@ dependencies {
 
     // compose base
     // https://developer.android.com/jetpack/androidx/releases/compose-foundation?hl=ko
-    // val foundation_version = "1.7.8"
     val foundation_version = "1.8.0-rc03"
     implementation("androidx.compose.foundation:foundation:$foundation_version")
+
+    // compose constraintlayout
+    val constraintlayout_version = "1.1.1"
+    implementation("androidx.constraintlayout:constraintlayout-compose:$constraintlayout_version")
 
     // timber
     // git: https://github.com/JakeWharton/timber

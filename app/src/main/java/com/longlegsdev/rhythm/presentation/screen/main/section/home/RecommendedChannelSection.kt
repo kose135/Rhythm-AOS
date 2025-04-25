@@ -1,7 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.home
 
 
-import android.R.attr.description
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +34,7 @@ import com.longlegsdev.rhythm.util.Space
 fun RecommendedChannelSection(
     modifier: Modifier = Modifier,
     state: UiState<List<ChannelEntity>>,
-    onChannelClick: (Int) -> Unit
+    onTrackClick: (ChannelEntity) -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -104,7 +103,6 @@ fun RecommendedChannelSection(
                             val liked = channel.liked
 
                             ChannelCard(
-                                channelId = channelId,
                                 title = title,
                                 coverImageUrl = coverImageUrl,
                                 description = description,
@@ -112,8 +110,8 @@ fun RecommendedChannelSection(
                                 likes = likes,
                                 liked = liked,
                                 width = itemWidth,
-                                onChannelItemClick = { channelId ->
-                                    onChannelClick(channelId)
+                                onTrackItemClick = {
+                                    onTrackClick(channel)
                                 }
                             )
                         }

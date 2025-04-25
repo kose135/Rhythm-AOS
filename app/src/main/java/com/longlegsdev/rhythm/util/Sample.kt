@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.util
 
+import com.longlegsdev.rhythm.data.entity.ChannelEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 
 val MUSICENTITY_LIST = listOf(
@@ -130,3 +131,13 @@ val LYRICS = "빛을 쏟는 sky\n" +
         "\n" +
         "눈 감은 순간 시간은 멈춰가\n" +
         "난 다시 떠올라"
+
+val TRACK_INFO = ChannelEntity(
+    id = 0,
+    title = "Title",
+    url = "http://192.168.0.2:8100/cover/TAEYEON.jpg",
+    description = "Track description",
+    size = 10,
+    likes = 2,
+    liked = false,
+)

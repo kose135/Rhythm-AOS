@@ -7,15 +7,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.longlegsdev.rhythm.presentation.screen.main.section.channel.ChannelListSection
-import com.longlegsdev.rhythm.presentation.viewmodel.channel.ChannelViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
 import timber.log.Timber
 
 @Composable
 fun ChannelPage(
-    viewModel: ChannelViewModel = hiltViewModel(),
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
-
-    val channelListState = viewModel.channelListState.value
+    val channelListState = viewModel.trackListState.value
 
     Box(
         modifier = Modifier
@@ -25,9 +24,9 @@ fun ChannelPage(
 
         ChannelListSection(
             state = channelListState,
-            onChannelClick = { channelId ->
-                Timber.d("click channel id = $channelId")
-                viewModel.playChannel(channelId)
+            onTrackClick = { channel ->
+                Timber.d("click channel id = ${channel.id}")
+                viewModel.getMusicList(channel)
             }
         )
 

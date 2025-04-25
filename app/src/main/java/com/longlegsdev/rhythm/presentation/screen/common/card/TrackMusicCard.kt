@@ -61,8 +61,7 @@ fun TrackMusicCard(
             modifier = Modifier
                 .size(60.dp)
                 .clip(RoundedCornerShape(5.dp)),
-//            url = albumImageUrl,
-            url = "http://192.168.0.2:8100/cover/IU.jpg",
+            url = albumImageUrl,
         )
 
         Spacer(modifier = Modifier.width(10.dp))

@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
+import android.R.attr.duration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,15 +24,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerPage(
-    viewModel: PlayerViewModel = hiltViewModel()
+    playerViewModel: PlayerViewModel = hiltViewModel()
 ) {
-    val musicList by viewModel.musicList.collectAsState()
-    val currentIndex by viewModel.currentIndex.collectAsState()
-    val currentMusic by viewModel.currentMusic.collectAsState()
-    val currentPosition by viewModel.currentPosition.collectAsState()
-    val bufferedPosition by viewModel.bufferedPosition.collectAsState()
-    val duration by viewModel.duration.collectAsState()
-    val isPlay by viewModel.isPlay.collectAsState()
+    val musicList by playerViewModel.musicList.collectAsState()
+    val currentIndex by playerViewModel.currentIndex.collectAsState()
+    val currentMusic by playerViewModel.currentMusic.collectAsState()
+    val playerState by playerViewModel.playerState.collectAsState()
 
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -77,20 +75,20 @@ fun PlayerPage(
             Space(height = 10.dp)
 
             ProgressSection(
-                currentTime = currentPosition,
-                bufferedTime = bufferedPosition,
-                duration = duration,
-                seekTo = { viewModel.seekTo(it.toLong()) }
+                currentTime = playerState.currentPosition,
+                bufferedTime = playerState.bufferedPosition,
+                duration = playerState.duration,
+                seekTo = { playerViewModel.seekTo(it.toLong()) }
             )
 
             Space(height = 10.dp)
 
             PlayerSection(
                 modifier = Modifier.weight(1f),
-                isPlay = isPlay,
-                pre = { viewModel.previous() },
-                playPause = { viewModel.playPause() },
-                next = { viewModel.next() },
+                isPlay = playerState.isPlaying,
+                pre = { playerViewModel.previous() },
+                playPause = { playerViewModel.playPause() },
+                next = { playerViewModel.next() },
             )
         }
     }

@@ -10,7 +10,10 @@ data class FavoriteChannelEntity(
     val title: String,
     val url: String,
     val description: String,
-    val favoriteAt: Long = System.currentTimeMillis()
+    val favoriteAt: Long = System.currentTimeMillis(),
+//    val size: Int,
+//    val likes: Int = -1,
+//    val liked: Boolean
 )
 
 fun ChannelEntity.toFavoriteChannelEntity(): FavoriteChannelEntity {

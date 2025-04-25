@@ -11,19 +11,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.longlegsdev.rhythm.presentation.screen.main.section.home.BestMusicSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.home.BestMusicListSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.home.RecommendedChannelSection
-import com.longlegsdev.rhythm.presentation.viewmodel.main.HomeViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import com.longlegsdev.rhythm.util.Space
 import timber.log.Timber
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HomePage(
-    viewModel: HomeViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
+    playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val channelListState = viewModel.channelListState.value
-    val musicListState = viewModel.musicListState.value
+    val channelListState = mainViewModel.recommendTrackListState.value
+    val bestMusicListState = mainViewModel.bestMusicListState.value
+
     BoxWithConstraints(
         modifier = Modifier
             .background(Color.Transparent)
@@ -40,20 +43,21 @@ fun HomePage(
             RecommendedChannelSection(
                 modifier = Modifier.weight(1f),
                 state = channelListState,
-                onChannelClick = { channelId ->
-                    Timber.d("click channel id = $channelId")
-                    viewModel.playChannel(channelId)
+                onTrackClick = { channel ->
+                    Timber.d("click channel id = ${channel.id}")
+                    mainViewModel.getMusicList(channel)
                 }
             )
 
             Space(height = 10.dp)
 
-            BestMusicSection(
+            BestMusicListSection(
                 modifier = Modifier.weight(1f),
-                state = musicListState,
+                state = bestMusicListState,
                 itemWidth = itemWidth,
-                onMusicClick = { musicId ->
-                    Timber.d("click music id = $musicId")
+                onMusicClick = { index ->
+                    Timber.d("click music index = $index")
+                    playerViewModel.play(bestMusicListState.data!!, index)
                 }
             )
         }

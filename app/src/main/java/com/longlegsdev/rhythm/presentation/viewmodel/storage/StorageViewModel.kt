@@ -46,72 +46,33 @@ class StorageViewModel @Inject constructor(
         fetchFavoriteChannelList()
     }
 
-
     fun fetchRecentMusicList() {
         viewModelScope.launch {
-
-            musicUseCase.getRecentList()
-                .doOnSuccess {
-                    Timber.d("Get data from database")
-
-                    _recentMusicListState.value =
-                        UiState<List<RecentMusicEntity>>(onSuccess = true, data = it)
-                }
-                .doOnFailure {
-                    Timber.d("Failed to retrieve data from database")
-
-                    _recentMusicListState.value =
-                        UiState<List<RecentMusicEntity>>(errorMessage = it.localizedMessage)
-                }
-                .doOnLoading {
-                    Timber.d("loading...")
-
-                }.collect()
+            musicUseCase.getRecentList().collect { list ->
+                Timber.d("Get data from database")
+                _recentMusicListState.value =
+                    UiState<List<RecentMusicEntity>>(onSuccess = true, data = list)
+            }
         }
     }
 
     fun fetchFavoriteMusicList() {
         viewModelScope.launch {
-
-            musicUseCase.getAllFavorite()
-                .doOnSuccess {
-                    Timber.d("Get data from database")
-
-                    _favoriteMusicListState.value =
-                        UiState<List<FavoriteMusicEntity>>(onSuccess = true, data = it)
-                }
-                .doOnFailure {
-                    Timber.d("Failed to retrieve data from database")
-
-                    _favoriteMusicListState.value =
-                        UiState<List<FavoriteMusicEntity>>(errorMessage = it.localizedMessage)
-                }
-                .doOnLoading {
-
-
-                }.collect()
+            musicUseCase.getAllFavorite().collect { list ->
+                Timber.d("Get data from database")
+                _favoriteMusicListState.value =
+                    UiState<List<FavoriteMusicEntity>>(onSuccess = true, data = list)
+            }
         }
     }
 
     fun fetchFavoriteChannelList() {
         viewModelScope.launch {
-
-            channelUseCase.getAllFavorite()
-                .doOnSuccess {
+            channelUseCase.getAllFavorite().collect {
                     Timber.d("Get data from database")
-
                     _favoriteChannelListState.value =
                         UiState<List<FavoriteChannelEntity>>(onSuccess = true, data = it)
-                }
-                .doOnFailure {
-                    Timber.d("Failed to retrieve data from database")
-
-                    _favoriteChannelListState.value =
-                        UiState<List<FavoriteChannelEntity>>(errorMessage = it.localizedMessage)
-                }
-                .doOnLoading {
-
-                }.collect()
+            }
         }
     }
 

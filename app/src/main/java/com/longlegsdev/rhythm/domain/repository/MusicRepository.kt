@@ -20,12 +20,12 @@ interface MusicRepository {
 
     suspend fun updateRecentMusic(music: MusicEntity)
 
-    suspend fun getRecentMusicList(): Flow<Result<List<RecentMusicEntity>>>
+    suspend fun getRecentMusicList(): Flow<List<RecentMusicEntity>>
 
     suspend fun addFavoriteMusic(music: MusicEntity)
 
     suspend fun deleteFavoriteMusic(musicId: Int)
 
-    suspend fun getAllFavoriteMusicList(): Flow<Result<List<FavoriteMusicEntity>>>
+    suspend fun getAllFavoriteMusicList(): Flow<List<FavoriteMusicEntity>>
 
 }

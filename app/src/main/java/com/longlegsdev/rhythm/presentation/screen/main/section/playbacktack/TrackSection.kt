@@ -1,18 +1,14 @@
-package com.longlegsdev.rhythm.presentation.screen.main.section.tack
+package com.longlegsdev.rhythm.presentation.screen.main.section.playbacktack
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.data.entity.MusicEntity
-import com.longlegsdev.rhythm.data.remote.model.MusicList
-import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.card.TrackMusicCard
 import timber.log.Timber
 

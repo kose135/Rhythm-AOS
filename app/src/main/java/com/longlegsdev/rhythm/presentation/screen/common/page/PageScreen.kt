@@ -9,7 +9,7 @@ import com.longlegsdev.rhythm.presentation.screen.main.page.HomePage
 import com.longlegsdev.rhythm.presentation.screen.main.page.LyricsPage
 import com.longlegsdev.rhythm.presentation.screen.main.page.PlayerPage
 import com.longlegsdev.rhythm.presentation.screen.main.page.StoragePage
-import com.longlegsdev.rhythm.presentation.screen.main.page.TrackPage
+import com.longlegsdev.rhythm.presentation.screen.main.page.PlaybackTrackPage
 
 sealed class PageScreen(@StringRes val title: Int, @DrawableRes val icon: Int?) {
     object Channel : PageScreen(R.string.tab_channel, R.drawable.ic_channel)
@@ -17,7 +17,7 @@ sealed class PageScreen(@StringRes val title: Int, @DrawableRes val icon: Int?) 
     object Storage : PageScreen(R.string.tab_storage, R.drawable.ic_storage)
 
     object Player : PageScreen(R.string.tab_player, null)
-    object Track : PageScreen(R.string.tab_track, null)
+    object PlaybackTrack : PageScreen(R.string.tab_track, null)
     object Lyrics : PageScreen(R.string.tab_lyrics, null)
 
     @Composable
@@ -31,7 +31,7 @@ sealed class PageScreen(@StringRes val title: Int, @DrawableRes val icon: Int?) 
     @Composable
     fun MusicContent() = when (this) {
         Player -> PlayerPage()
-        Track -> TrackPage()
+        PlaybackTrack -> PlaybackTrackPage()
         Lyrics -> LyricsPage()
         else -> PlayerPage()
     }

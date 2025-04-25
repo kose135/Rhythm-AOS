@@ -18,8 +18,8 @@ fun AlbumCoverImage(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     url: String,
-    @DrawableRes loadingRes: Int? = R.drawable.ic_cover,
-    @DrawableRes errorRes: Int? = R.drawable.ic_cover,
+    @DrawableRes loadingRes: Int? = R.drawable.img_cover,
+    @DrawableRes errorRes: Int? = R.drawable.img_cover,
 ) {
     CoilImage(
         imageModel = {

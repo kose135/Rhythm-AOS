@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteChannelDao {
@@ -16,6 +17,6 @@ interface FavoriteChannelDao {
     suspend fun insert(favoriteChannel: FavoriteChannelEntity)
 
     @Query("SELECT * FROM favorite_channel ORDER BY favoriteAt DESC")
-    suspend fun getAllFavoriteChannelList(): List<FavoriteChannelEntity>
+    fun getAllFavoriteChannelList(): Flow<List<FavoriteChannelEntity>>git
 
 }

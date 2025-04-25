@@ -21,8 +21,6 @@ import javax.inject.Singleton
 class MusicPlayer @Inject constructor(
     private val player: ExoPlayer
 ) : Player.Listener {
-
-    private var playerState = PlaybackState.IDLE
     private var playerEventListener: MusicPlayerEventListener? = null
 
     init {
@@ -87,7 +85,6 @@ class MusicPlayer @Inject constructor(
         player.seekToPrevious()
     }
 
-
     fun seekTo(position: Long) {
         player.seekTo(position)
     }
@@ -104,8 +101,6 @@ class MusicPlayer @Inject constructor(
         player.release()
     }
 
-    fun getState() = playerState
-
     fun getPlayer(): ExoPlayer = player
 
     fun setMusicPlayerEventListener(listener: MusicPlayerEventListener) {
@@ -118,7 +113,7 @@ class MusicPlayer @Inject constructor(
     override fun onPlaybackStateChanged(state: Int) {
         Timber.d("Playback state changed: $state")
 
-        playerState = when (state) {
+        val playerState = when (state) {
             Player.STATE_IDLE -> PlaybackState.IDLE
             Player.STATE_BUFFERING -> PlaybackState.BUFFERING
             Player.STATE_READY -> {

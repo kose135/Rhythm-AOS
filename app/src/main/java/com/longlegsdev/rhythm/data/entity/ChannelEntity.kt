@@ -12,5 +12,18 @@ data class ChannelEntity(
     val description: String,
     val size: Int,
     val likes: Int = -1,
-    val liked: Boolean
-)
+    val liked: Boolean,
+    var IsFavorite: Boolean = false
+) {
+    companion object {
+        val EMPTY = ChannelEntity(
+            id = -1,
+            title = "",
+            url = "",
+            description = "",
+            size = 0,
+            likes = 0,
+            liked = false,
+        )
+    }
+}

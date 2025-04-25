@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,19 +13,19 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.PageSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.TabSection
-import com.longlegsdev.rhythm.presentation.screen.main.state.MainScreenState
-import com.longlegsdev.rhythm.presentation.screen.main.state.PlayerState
+import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MainScreenUiState
+import com.longlegsdev.rhythm.presentation.viewmodel.player.state.PlayerUiState
 
 @Composable
 fun MainScreenContent(
     pages: List<PageScreen>,
     pagerState: PagerState,
-    playerState: PlayerState,
-    uiState: MainScreenState,
+    playerState: PlayerUiState,
+    uiState: MainScreenUiState,
     onTabSelected: (Int) -> Unit,
     onPlayPauseClick: () -> Unit,
-    onMiniPlayerClick: () -> Unit,
-    onMusicPageDismiss: () -> Unit
+    onMusicPageShow: (Boolean) -> Unit,
+    onTrackDetailPageShow: (Boolean) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier
@@ -64,14 +63,21 @@ fun MainScreenContent(
                 bottomPadding = bottomPadding,
                 playerState = playerState,
                 onPlayPauseClick = onPlayPauseClick,
-                onClick = onMiniPlayerClick,
+                onClick = { onMusicPageShow(true) },
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
 
             // music page
             AnimatedMusicPage(
                 isVisible = uiState.showMusicPage,
-                onSwipeDown = onMusicPageDismiss,
+                onSwipeDown = { onMusicPageShow(false) },
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+
+            // track detail page
+            AnimatedTrackDetailPage(
+                isVisible = uiState.showTrackDetailPage,
+                onTrackDetailPageDismiss = onTrackDetailPageShow,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

@@ -90,7 +90,7 @@ class MusicPlayerManager @Inject constructor(
         } else {
             musicPlayer.play()
         }
-        updateState()
+//            updateState()
     }
 
     fun next() {
@@ -131,11 +131,9 @@ class MusicPlayerManager @Inject constructor(
         _currentPosition.value = 0L
         _bufferedPosition.value = 0L
         _duration.value =
-            if (duration < 0L) _currentMusic.value.duration * 1000 else duration // metadata를 가져오지 못하는 상황 발생
-        _playbackState.value = musicPlayer.getState()
+            if (duration <= 0L) _currentMusic.value.duration else duration // metadata를 가져오지 못하는 상황 발생
 
         Timber.d("change playbackstate: ${_playbackState.value}")
-
     }
 
 

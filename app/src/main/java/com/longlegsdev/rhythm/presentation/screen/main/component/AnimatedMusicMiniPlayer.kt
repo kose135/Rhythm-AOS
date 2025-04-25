@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.MiniPlayBarSection
-import com.longlegsdev.rhythm.presentation.screen.main.state.PlayerState
+import com.longlegsdev.rhythm.presentation.viewmodel.player.state.PlayerUiState
 
 @Composable
 fun AnimatedMusicMiniPlayer(
     isVisible: Boolean,
     bottomPadding: Dp,
-    playerState: PlayerState,
+    playerState: PlayerUiState,
     onPlayPauseClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier

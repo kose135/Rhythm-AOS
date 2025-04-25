@@ -32,7 +32,7 @@ import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 fun ChannelListSection(
     modifier: Modifier = Modifier,
     state: UiState<List<ChannelEntity>>,
-    onChannelClick: (Int) -> Unit
+    onTrackClick: (ChannelEntity) -> Unit
 ) {
 
     BoxWithConstraints(
@@ -88,7 +88,6 @@ fun ChannelListSection(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         itemsIndexed(channels) { index, channel ->
-                            val channelId = channel.id
                             val title = channel.title
                             val coverImageUrl = channel.url
                             val description = channel.description
@@ -97,7 +96,6 @@ fun ChannelListSection(
                             val liked = channel.liked
 
                             ChannelCard(
-                                channelId = channelId,
                                 title = title,
                                 coverImageUrl = coverImageUrl,
                                 description = description,
@@ -105,8 +103,8 @@ fun ChannelListSection(
                                 likes = likes,
                                 liked = liked,
                                 width = itemWidth,
-                                onChannelItemClick = { channelId ->
-                                    onChannelClick(channelId)
+                                onTrackItemClick = {
+                                    onTrackClick(channel)
                                 }
                             )
                         }

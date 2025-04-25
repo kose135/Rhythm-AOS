@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.longlegsdev.rhythm.presentation.screen.common.page.Page
-import com.longlegsdev.rhythm.presentation.screen.common.page.Page.*
+import com.longlegsdev.rhythm.presentation.screen.common.page.PageType
+import com.longlegsdev.rhythm.presentation.screen.common.page.PageType.*
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PageSection(
-    type: Page = Page.MAIN,
+    type: PageType = PageType.MAIN,
     pages: List<PageScreen>,
     pagerState: PagerState,
     modifier: Modifier = Modifier,

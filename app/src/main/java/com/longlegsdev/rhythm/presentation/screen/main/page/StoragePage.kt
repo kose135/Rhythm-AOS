@@ -1,5 +1,6 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
+import android.R.attr.track
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -15,18 +16,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.longlegsdev.rhythm.presentation.screen.main.section.storage.FavoriteChannelSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.storage.FavoriteMusicSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.storage.RecentlyPlayedMusicSection
+import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.storage.StorageViewModel
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun StoragePage(
-    viewModel: StorageViewModel = hiltViewModel()
+    storageViewModel: StorageViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
+    playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val scrollState = rememberScrollState()
 
-    val recentMusicState = viewModel.recentMusicListState.value
-    val favoriteMusicState = viewModel.favoriteMusicListState.value
-    val favoriteChannelState = viewModel.favoriteChannelListState.value
+    val recentMusicState = storageViewModel.recentMusicListState.value
+    val favoriteMusicState = storageViewModel.favoriteMusicListState.value
+    val favoriteChannelState = storageViewModel.favoriteChannelListState.value
 
     BoxWithConstraints(
         modifier = Modifier
@@ -66,7 +71,9 @@ fun StoragePage(
                 modifier = Modifier
                     .height(sectionHeight),
                 state = favoriteChannelState,
-                onChannelClick = { }
+                onTrackClick = {
+//                    track -> mainViewModel.getMusicList(track)
+                }
             )
 
         }

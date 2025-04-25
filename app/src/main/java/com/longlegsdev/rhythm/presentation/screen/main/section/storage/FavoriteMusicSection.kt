@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ fun FavoriteMusicSection(
     state: UiState<List<FavoriteMusicEntity>>,
     onMusicClick: (Int) -> Unit
 ) {
+    val favoriteMusicList = state.data
 
     Column(
         modifier = Modifier
@@ -48,50 +52,43 @@ fun FavoriteMusicSection(
 
         Space(height = 10.dp)
 
-        when {
-
-            state.errorMessage != null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.err_favorite_music),
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
+        if (favoriteMusicList == null || favoriteMusicList.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.err_favorite_music),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
             }
+        } else {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                itemsIndexed(favoriteMusicList) { index, music ->
+                    val musicId = music.id
+                    val title = music.title
+                    val albumImageUrl = music.album
+                    val artist = music.artist
+                    val duration = music.duration
 
-            state.onSuccess == true -> {
-                val musics = state.data!!
-
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    itemsIndexed(musics) { index, music ->
-                        val musicId = music.id
-                        val title = music.title
-                        val albumImageUrl = music.album
-                        val artist = music.artist
-                        val duration = music.duration
-
-                        FavoriteMusicCard(
-                            musicId = musicId,
-                            title = title,
-                            albumImageUrl = albumImageUrl,
-                            artist = artist,
-                            duration = duration,
-                            onFavoriteMusicClick = { musicId ->
-                                onMusicClick(musicId)
-                            }
-                        )
-                    }
+                    FavoriteMusicCard(
+                        musicId = musicId,
+                        title = title,
+                        albumImageUrl = albumImageUrl,
+                        artist = artist,
+                        duration = duration,
+                        onFavoriteMusicClick = { musicId ->
+                            onMusicClick(musicId)
+                        }
+                    )
                 }
             }
         }

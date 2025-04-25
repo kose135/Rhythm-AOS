@@ -78,8 +78,8 @@ object AppModule {
             app,
             DefaultHttpDataSource.Factory()
                 .setAllowCrossProtocolRedirects(true)
-                .setConnectTimeoutMs(150)
-                .setReadTimeoutMs(150)
+                .setConnectTimeoutMs(1500)
+                .setReadTimeoutMs(1500)
         )
 
         // create and return a cache data source factory

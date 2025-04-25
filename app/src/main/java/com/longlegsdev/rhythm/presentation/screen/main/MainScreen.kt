@@ -16,40 +16,46 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.component.MainScreenContent
-import com.longlegsdev.rhythm.presentation.screen.main.event.HandlePlaybackEvents
-import com.longlegsdev.rhythm.presentation.screen.main.state.collectPlayerState
-import com.longlegsdev.rhythm.presentation.screen.main.state.rememberMainScreenState
+import com.longlegsdev.rhythm.presentation.viewmodel.main.event.HandlePlayEvents
+import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.main.event.HandlePlaybackEvents
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun MainScreen(
     navController: NavHostController,
     activity: Activity? = LocalContext.current as? Activity,
-    viewModel: PlayerViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
+    playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val pages = listOf(PageScreen.Channel, PageScreen.Home, PageScreen.Storage)
     val pagerState = rememberPagerState(initialPage = 1) { pages.size }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val playbackState by viewModel.playbackState.collectAsState()
-
 
     // UI state
-    val playerState = collectPlayerState(viewModel)
-    val uiState = rememberMainScreenState(playbackState)
+    val playerState by playerViewModel.playerState.collectAsState()
+    val playbackState by playerViewModel.playbackState.collectAsState()
+    val playerEvent = playerViewModel.playbackEvents
+    val uiState by mainViewModel.uiState.collectAsState()
 
     // event processing
-    HandlePlaybackEvents(viewModel, snackbarHostState)
+    HandlePlaybackEvents(playbackState) { isShow -> mainViewModel.setShowMiniPlayer(isShow) }
+    HandlePlayEvents(playerEvent, snackbarHostState)
 
     // back button processing
-    BackHandler(uiState.showMusicPage) {
-        uiState.showMusicPage = false
+    BackHandler {
+        if (uiState.showTrackDetailPage) {
+            mainViewModel.setShowTrackDetailPage(false)
+        } else if (uiState.showMusicPage) {
+            mainViewModel.setShowMusicPage(false)
+        }
     }
 
-    BackHandler(enabled = !uiState.showMusicPage) {
+    BackHandler(enabled = !uiState.showMusicPage && !uiState.showTrackDetailPage) {
         activity?.finish()
     }
 
@@ -63,9 +69,9 @@ fun MainScreen(
                 pagerState.animateScrollToPage(selectedPage)
             }
         },
-        onPlayPauseClick = { viewModel.playPause() },
-        onMiniPlayerClick = { uiState.showMusicPage = true },
-        onMusicPageDismiss = { uiState.showMusicPage = false }
+        onPlayPauseClick = { playerViewModel.playPause() },
+        onMusicPageShow = { isShow -> mainViewModel.setShowMusicPage(isShow) },
+        onTrackDetailPageShow = { isShow -> mainViewModel.setShowTrackDetailPage(isShow) }
     )
 }
 
