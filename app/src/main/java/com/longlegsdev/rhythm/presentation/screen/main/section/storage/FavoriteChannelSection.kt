@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,10 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
-import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
-import com.longlegsdev.rhythm.presentation.screen.common.card.ChannelCard
-import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
+import com.longlegsdev.rhythm.data.entity.TrackEntity
+import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import com.longlegsdev.rhythm.util.Space
 
@@ -34,8 +29,8 @@ import com.longlegsdev.rhythm.util.Space
 @Composable
 fun FavoriteChannelSection(
     modifier: Modifier = Modifier,
-    state: UiState<List<FavoriteChannelEntity>>,
-    onTrackClick: (FavoriteChannelEntity) -> Unit
+    state: UiState<List<TrackEntity>>,
+    onTrackClick: (TrackEntity) -> Unit
 ) {
     val favoriteTrackList = state.data
 
@@ -46,7 +41,7 @@ fun FavoriteChannelSection(
         Text(
             modifier = Modifier
                 .padding(horizontal = 8.dp),
-            text = stringResource(R.string.str_favorite_channel),
+            text = stringResource(R.string.str_favorite_track),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.headlineSmall
         )
@@ -61,7 +56,7 @@ fun FavoriteChannelSection(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.err_favorite_channel),
+                    text = stringResource(R.string.err_favorite_track),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -79,7 +74,7 @@ fun FavoriteChannelSection(
                     val coverImageUrl = track.url
                     val description = track.description
 
-                    ChannelCard(
+                    TrackCard(
                         title = title,
                         coverImageUrl = coverImageUrl,
                         description = description,

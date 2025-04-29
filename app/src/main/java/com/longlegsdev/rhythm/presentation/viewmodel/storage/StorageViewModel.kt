@@ -5,13 +5,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
-import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
-import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
+import com.longlegsdev.rhythm.data.entity.FavoriteTrackEntity
+import com.longlegsdev.rhythm.data.entity.MusicEntity
+import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.domain.doOnFailure
 import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
-import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
+import com.longlegsdev.rhythm.domain.usecase.track.TrackUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,56 +23,84 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StorageViewModel @Inject constructor(
-    private val channelUseCase: ChannelUseCase,
+    private val trackUseCase: TrackUseCase,
     private val musicUseCase: MusicUseCase,
 ) : ViewModel() {
 
-    private val _recentMusicListState: MutableState<UiState<List<RecentMusicEntity>>> =
-        mutableStateOf(UiState<List<RecentMusicEntity>>())
-    val recentMusicListState: State<UiState<List<RecentMusicEntity>>> = _recentMusicListState
+    private val _recentMusicListState: MutableState<UiState<List<MusicEntity>>> =
+        mutableStateOf(UiState<List<MusicEntity>>())
+    val recentMusicListState: State<UiState<List<MusicEntity>>> = _recentMusicListState
 
-    private val _favoriteMusicListState: MutableState<UiState<List<FavoriteMusicEntity>>> =
-        mutableStateOf(UiState<List<FavoriteMusicEntity>>())
-    val favoriteMusicListState: State<UiState<List<FavoriteMusicEntity>>> = _favoriteMusicListState
+    private val _favoriteMusicListState: MutableState<UiState<List<MusicEntity>>> =
+        mutableStateOf(UiState<List<MusicEntity>>())
+    val favoriteMusicListState: State<UiState<List<MusicEntity>>> = _favoriteMusicListState
 
-    private val _favoriteChannelListState: MutableState<UiState<List<FavoriteChannelEntity>>> =
-        mutableStateOf(UiState<List<FavoriteChannelEntity>>())
-    val favoriteChannelListState: State<UiState<List<FavoriteChannelEntity>>> =
+    private val _favoriteChannelListState: MutableState<UiState<List<TrackEntity>>> =
+        mutableStateOf(UiState<List<TrackEntity>>())
+    val favoriteChannelListState: State<UiState<List<TrackEntity>>> =
         _favoriteChannelListState
 
     init {
         fetchRecentMusicList()
         fetchFavoriteMusicList()
-        fetchFavoriteChannelList()
+        fetchFavoriteTrackList()
     }
 
     fun fetchRecentMusicList() {
         viewModelScope.launch {
-            musicUseCase.getRecentList().collect { list ->
-                Timber.d("Get data from database")
-                _recentMusicListState.value =
-                    UiState<List<RecentMusicEntity>>(onSuccess = true, data = list)
-            }
+            musicUseCase.getRecentList()
+                .doOnSuccess { list ->
+                    _recentMusicListState.value =
+                        UiState<List<MusicEntity>>(onSuccess = true, data = list)
+                }
+                .doOnFailure {
+                    _recentMusicListState.value =
+                        UiState(errorMessage = it.localizedMessage, isLoading = false)
+                }
+                .doOnLoading {
+                    val data = _recentMusicListState.value.data
+                    if (data == null || data.isEmpty()) {
+                        _recentMusicListState.value = UiState(isLoading = true)
+                    }
+                }.collect()
         }
     }
 
     fun fetchFavoriteMusicList() {
         viewModelScope.launch {
-            musicUseCase.getAllFavorite().collect { list ->
-                Timber.d("Get data from database")
-                _favoriteMusicListState.value =
-                    UiState<List<FavoriteMusicEntity>>(onSuccess = true, data = list)
-            }
+            musicUseCase.getAllFavorite()
+                .doOnSuccess { list ->
+                    _favoriteMusicListState.value = UiState(onSuccess = true, data = list)
+                }
+                .doOnFailure {
+                    _favoriteMusicListState.value =
+                        UiState(errorMessage = it.localizedMessage, isLoading = false)
+                }
+                .doOnLoading {
+                    val data = _favoriteMusicListState.value.data
+                    if (data == null || data.isEmpty()) {
+                        _favoriteMusicListState.value = UiState(isLoading = true)
+                    }
+                }.collect()
         }
     }
 
-    fun fetchFavoriteChannelList() {
+    fun fetchFavoriteTrackList() {
         viewModelScope.launch {
-            channelUseCase.getAllFavorite().collect {
-                    Timber.d("Get data from database")
-                    _favoriteChannelListState.value =
-                        UiState<List<FavoriteChannelEntity>>(onSuccess = true, data = it)
-            }
+            trackUseCase.getAllFavorite()
+                .doOnSuccess { list ->
+                    _favoriteChannelListState.value = UiState(onSuccess = true, data = list)
+                }
+                .doOnFailure {
+                    _favoriteMusicListState.value =
+                        UiState(errorMessage = it.localizedMessage, isLoading = false)
+                }
+                .doOnLoading {
+                    val data = _favoriteMusicListState.value.data
+                    if (data == null || data.isEmpty()) {
+                        _favoriteMusicListState.value = UiState(isLoading = true)
+                    }
+                }.collect()
         }
     }
 

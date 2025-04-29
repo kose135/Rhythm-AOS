@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Channel(
+data class Track(
     @Json(name = "id")
     val id: Int,
     @Json(name = "title")
@@ -15,8 +15,4 @@ data class Channel(
     val description: String,
     @Json(name = "size")
     val size: Int,
-    @Json(name = "likes")
-    val likes: Int = -1,
-    @Json(name = "liked")
-    val liked: Boolean
 )

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.longlegsdev.rhythm.data.entity.FavoriteChannelEntity
 import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -17,7 +16,7 @@ interface FavoriteMusicDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favoriteMusic: FavoriteMusicEntity)
 
-    @Query("SELECT * FROM favorite_music ORDER BY favoriteAt DESC")
+    @Query("SELECT * FROM favorite_music ORDER BY favoritedAt DESC")
     fun getAllFavoriteMusicList(): Flow<List<FavoriteMusicEntity>>
 
 }

@@ -1,6 +1,6 @@
 package com.longlegsdev.rhythm.util
 
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
+import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 
 val MUSICENTITY_LIST = listOf(
@@ -12,8 +12,6 @@ val MUSICENTITY_LIST = listOf(
         205,
         "가사1222",
         "http://192.168.0.2:8100/music/I.mp4",
-        5,
-        true
     ),
     MusicEntity(
         2,
@@ -23,8 +21,6 @@ val MUSICENTITY_LIST = listOf(
         234,
         "가사1333",
         "http://192.168.0.2:8100/music/Weekend.mp4",
-        5,
-        false
     ),
     MusicEntity(
         3,
@@ -34,8 +30,6 @@ val MUSICENTITY_LIST = listOf(
         204,
         "가사14444",
         "http://192.168.0.2:8100/music/제주도의 푸른 밤.mp4",
-        5,
-        false
     ),
     MusicEntity(
         4,
@@ -45,8 +39,6 @@ val MUSICENTITY_LIST = listOf(
         206,
         "가사166666",
         "http://192.168.0.2:8100/music/Time of Our Life.mp4",
-        5,
-        true
     ),
     MusicEntity(
         5,
@@ -56,8 +48,6 @@ val MUSICENTITY_LIST = listOf(
         242,
         "가사177777",
         "http://192.168.0.2:8100/music/Viva La Vida.mp4",
-        5,
-        true
     ),
     MusicEntity(
         6,
@@ -67,8 +57,6 @@ val MUSICENTITY_LIST = listOf(
         214,
         "88888888",
         "http://192.168.0.2:8100/music/LILAC.mp4",
-        5,
-        false
     ),
 )
 
@@ -132,12 +120,12 @@ val LYRICS = "빛을 쏟는 sky\n" +
         "눈 감은 순간 시간은 멈춰가\n" +
         "난 다시 떠올라"
 
-val TRACK_INFO = ChannelEntity(
+val TRACK_INFO = TrackEntity(
     id = 0,
     title = "Title",
     url = "http://192.168.0.2:8100/cover/TAEYEON.jpg",
     description = "Track description",
     size = 10,
-    likes = 2,
-    liked = false,
+//    likes = 2,
+//    liked = false,
 )

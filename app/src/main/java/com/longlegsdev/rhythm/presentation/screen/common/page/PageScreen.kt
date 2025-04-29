@@ -12,7 +12,7 @@ import com.longlegsdev.rhythm.presentation.screen.main.page.StoragePage
 import com.longlegsdev.rhythm.presentation.screen.main.page.PlaybackTrackPage
 
 sealed class PageScreen(@StringRes val title: Int, @DrawableRes val icon: Int?) {
-    object Channel : PageScreen(R.string.tab_channel, R.drawable.ic_channel)
+    object Channel : PageScreen(R.string.tab_tracks, R.drawable.ic_channel)
     object Home : PageScreen(R.string.tab_home, R.drawable.ic_home)
     object Storage : PageScreen(R.string.tab_storage, R.drawable.ic_storage)
 

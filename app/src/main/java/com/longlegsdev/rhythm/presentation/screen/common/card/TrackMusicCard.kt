@@ -40,7 +40,6 @@ fun TrackMusicCard(
     albumImageUrl: String,
     artist: String,
     duration: Long,
-    liked: Boolean?,
     onMusicItemClick: () -> Unit,
     isCurrent: Boolean,
 ) {
@@ -100,18 +99,6 @@ fun TrackMusicCard(
                     overflow = TextOverflow.Visible,
                 )
 
-                // liked icon
-                if (liked != null) {
-                    Icon(
-                        modifier = Modifier.size(20.dp),
-                        imageVector = if (liked)
-                            Icons.Default.Favorite
-                        else
-                            Icons.Default.FavoriteBorder,
-                        contentDescription = "music liked",
-                        tint = Color.Red
-                    )
-                }
             }
         }
     }

@@ -36,7 +36,6 @@ fun MusicCard(
     title: String,
     albumImageUrl: String,
     artist: String,
-    liked: Boolean?,
     itemWidth: Dp? = null,
     onMusicItemClick: () -> Unit
 ) {
@@ -97,17 +96,6 @@ fun MusicCard(
                     overflow = TextOverflow.Visible,
                 )
 
-                if (liked != null) {
-                    Icon(
-                        modifier = Modifier.size(20.dp),
-                        imageVector = if (liked)
-                            Icons.Default.Favorite
-                        else
-                            Icons.Default.FavoriteBorder,
-                        contentDescription = "music liked",
-                        tint = Color.Red
-                    )
-                }
             }
         }
     }

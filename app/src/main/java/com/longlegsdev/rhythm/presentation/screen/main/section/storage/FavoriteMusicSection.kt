@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
+import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.FavoriteMusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
@@ -33,7 +34,7 @@ import com.longlegsdev.rhythm.util.Space
 @Composable
 fun FavoriteMusicSection(
     modifier: Modifier = Modifier,
-    state: UiState<List<FavoriteMusicEntity>>,
+    state: UiState<List<MusicEntity>>,
     onMusicClick: (Int) -> Unit
 ) {
     val favoriteMusicList = state.data

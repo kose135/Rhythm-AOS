@@ -19,8 +19,4 @@ data class Music(
     val lyrics: String,
     @Json(name = "url")
     val url: String,
-    @Json(name = "likes")
-    val likes: Int = -1,
-    @Json(name = "liked")
-    val liked: Boolean
 )

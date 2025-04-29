@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ChannelList(
+data class TrackList(
     @field:Json(name = "status")
     val status: String,
     @field:Json(name = "total")
@@ -14,5 +14,5 @@ data class ChannelList(
     @field:Json(name = "size")
     val size: Int,
     @field:Json(name = "list")
-    val list: List<Channel>
+    val list: List<Track>
 )

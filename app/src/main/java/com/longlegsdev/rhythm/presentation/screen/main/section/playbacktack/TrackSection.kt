@@ -31,7 +31,6 @@ fun TrackSection(
             val albumImageUrl = music.album
             val artist = music.artist
             val duration = music.duration
-            val liked = music.liked
             val isCurrent = index == currentIndex
 
             Timber.d("duration= $duration")
@@ -42,7 +41,6 @@ fun TrackSection(
                 albumImageUrl = albumImageUrl,
                 artist = artist,
                 duration = duration,
-                liked = liked,
                 onMusicItemClick = {
                     onMusicItemClick(index)
                 },

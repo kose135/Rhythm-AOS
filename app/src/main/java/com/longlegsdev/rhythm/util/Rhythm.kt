@@ -2,6 +2,7 @@ package com.longlegsdev.rhythm.util
 
 import com.longlegsdev.rhythm.BuildConfig
 
+// presentation constants
 object Rhythm {
 
     /* Notification values */
@@ -10,16 +11,8 @@ object Rhythm {
     const val CHANNEL_NAME = "rhythm_channel_name"
     const val CHANNEL_DESCRIPTION = "Controls for music playback"
 
-
-    /* DI values */
-    const val BASE_URL = BuildConfig.BASE_URL
-    const val DATABASE_NAME = "rhythm.db"
-    const val MEDIA_CACHE_DIR = "media3_cache"
-    const val MEDIA_CACHE_SIZE = 500L * 1024 * 1024 // 500MB
-
     /* Screen values */
-    const val SPLASH_DURATION = 2000
-
+    const val SPLASH_DURATION = 1000
 
     /* Default API values */
     const val DEFAULT_PAGE = 1

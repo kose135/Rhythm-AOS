@@ -65,8 +65,6 @@ fun PlayerPage(
                 .fillMaxSize()
         ) {
             LikeFavoriteSection(
-                isLike = currentMusic.liked,
-                likeCount = currentMusic.likes,
                 isFavorite = false,
                 onLikeClick = { },
                 onFavoriteClick = { },

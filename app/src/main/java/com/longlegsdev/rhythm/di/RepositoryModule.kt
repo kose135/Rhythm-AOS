@@ -1,8 +1,8 @@
 package com.longlegsdev.rhythm.di
 
-import com.longlegsdev.rhythm.data.repository.ChannelRepositoryImpl
+import com.longlegsdev.rhythm.data.repository.TrackRepositoryImpl
 import com.longlegsdev.rhythm.data.repository.MusicRepositoryImpl
-import com.longlegsdev.rhythm.domain.repository.ChannelRepository
+import com.longlegsdev.rhythm.domain.repository.TrackRepository
 import com.longlegsdev.rhythm.domain.repository.MusicRepository
 import dagger.Binds
 import dagger.Module
@@ -15,8 +15,8 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindChannelRepository(
-        channelRepositoryImpl: ChannelRepositoryImpl
-    ): ChannelRepository
+        trackRepositoryImpl: TrackRepositoryImpl
+    ): TrackRepository
 
     @Binds
     fun bindMusicRepository(

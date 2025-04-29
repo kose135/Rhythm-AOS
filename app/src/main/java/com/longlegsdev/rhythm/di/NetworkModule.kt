@@ -2,7 +2,6 @@ package com.longlegsdev.rhythm.di
 
 import android.content.Context
 import com.longlegsdev.rhythm.data.remote.RhythmApiService
-import com.longlegsdev.rhythm.data.remote.interceptor.AuthInterceptor
 import com.longlegsdev.rhythm.util.Rhythm
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -42,8 +41,8 @@ object NetworkModule {
     fun provideCache(
         @ApplicationContext app: Context,
     ): Cache {
-        val cacheDirectory = File(app.cacheDir, "http-cache")
-        val cacheSize = 10 * 1024 * 1024 // 10MB
+        val cacheDirectory = File(app.cacheDir, ModuleConstant.CACHE_DIRECTORY)
+        val cacheSize = ModuleConstant.CACHE_SIZE
         return Cache(cacheDirectory, cacheSize.toLong())
     }
 
@@ -56,7 +55,6 @@ object NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addNetworkInterceptor(httpLoggingInterceptor)
-            .addInterceptor(AuthInterceptor(app))
             .cache(cache)
             .build()
     }
@@ -68,7 +66,7 @@ object NetworkModule {
         moshi: Moshi,
     ): RhythmApiService = Retrofit.Builder()
         .run {
-            baseUrl(Rhythm.BASE_URL)
+            baseUrl(ModuleConstant.BASE_URL)
             client(okHttpClient)
             addConverterFactory(MoshiConverterFactory.create(moshi))
             build()

@@ -13,8 +13,6 @@ object MusicMapper : EntityMapper<Music, MusicEntity> {
             duration = domain.duration * 1000, // 서버는 second 기준
             lyrics = domain.lyrics,
             url = domain.url,
-            likes = domain.likes,
-            liked = domain.liked
         )
     }
 
@@ -27,8 +25,6 @@ object MusicMapper : EntityMapper<Music, MusicEntity> {
             duration = entity.duration,
             lyrics = entity.lyrics,
             url = entity.url,
-            likes = entity.likes,
-            liked = entity.liked
         )
     }
 }

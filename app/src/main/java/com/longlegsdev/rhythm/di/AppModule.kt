@@ -63,8 +63,8 @@ object AppModule {
         @ApplicationContext app: Context
     ): CacheDataSource.Factory {
         // set cache directory and size
-        val cacheDir = File(app.cacheDir, Rhythm.MEDIA_CACHE_DIR)
-        val cacheSize = Rhythm.MEDIA_CACHE_SIZE
+        val cacheDir = File(app.cacheDir, ModuleConstant.MEDIA_CACHE_DIR)
+        val cacheSize = ModuleConstant.MEDIA_CACHE_SIZE
 
         // create cache database
         val simpleCache = SimpleCache(
@@ -78,8 +78,8 @@ object AppModule {
             app,
             DefaultHttpDataSource.Factory()
                 .setAllowCrossProtocolRedirects(true)
-                .setConnectTimeoutMs(1500)
-                .setReadTimeoutMs(1500)
+                .setConnectTimeoutMs(ModuleConstant.MEDIA_CONNECTION_TIMEOUT_MS)
+                .setReadTimeoutMs(ModuleConstant.MEDIA_READ_TIMEOUT_MS)
         )
 
         // create and return a cache data source factory

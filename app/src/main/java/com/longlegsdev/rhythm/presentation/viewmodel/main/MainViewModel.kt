@@ -5,17 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
+import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.domain.doOnFailure
 import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
-import com.longlegsdev.rhythm.domain.usecase.channel.ChannelUseCase
+import com.longlegsdev.rhythm.domain.usecase.track.TrackUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.presentation.viewmodel.main.state.MainScreenUiState
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
-import com.longlegsdev.rhythm.service.player.MusicPlayerManager
-import com.longlegsdev.rhythm.service.player.PlaybackState
 import com.longlegsdev.rhythm.util.Rhythm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,31 +28,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val channelUseCase: ChannelUseCase,
+    private val trackUseCase: TrackUseCase,
     private val musicUseCase: MusicUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainScreenUiState())
     val uiState: StateFlow<MainScreenUiState> = _uiState.asStateFlow()
 
-    private val _recommendTrackListState: MutableState<UiState<List<ChannelEntity>>> =
-        mutableStateOf(UiState<List<ChannelEntity>>())
-    val recommendTrackListState: State<UiState<List<ChannelEntity>>> = _recommendTrackListState
+    private val _recommendTrackListState: MutableState<UiState<List<TrackEntity>>> =
+        mutableStateOf(UiState<List<TrackEntity>>())
+    val recommendTrackListState: State<UiState<List<TrackEntity>>> = _recommendTrackListState
 
     private val _bestMusicListState: MutableState<UiState<List<MusicEntity>>> =
         mutableStateOf(UiState<List<MusicEntity>>())
     val bestMusicListState: State<UiState<List<MusicEntity>>> = _bestMusicListState
 
-    private val _trackListState: MutableState<UiState<List<ChannelEntity>>> =
-        mutableStateOf(UiState<List<ChannelEntity>>())
-    val trackListState: State<UiState<List<ChannelEntity>>> = _trackListState
+    private val _trackListState: MutableState<UiState<List<TrackEntity>>> =
+        mutableStateOf(UiState<List<TrackEntity>>())
+    val trackListState: State<UiState<List<TrackEntity>>> = _trackListState
 
     private val _musicListState: MutableState<UiState<List<MusicEntity>>> =
         mutableStateOf(UiState<List<MusicEntity>>())
     val musicListState: State<UiState<List<MusicEntity>>> = _musicListState
 
-    private val _trackInfo = MutableStateFlow(ChannelEntity.EMPTY)
-    val trackInfo: StateFlow<ChannelEntity> = _trackInfo.asStateFlow()
+    private val _trackInfo = MutableStateFlow(TrackEntity.EMPTY)
+    val trackInfo: StateFlow<TrackEntity> = _trackInfo.asStateFlow()
 
     private var currentPage = 1
 
@@ -68,7 +66,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val limit = Rhythm.DEFAULT_LIMIT
 
-            channelUseCase.getRecommendedList(limit = limit)
+            trackUseCase.getRecommendedList(limit = limit)
                 .doOnSuccess {
                     _recommendTrackListState.value = UiState(onSuccess = true, data = it.channels)
                 }
@@ -101,7 +99,7 @@ class MainViewModel @Inject constructor(
 
     fun fetchTrackList() {
         viewModelScope.launch {
-            channelUseCase.getList(page = currentPage, offset = Rhythm.DEFAULT_OFFSET)
+            trackUseCase.getList(page = currentPage, offset = Rhythm.DEFAULT_OFFSET)
                 .doOnSuccess {
                     _trackListState.value = UiState(
                         onSuccess = true,
@@ -129,17 +127,17 @@ class MainViewModel @Inject constructor(
         _uiState.update { it.copy(showTrackDetailPage = show) }
     }
 
-    fun setTrack(track: ChannelEntity) {
+    fun setTrack(track: TrackEntity) {
         _trackInfo.value = track
     }
 
-    fun getMusicList(track: ChannelEntity) {
+    fun getMusicList(track: TrackEntity) {
         viewModelScope.launch {
             setTrack(track)
             setShowTrackDetailPage(true)
             val trackId = track.id
 
-            channelUseCase.getMusicList(trackId)
+            trackUseCase.getMusicList(trackId)
                 .doOnSuccess {
                     _musicListState.value = UiState(onSuccess = true, data = it.musicList)
                 }

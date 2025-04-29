@@ -35,8 +35,6 @@ import com.longlegsdev.rhythm.util.toTimeFormat
 
 @Composable
 fun LikeFavoriteSection(
-    isLike: Boolean,
-    likeCount: Int,
     isFavorite: Boolean,
     onLikeClick: (Boolean) -> Unit,
     onFavoriteClick: (Boolean) -> Unit,
@@ -60,27 +58,27 @@ fun LikeFavoriteSection(
             horizontalArrangement = Arrangement.Center
         ) {
 
-            IconButton(
-                onClick = { onLikeClick(!isLike) },
-                modifier = Modifier.size(iconSize)
-            ) {
-                Image(
-                    modifier = Modifier.size(iconSize),
-                    painter = if (isLike) painterResource(R.drawable.ic_like_filled) else painterResource(
-                        R.drawable.ic_like_outlined
-                    ),
-                    contentDescription = "pre music",
-                )
-            }
+//            IconButton(
+//                onClick = { onLikeClick(!isLike) },
+//                modifier = Modifier.size(iconSize)
+//            ) {
+//                Image(
+//                    modifier = Modifier.size(iconSize),
+//                    painter = if (isLike) painterResource(R.drawable.ic_like_filled) else painterResource(
+//                        R.drawable.ic_like_outlined
+//                    ),
+//                    contentDescription = "pre music",
+//                )
+//            }
 
             Space(width = 15.dp)
 
-            Text(
-                text = "$likeCount",
-                style = MaterialTheme.typography.bodySmall,
-                color = Color.Black,
-                fontSize = 20.sp
-            )
+//            Text(
+//                text = "$likeCount",
+//                style = MaterialTheme.typography.bodySmall,
+//                color = Color.Black,
+//                fontSize = 20.sp
+//            )
 
         }
 

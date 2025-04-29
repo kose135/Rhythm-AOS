@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
-import com.longlegsdev.rhythm.presentation.screen.common.card.ChannelCard
+import com.longlegsdev.rhythm.data.entity.TrackEntity
+import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 
@@ -31,8 +31,8 @@ import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 @Composable
 fun ChannelListSection(
     modifier: Modifier = Modifier,
-    state: UiState<List<ChannelEntity>>,
-    onTrackClick: (ChannelEntity) -> Unit
+    state: UiState<List<TrackEntity>>,
+    onTrackClick: (TrackEntity) -> Unit
 ) {
 
     BoxWithConstraints(
@@ -47,7 +47,7 @@ fun ChannelListSection(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 8.dp),
-                text = stringResource(R.string.str_channel_list),
+                text = stringResource(R.string.str_track_list),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineSmall
             )
@@ -92,16 +92,12 @@ fun ChannelListSection(
                             val coverImageUrl = channel.url
                             val description = channel.description
                             val size = channel.size
-                            val likes = channel.likes
-                            val liked = channel.liked
 
-                            ChannelCard(
+                            TrackCard(
                                 title = title,
                                 coverImageUrl = coverImageUrl,
                                 description = description,
                                 size = size,
-                                likes = likes,
-                                liked = liked,
                                 width = itemWidth,
                                 onTrackItemClick = {
                                     onTrackClick(channel)

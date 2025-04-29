@@ -2,7 +2,7 @@ package com.longlegsdev.rhythm.di
 
 import android.content.Context
 import androidx.room.Room
-import com.longlegsdev.rhythm.data.dao.FavoriteChannelDao
+import com.longlegsdev.rhythm.data.dao.FavoriteTrackDao
 import com.longlegsdev.rhythm.data.dao.FavoriteMusicDao
 import com.longlegsdev.rhythm.data.dao.RecentMusicDao
 import com.longlegsdev.rhythm.data.local.RhythmDatabase
@@ -27,7 +27,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             app,
             RhythmDatabase::class.java,
-            Rhythm.DATABASE_NAME
+            ModuleConstant.DATABASE_NAME
         ).run {
             build()
         }
@@ -44,8 +44,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideFavoriteChannelDao(database: RhythmDatabase): FavoriteChannelDao {
-        return database.favoriteChannelDao
+    fun provideFavoriteChannelDao(database: RhythmDatabase): FavoriteTrackDao {
+        return database.favoriteTrackDao
     }
 
 }

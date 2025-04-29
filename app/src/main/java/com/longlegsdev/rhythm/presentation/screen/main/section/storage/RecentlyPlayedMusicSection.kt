@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import com.longlegsdev.rhythm.R
+import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
@@ -31,7 +32,7 @@ import com.longlegsdev.rhythm.util.Space
 @Composable
 fun RecentlyPlayedMusicSection(
     modifier: Modifier = Modifier,
-    state: UiState<List<RecentMusicEntity>>,
+    state: UiState<List<MusicEntity>>,
     itemWidth: Dp,
     onMusicClick: (Int) -> Unit
 ) {
@@ -77,13 +78,11 @@ fun RecentlyPlayedMusicSection(
                     val title = music.title
                     val albumImageUrl = music.album
                     val artist = music.artist
-                    val liked = null
 
                     MusicCard(
                         title = title,
                         albumImageUrl = albumImageUrl,
                         artist = artist,
-                        liked = liked,
                         itemWidth = itemWidth,
                         onMusicItemClick = {
                             onMusicClick(index)

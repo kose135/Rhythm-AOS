@@ -85,13 +85,11 @@ fun BestMusicListSection(
                         val title = music.title
                         val albumImageUrl = music.album
                         val artist = music.artist
-                        val liked = music.liked
 
                         MusicCard(
                             title = title,
                             albumImageUrl = albumImageUrl,
                             artist = artist,
-                            liked = liked,
                             itemWidth = itemWidth,
                             onMusicItemClick = {
                                 onMusicClick(index)

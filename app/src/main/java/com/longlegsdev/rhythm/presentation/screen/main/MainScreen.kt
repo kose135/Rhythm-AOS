@@ -68,6 +68,9 @@ fun MainScreen(
             scope.launch {
                 pagerState.animateScrollToPage(selectedPage)
             }
+
+            mainViewModel.setShowMusicPage(false)
+            mainViewModel.setShowTrackDetailPage(false)
         },
         onPlayPauseClick = { playerViewModel.playPause() },
         onMusicPageShow = { isShow -> mainViewModel.setShowMusicPage(isShow) },

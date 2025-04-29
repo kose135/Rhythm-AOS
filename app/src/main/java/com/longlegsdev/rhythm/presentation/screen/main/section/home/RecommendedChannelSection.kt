@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
-import com.longlegsdev.rhythm.presentation.screen.common.card.ChannelCard
+import com.longlegsdev.rhythm.data.entity.TrackEntity
+import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
 import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import com.longlegsdev.rhythm.util.Space
@@ -33,8 +33,8 @@ import com.longlegsdev.rhythm.util.Space
 @Composable
 fun RecommendedChannelSection(
     modifier: Modifier = Modifier,
-    state: UiState<List<ChannelEntity>>,
-    onTrackClick: (ChannelEntity) -> Unit
+    state: UiState<List<TrackEntity>>,
+    onTrackClick: (TrackEntity) -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -99,16 +99,12 @@ fun RecommendedChannelSection(
                             val coverImageUrl = channel.url
                             val description = channel.description
                             val size = channel.size
-                            val likes = channel.likes
-                            val liked = channel.liked
 
-                            ChannelCard(
+                            TrackCard(
                                 title = title,
                                 coverImageUrl = coverImageUrl,
                                 description = description,
                                 size = size,
-                                likes = likes,
-                                liked = liked,
                                 width = itemWidth,
                                 onTrackItemClick = {
                                     onTrackClick(channel)

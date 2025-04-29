@@ -1,24 +1,14 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.trackdetail
 
-import android.R.attr.scaleX
-import android.R.attr.scaleY
-import android.R.attr.top
-import android.R.attr.translationY
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,17 +24,15 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
-import androidx.constraintlayout.compose.MotionScene
 import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.ChannelEntity
+import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
-import com.longlegsdev.rhythm.util.Space
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun TrackInfoSection(
     modifier: Modifier = Modifier,
-    trackInfo: ChannelEntity,
+    trackInfo: TrackEntity,
     progress: Float
 ) {
     val columnId = "contentColumn"
@@ -105,15 +93,15 @@ fun TrackInfoSection(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = if (trackInfo.liked)
-                        painterResource(R.drawable.ic_like_filled)
-                    else
-                        painterResource(R.drawable.ic_like_outlined),
-                    contentDescription = "Like"
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${trackInfo.likes}")
+//                Icon(
+//                    painter = if (trackInfo.liked)
+//                        painterResource(R.drawable.ic_like_filled)
+//                    else
+//                        painterResource(R.drawable.ic_like_outlined),
+//                    contentDescription = "Like"
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                Text(text = "${trackInfo.likes}")
             }
 
             Text(

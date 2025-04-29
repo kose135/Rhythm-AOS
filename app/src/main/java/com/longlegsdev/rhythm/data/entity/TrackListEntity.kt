@@ -1,9 +1,9 @@
 package com.longlegsdev.rhythm.data.entity
 
 
-data class ChannelListEntity(
+data class TrackListEntity(
     val total: Int?,
     val page: Int?,
     val size: Int,
-    val channels: List<ChannelEntity>
+    val channels: List<TrackEntity>
 )

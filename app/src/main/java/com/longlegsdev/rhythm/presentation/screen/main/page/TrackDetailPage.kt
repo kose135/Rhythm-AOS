@@ -119,7 +119,6 @@ fun TrackDetailPage(
                             title = music.title,
                             albumImageUrl = music.album,
                             artist = music.artist,
-                            liked = music.liked,
                             onMusicItemClick = {
                                 playerViewModel.play(musicList, index)
                             }
