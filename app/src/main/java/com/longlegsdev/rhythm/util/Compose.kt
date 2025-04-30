@@ -41,3 +41,6 @@ inline fun Modifier.click(crossinline onClick: () -> Unit): Modifier = composed 
         onClick()
     }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+fun PagerState.offsetForPage(page: Int) = (currentPage - page) + currentPageOffsetFraction

@@ -1,6 +1,5 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
-import android.R.attr.duration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.AlbumSection
-import com.longlegsdev.rhythm.presentation.screen.main.section.player.LikeFavoriteSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.player.FavoriteSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.PlayerSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.ProgressSection
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
@@ -64,9 +63,8 @@ fun PlayerPage(
                 .padding(horizontal = 30.dp)
                 .fillMaxSize()
         ) {
-            LikeFavoriteSection(
+            FavoriteSection(
                 isFavorite = false,
-                onLikeClick = { },
                 onFavoriteClick = { },
             )
 

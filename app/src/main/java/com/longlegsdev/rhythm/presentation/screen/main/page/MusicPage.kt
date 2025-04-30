@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageType
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.PageSection
@@ -36,8 +37,9 @@ fun MusicPage(
             .fillMaxSize(),
         topBar = {
             TabSection(
+                type = PageType.MUSIC,
                 pages = pages,
-                selectedTabIndex = pagerState.currentPage,
+                pagerState = pagerState,
                 backgroundColor = TopTabBackground,
                 selectedColor = TopTabSelected,
                 unselectedColor = TopTabUnselected,
@@ -49,8 +51,6 @@ fun MusicPage(
             )
         }
     ) {
-        Timber.d("Music Page padding values: $it")
-
         Box(
             modifier = Modifier
                 .fillMaxSize()

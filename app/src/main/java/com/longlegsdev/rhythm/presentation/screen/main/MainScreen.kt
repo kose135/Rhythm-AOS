@@ -32,7 +32,10 @@ fun MainScreen(
     playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val pages = listOf(PageScreen.Channel, PageScreen.Home, PageScreen.Storage)
-    val pagerState = rememberPagerState(initialPage = 1) { pages.size }
+    val pagerState = rememberPagerState(
+        initialPage = 1,
+        pageCount = { pages.size }
+    )
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 

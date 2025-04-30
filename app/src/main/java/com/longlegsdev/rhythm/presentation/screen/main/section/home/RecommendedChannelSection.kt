@@ -53,7 +53,7 @@ fun RecommendedChannelSection(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 8.dp),
-                text = stringResource(R.string.str_recommended_music),
+                text = stringResource(R.string.str_recommended_track),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineSmall
             )

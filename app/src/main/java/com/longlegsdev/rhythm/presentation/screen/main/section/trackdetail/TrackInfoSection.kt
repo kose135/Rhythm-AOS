@@ -33,7 +33,8 @@ import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverIma
 fun TrackInfoSection(
     modifier: Modifier = Modifier,
     trackInfo: TrackEntity,
-    progress: Float
+    progress: Float,
+    onFavoriteClick: (Boolean)-> Unit,
 ) {
     val columnId = "contentColumn"
 

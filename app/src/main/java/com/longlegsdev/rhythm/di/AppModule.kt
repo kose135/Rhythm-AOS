@@ -9,12 +9,14 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.exoplayer.DefaultLoadControl
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.service.player.MusicPlayer
 import com.longlegsdev.rhythm.service.player.MusicPlayerManager
-import com.longlegsdev.rhythm.util.Rhythm
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -80,6 +82,11 @@ object AppModule {
                 .setAllowCrossProtocolRedirects(true)
                 .setConnectTimeoutMs(ModuleConstant.MEDIA_CONNECTION_TIMEOUT_MS)
                 .setReadTimeoutMs(ModuleConstant.MEDIA_READ_TIMEOUT_MS)
+                .setDefaultRequestProperties(
+                    mapOf(
+                        "Connection" to "keep-alive"
+                    )
+                )
         )
 
         // create and return a cache data source factory
@@ -96,8 +103,35 @@ object AppModule {
     fun providesExoplayer(
         @ApplicationContext app: Context,
         cacheDataSourceFactory: CacheDataSource.Factory
-    ): ExoPlayer = ExoPlayer
-        .Builder(app)
-        .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
-        .build()
+    ): ExoPlayer {
+        // 로드 제어 설정
+        val loadControl = DefaultLoadControl.Builder()
+            // 버퍼 사이즈 증가 (기본값 보다 큰 값으로 설정)
+            .setBufferDurationsMs(
+                DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 2,  // 최소 버퍼 크기 2배로
+                DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,  // 최대 버퍼 크기 2배로
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2,  // 재생을 시작하기 위한 버퍼 감소
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2  // 리버퍼링 후 재생 버퍼 감소
+            )
+            // 버퍼링 우선순위 설정
+            .setPrioritizeTimeOverSizeThresholds(true)
+            .build()
+
+        // 대역폭 측정 설정
+        val bandwidthMeter = DefaultBandwidthMeter.Builder(app)
+            .setResetOnNetworkTypeChange(false)  // 네트워크 변경 시에도 대역폭 측정 유지
+            .setSlidingWindowMaxWeight(20)       // 대역폭 계산을 위한 샘플 수 증가
+            .build()
+
+        return ExoPlayer.Builder(app)
+            .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
+            .setLoadControl(loadControl)  // 커스텀 로드 컨트롤 적용
+            .setBandwidthMeter(bandwidthMeter)  // 커스텀 대역폭 미터 적용
+            // 백그라운드 작업 개선
+            .setRenderersFactory(
+                DefaultRenderersFactory(app)
+                    .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
+            )
+            .build()
+    }
 }

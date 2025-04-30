@@ -5,7 +5,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.longlegsdev.rhythm.data.entity.FavoriteTrackEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.domain.doOnFailure
@@ -17,7 +16,6 @@ import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -35,10 +33,10 @@ class StorageViewModel @Inject constructor(
         mutableStateOf(UiState<List<MusicEntity>>())
     val favoriteMusicListState: State<UiState<List<MusicEntity>>> = _favoriteMusicListState
 
-    private val _favoriteChannelListState: MutableState<UiState<List<TrackEntity>>> =
+    private val _favoriteTrackListState: MutableState<UiState<List<TrackEntity>>> =
         mutableStateOf(UiState<List<TrackEntity>>())
-    val favoriteChannelListState: State<UiState<List<TrackEntity>>> =
-        _favoriteChannelListState
+    val favoriteTrackListState: State<UiState<List<TrackEntity>>> =
+        _favoriteTrackListState
 
     init {
         fetchRecentMusicList()
@@ -89,16 +87,16 @@ class StorageViewModel @Inject constructor(
         viewModelScope.launch {
             trackUseCase.getAllFavorite()
                 .doOnSuccess { list ->
-                    _favoriteChannelListState.value = UiState(onSuccess = true, data = list)
+                    _favoriteTrackListState.value = UiState(onSuccess = true, data = list)
                 }
                 .doOnFailure {
-                    _favoriteMusicListState.value =
+                    _favoriteTrackListState.value =
                         UiState(errorMessage = it.localizedMessage, isLoading = false)
                 }
                 .doOnLoading {
-                    val data = _favoriteMusicListState.value.data
+                    val data = _favoriteTrackListState.value.data
                     if (data == null || data.isEmpty()) {
-                        _favoriteMusicListState.value = UiState(isLoading = true)
+                        _favoriteTrackListState.value = UiState(isLoading = true)
                     }
                 }.collect()
         }

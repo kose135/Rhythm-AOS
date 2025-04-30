@@ -1,5 +1,7 @@
 package com.longlegsdev.rhythm.data.repository
 
+import androidx.compose.ui.res.stringResource
+import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.dao.FavoriteMusicDao
 import com.longlegsdev.rhythm.data.dao.RecentMusicDao
 import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
@@ -112,7 +114,7 @@ class MusicRepositoryImpl @Inject constructor(
         favoriteMusicDao.getAllFavoriteMusicList()
             .mapLatest { favoriteMusicList ->
                 if (favoriteMusicList.isEmpty()) {
-                    Result.Failure(Throwable("즐겨찾기한 음악이 없습니다"))
+                    Result.Success(emptyList())
                 } else {
                     val ids = favoriteMusicList.map { it.id }
                     val idsString = ids.joinToString(",")
@@ -138,6 +140,5 @@ class MusicRepositoryImpl @Inject constructor(
                 emit(Result.Failure(Exception(e)))
             }
             .flowOn(Dispatchers.IO)
-
 
 }

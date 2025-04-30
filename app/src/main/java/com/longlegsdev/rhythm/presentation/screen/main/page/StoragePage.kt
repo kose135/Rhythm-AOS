@@ -1,6 +1,5 @@
 package com.longlegsdev.rhythm.presentation.screen.main.page
 
-import android.R.attr.track
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -31,7 +30,7 @@ fun StoragePage(
 
     val recentMusicState = storageViewModel.recentMusicListState.value
     val favoriteMusicState = storageViewModel.favoriteMusicListState.value
-    val favoriteChannelState = storageViewModel.favoriteChannelListState.value
+    val favoriteChannelState = storageViewModel.favoriteTrackListState.value
 
     BoxWithConstraints(
         modifier = Modifier

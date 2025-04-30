@@ -1,5 +1,7 @@
 package com.longlegsdev.rhythm.domain
 
+import android.R.attr.action
+import androidx.compose.runtime.Composable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
@@ -19,7 +21,7 @@ sealed class Result<out T> {
     }
 }
 
-fun <T,R> Flow<Result<T>>.mapper(transform: (T) -> R) : Flow<Result<R>> {
+fun <T, R> Flow<Result<T>>.mapper(transform: (T) -> R): Flow<Result<R>> {
     return this.map {
         it.result(transform)
     }

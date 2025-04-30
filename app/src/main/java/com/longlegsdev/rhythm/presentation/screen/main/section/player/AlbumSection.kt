@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.AlbumCard
+import com.longlegsdev.rhythm.util.offsetForPage
 import timber.log.Timber
 import kotlin.math.absoluteValue
 
@@ -36,7 +37,7 @@ fun AlbumSection(
         beyondViewportPageCount = 1,
         userScrollEnabled = false,
     ) { pageNum ->
-        val pageOffset = (pagerState.currentPage - pageNum) + pagerState.currentPageOffsetFraction
+        val pageOffset = pagerState.offsetForPage(pageNum)
 
         // animation value
         // alpha
