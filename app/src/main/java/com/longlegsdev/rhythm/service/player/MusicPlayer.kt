@@ -11,8 +11,6 @@ import androidx.media3.datasource.HttpDataSource.HttpDataSourceException
 import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import androidx.media3.exoplayer.ExoPlayer
 import com.longlegsdev.rhythm.data.entity.MusicEntity
-import com.longlegsdev.rhythm.data.remote.model.Music
-import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -195,21 +193,6 @@ class MusicPlayer @Inject constructor(
     */
     override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
         super.onPlayWhenReadyChanged(playWhenReady, reason)
-
-
     }
-
-    // 반복 모드가 바뀔 때
-//    override fun onRepeatModeChanged(repeatMode: Int) {
-//        super.onRepeatModeChanged(repeatMode)
-//
-//    }
-
-    // 셔플 설정 변경 시
-//    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-//        super.onShuffleModeEnabledChanged(shuffleModeEnabled)
-//
-//    }
-
 
 }

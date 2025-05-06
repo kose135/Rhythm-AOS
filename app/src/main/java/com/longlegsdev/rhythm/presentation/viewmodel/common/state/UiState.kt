@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.viewmodel.state
+package com.longlegsdev.rhythm.presentation.viewmodel.common.state
 
 data class UiState<T>(
     val data: T? = null,

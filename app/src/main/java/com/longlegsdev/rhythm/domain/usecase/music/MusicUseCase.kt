@@ -8,4 +8,5 @@ data class MusicUseCase(
     val addFavorite: AddFavoriteMusicUseCase,
     val delFavorite: DeleteFavoriteMusicUseCase,
     val getAllFavorite: GetAllFavoriteMusicUseCase,
+    val isFavoritedMusic: IsFavoriteMusicUseCase,
 )

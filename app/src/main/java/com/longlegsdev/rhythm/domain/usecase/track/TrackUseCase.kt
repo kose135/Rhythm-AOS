@@ -7,4 +7,5 @@ data class TrackUseCase(
     val addFavorite: AddFavoriteTrackUseCase,
     val delFavorite: DeleteFavoriteTrackUseCase,
     val getAllFavorite: GetAllFavoriteTrackUseCase,
+    val isFavoritedTrack: IsFavoriteTrackUseCase,
 )

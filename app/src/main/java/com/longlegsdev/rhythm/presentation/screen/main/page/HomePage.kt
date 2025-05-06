@@ -11,21 +11,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.longlegsdev.rhythm.presentation.screen.main.section.home.BestMusicListSection
-import com.longlegsdev.rhythm.presentation.screen.main.section.home.RecommendedChannelSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.home.BestMusicSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.home.RecommendedTrackSection
 import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.music.MusicViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.track.TrackViewModel
 import com.longlegsdev.rhythm.util.Space
-import timber.log.Timber
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HomePage(
     mainViewModel: MainViewModel = hiltViewModel(),
+    trackViewModel: TrackViewModel = hiltViewModel(),
+    musicViewModel: MusicViewModel = hiltViewModel(),
     playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val channelListState = mainViewModel.recommendTrackListState.value
-    val bestMusicListState = mainViewModel.bestMusicListState.value
+    val recommendTrackState = trackViewModel.recommendTrackState.value
+    val bestMusicState = musicViewModel.bestMusicState.value
 
     BoxWithConstraints(
         modifier = Modifier
@@ -40,24 +43,25 @@ fun HomePage(
                 .fillMaxSize(),
         ) {
 
-            RecommendedChannelSection(
+            RecommendedTrackSection(
                 modifier = Modifier.weight(1f),
-                state = channelListState,
-                onTrackClick = { channel ->
-                    Timber.d("click channel id = ${channel.id}")
-                    mainViewModel.getMusicList(channel)
+                state = recommendTrackState,
+                onTrackClick = { trackEntity ->
+                    trackViewModel.getMusicList(trackEntity)
+                    mainViewModel.setShowTrackDetailPage(true)
                 }
             )
 
             Space(height = 10.dp)
 
-            BestMusicListSection(
+            BestMusicSection(
                 modifier = Modifier.weight(1f),
-                state = bestMusicListState,
+                state = bestMusicState,
                 itemWidth = itemWidth,
                 onMusicClick = { index ->
-                    Timber.d("click music index = $index")
-                    playerViewModel.play(bestMusicListState.data!!, index)
+                    val list = bestMusicState.data!!
+
+                    playerViewModel.play(list, index)
                 }
             )
         }

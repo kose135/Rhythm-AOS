@@ -16,7 +16,7 @@ import com.longlegsdev.rhythm.R
 @Composable
 fun FavoriteSection(
     isFavorite: Boolean,
-    onFavoriteClick: (Boolean) -> Unit,
+    onFavoriteClick: () -> Unit,
 ) {
 
     val iconSize = 35.dp
@@ -29,7 +29,7 @@ fun FavoriteSection(
     ) {
 
         IconButton(
-            onClick = { onFavoriteClick(!isFavorite) },
+            onClick = { onFavoriteClick() },
             modifier = Modifier.size(iconSize)
         ) {
             Image(

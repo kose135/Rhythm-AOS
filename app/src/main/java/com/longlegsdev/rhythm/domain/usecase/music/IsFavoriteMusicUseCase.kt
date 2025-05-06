@@ -3,12 +3,12 @@ package com.longlegsdev.rhythm.domain.usecase.music
 import com.longlegsdev.rhythm.domain.repository.MusicRepository
 import javax.inject.Inject
 
-class GetMusicInfoUseCase @Inject constructor(
+class IsFavoriteMusicUseCase @Inject constructor(
     private val musicRepository: MusicRepository
 ) {
     suspend operator fun invoke(
         musicId: Int
-    ) = musicRepository.getMusicInfo(
+    ) = musicRepository.isFavoritedMusic(
         musicId = musicId
     )
 }

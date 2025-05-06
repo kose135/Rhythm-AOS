@@ -17,18 +17,21 @@ import com.longlegsdev.rhythm.presentation.screen.main.section.player.AlbumSecti
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.FavoriteSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.PlayerSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.player.ProgressSection
+import com.longlegsdev.rhythm.presentation.viewmodel.music.MusicViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import com.longlegsdev.rhythm.util.Space
 import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerPage(
-    playerViewModel: PlayerViewModel = hiltViewModel()
+    playerViewModel: PlayerViewModel = hiltViewModel(),
+    musicViewModel: MusicViewModel = hiltViewModel(),
 ) {
     val musicList by playerViewModel.musicList.collectAsState()
     val currentIndex by playerViewModel.currentIndex.collectAsState()
-    val currentMusic by playerViewModel.currentMusic.collectAsState()
     val playerState by playerViewModel.playerState.collectAsState()
+
+    val isFavoriteMusic by musicViewModel.isFavoriteMusic.collectAsState()
 
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -43,6 +46,8 @@ fun PlayerPage(
                 animationSpec = tween(500)
             )
         }
+
+        musicViewModel.checkFavoriteMusic(playerState.music.id)
     }
 
     Column(
@@ -64,8 +69,10 @@ fun PlayerPage(
                 .fillMaxSize()
         ) {
             FavoriteSection(
-                isFavorite = false,
-                onFavoriteClick = { },
+                isFavorite = isFavoriteMusic,
+                onFavoriteClick = {
+                    musicViewModel.toggleFavoriteMusic(playerState.music.id)
+                },
             )
 
             Space(height = 10.dp)

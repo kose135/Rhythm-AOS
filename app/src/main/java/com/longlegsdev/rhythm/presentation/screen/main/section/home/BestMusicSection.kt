@@ -23,11 +23,11 @@ import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
-import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun BestMusicListSection(
+fun BestMusicSection(
     modifier: Modifier = Modifier,
     state: UiState<List<MusicEntity>>,
     itemWidth: Dp,

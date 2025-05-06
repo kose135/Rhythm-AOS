@@ -124,6 +124,7 @@ object AppModule {
             .build()
 
         return ExoPlayer.Builder(app)
+            .setUseLazyPreparation(false)
             .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
             .setLoadControl(loadControl)  // 커스텀 로드 컨트롤 적용
             .setBandwidthMeter(bandwidthMeter)  // 커스텀 대역폭 미터 적용

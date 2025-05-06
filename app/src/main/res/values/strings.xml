@@ -14,9 +14,9 @@
     <string name="str_recommended_track">Recommended Track</string>
     <string name="str_best_music">Popular Music</string>
 
-    <string name="str_recent_music">Recently Played Songs</string>
+    <string name="str_recent_music">Recently Played Song</string>
     <string name="str_favorite_music">Favorite Music</string>
-    <string name="str_favorite_track">Favorite Tracks</string>
+    <string name="str_favorite_track">Favorite Track</string>
 
     <string name="str_count_music">%d songs</string>
 

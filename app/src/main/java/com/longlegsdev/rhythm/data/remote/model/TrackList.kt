@@ -12,7 +12,7 @@ data class TrackList(
     @field:Json(name = "page")
     val page: Int?,
     @field:Json(name = "size")
-    val size: Int,
+    val size: Int?,
     @field:Json(name = "list")
     val list: List<Track>
 )

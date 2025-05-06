@@ -7,8 +7,8 @@ class GetTrackMusicListUseCase @Inject constructor(
     private val trackRepository: TrackRepository
 ) {
     suspend operator fun invoke(
-        channelId: Int
+        trackId: Int
     ) = trackRepository.getTrackMusic(
-        channelId
+        trackId = trackId
     )
 }

@@ -9,7 +9,7 @@ object TrackListMapper : EntityMapper<TrackList, TrackListEntity> {
             total = domain.total,
             page = domain.page,
             size = domain.size,
-            channels = domain.list.asEntity()
+            tracks = domain.list.asEntity()
         )
     }
 
@@ -18,8 +18,8 @@ object TrackListMapper : EntityMapper<TrackList, TrackListEntity> {
             status = "Success Channel Info",
             total = entity.total,
             page = entity.page,
-            size = entity.size,
-            list = entity.channels.asDomain()
+            size = entity.tracks.size,
+            list = entity.tracks.asDomain()
         )
     }
 }

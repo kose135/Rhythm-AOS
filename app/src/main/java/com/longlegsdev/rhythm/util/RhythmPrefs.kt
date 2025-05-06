@@ -2,7 +2,6 @@ package com.longlegsdev.rhythm.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
 import com.longlegsdev.rhythm.RhythmApplication
 
 object RhythmPrefs {

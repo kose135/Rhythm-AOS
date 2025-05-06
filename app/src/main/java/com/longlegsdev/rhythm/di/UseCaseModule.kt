@@ -15,8 +15,10 @@ import com.longlegsdev.rhythm.domain.usecase.music.GetAllFavoriteMusicUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.GetMusicBestListUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.GetMusicInfoUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.GetRecentMusicListUseCase
+import com.longlegsdev.rhythm.domain.usecase.music.IsFavoriteMusicUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
 import com.longlegsdev.rhythm.domain.usecase.track.GetTrackMusicListUseCase
+import com.longlegsdev.rhythm.domain.usecase.track.IsFavoriteTrackUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +41,7 @@ object UseCaseModule {
             addFavorite = AddFavoriteTrackUseCase(repository),
             delFavorite = DeleteFavoriteTrackUseCase(repository),
             getAllFavorite = GetAllFavoriteTrackUseCase(repository),
+            isFavoritedTrack = IsFavoriteTrackUseCase(repository),
         )
     }
 
@@ -53,6 +56,7 @@ object UseCaseModule {
             addFavorite = AddFavoriteMusicUseCase(repository),
             delFavorite = DeleteFavoriteMusicUseCase(repository),
             getAllFavorite = GetAllFavoriteMusicUseCase(repository),
+            isFavoritedMusic = IsFavoriteMusicUseCase(repository),
         )
     }
 

@@ -15,19 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
-import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
 import com.longlegsdev.rhythm.util.toTimeFormat
-import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
 fun FavoriteMusicCard(
@@ -37,13 +31,13 @@ fun FavoriteMusicCard(
     albumImageUrl: String,
     artist: String,
     duration: Long,
-    onFavoriteMusicClick: (Int) -> Unit = {}
+    onFavoriteMusicClick: () -> Unit = {}
 ) {
 
     Column(
         modifier = modifier
             .width(170.dp)
-            .click { onFavoriteMusicClick(musicId) }
+            .click { onFavoriteMusicClick() }
             .padding(end = 12.dp),
         verticalArrangement = Arrangement.Center
     ) {

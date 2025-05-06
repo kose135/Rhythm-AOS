@@ -1,7 +1,5 @@
 package com.longlegsdev.rhythm.data.repository
 
-import androidx.compose.ui.res.stringResource
-import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.dao.FavoriteMusicDao
 import com.longlegsdev.rhythm.data.dao.RecentMusicDao
 import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
@@ -20,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
@@ -88,11 +87,10 @@ class MusicRepositoryImpl @Inject constructor(
             }
             .flowOn(Dispatchers.IO)
 
-
-    override suspend fun addFavoriteMusic(music: MusicEntity) {
+    override suspend fun addFavoriteMusic(musicId: Int) {
         try {
             withContext(Dispatchers.IO) {
-                favoriteMusicDao.insert(FavoriteMusicEntity(id = music.id))
+                favoriteMusicDao.insert(FavoriteMusicEntity(id = musicId))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -123,7 +121,8 @@ class MusicRepositoryImpl @Inject constructor(
                     val response = apiCall { service.getMusicListById(idsString) }
                         .result { result ->
                             // ID -> favoritedAt 매핑
-                            val favoriteAtMap = favoriteMusicList.associate { it.id to it.favoritedAt }
+                            val favoriteAtMap =
+                                favoriteMusicList.associate { it.id to it.favoritedAt }
 
                             // 서버에서 받은 리스트를 favoritedAt 기준으로 정렬
                             result.list
@@ -140,5 +139,9 @@ class MusicRepositoryImpl @Inject constructor(
                 emit(Result.Failure(Exception(e)))
             }
             .flowOn(Dispatchers.IO)
+
+
+    override suspend fun isFavoritedMusic(musicId: Int): Flow<Boolean> =
+        favoriteMusicDao.isFavorite(musicId)
 
 }

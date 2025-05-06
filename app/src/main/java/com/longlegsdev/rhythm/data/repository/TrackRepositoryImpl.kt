@@ -2,14 +2,14 @@ package com.longlegsdev.rhythm.data.repository
 
 
 import com.longlegsdev.rhythm.data.dao.FavoriteTrackDao
-import com.longlegsdev.rhythm.data.entity.TrackEntity
-import com.longlegsdev.rhythm.data.entity.TrackListEntity
 import com.longlegsdev.rhythm.data.entity.FavoriteTrackEntity
 import com.longlegsdev.rhythm.data.entity.MusicListEntity
+import com.longlegsdev.rhythm.data.entity.TrackEntity
+import com.longlegsdev.rhythm.data.entity.TrackListEntity
 import com.longlegsdev.rhythm.data.mapper.asEntity
 import com.longlegsdev.rhythm.data.remote.RhythmApiService
-import com.longlegsdev.rhythm.data.remote.model.TrackList
 import com.longlegsdev.rhythm.data.remote.model.MusicList
+import com.longlegsdev.rhythm.data.remote.model.TrackList
 import com.longlegsdev.rhythm.domain.Result
 import com.longlegsdev.rhythm.domain.mapper
 import com.longlegsdev.rhythm.domain.repository.TrackRepository
@@ -18,15 +18,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
-import kotlin.collections.joinToString
-import kotlin.collections.map
+import kotlin.Int
 
 class TrackRepositoryImpl @Inject constructor(
     private val service: RhythmApiService,
@@ -61,12 +60,12 @@ class TrackRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun addFavoriteTrack(track: TrackEntity) {
+    override suspend fun addFavoriteTrack(trackId: Int) {
         try {
             withContext(Dispatchers.IO) {
                 favoriteTrackDao.insert(
                     FavoriteTrackEntity(
-                        id = track.id
+                        id = trackId
                     )
                 )
             }
@@ -117,6 +116,10 @@ class TrackRepositoryImpl @Inject constructor(
                 emit(Result.Failure(Exception(e)))
             }
             .flowOn(Dispatchers.IO)
+
+
+    override suspend fun isFavoritedTrack(trackId: Int): Flow<Boolean> =
+        favoriteTrackDao.isFavorite(trackId)
 
 
 }

@@ -60,88 +60,109 @@ fun AnimatedTopBarIndicator(
 
 @Composable
 fun AnimatedRibbonIndicator(
-    sizeList: SnapshotStateMap<Int, Pair<Float, Float>>,
-    progressFromFirstPage: Float,
-    indicatorColor: Color,
-    width: Float = 20f,
+    sizeList: SnapshotStateMap<Int, Pair<Float, Float>>, // Tab size info (width, height)
+    progressFromFirstPage: Float,                         // Progress from first tab page (e.g., 1.5)
+    indicatorColor: Color,                                // Indicator color
+    width: Float = 20f,                                   // Indicator stroke width
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .drawBehind {
+            .drawBehind { // Custom drawing behind the Box
+
+                // Stores lengths of each ribbon segment
                 val ribbonSectionsLengths = mutableMapOf<Int, Float>()
                 var currentRibbonLength = 0f
 
+                // Current start X position
                 var currentOrigin = 0f
-                val path = Path()
+                val path = Path() // 리본의 전체 경로 / Path for the full ribbon
 
+                // Iterate sorted tabs to build the ribbon path
                 sizeList.keys.sorted().mapNotNull { sizeList[it] }
                     .forEachIndexed { index, (width, height) ->
+                        // Bottom Y position
                         val bottom = height - 10f
+                        // Top Y position
                         val top = 10f
 
+                        // Move to start for first tab
                         if (index == 0) path.moveTo(0f, top)
 
-                        // top - right
+                        // Curve to top-right
                         path.quadraticTo(
                             currentOrigin + width, top, currentOrigin + width, height / 2
                         )
 
-                        // bottom - right
+                        // Curve to bottom-right
                         path.quadraticTo(
                             currentOrigin + width, bottom, currentOrigin + (width / 2), bottom
                         )
 
-                        // left?
+                        // Curve to bottom-left
                         path.quadraticTo(
                             currentOrigin + 0f, bottom, currentOrigin + 0f, height / 2
                         )
 
-                        // top - left
+                        // Curve to top-left
                         path.quadraticTo(
                             currentOrigin - 10f, top, currentOrigin + width, top
                         )
 
+                        // Move to next origin
                         currentOrigin += width
 
+                        // Measure current path length
                         val measure = PathMeasure()
                         measure.setPath(path, false)
 
+                        // Save new ribbon section length
                         val length = measure.length
                         ribbonSectionsLengths[index] = length - currentRibbonLength
                         currentRibbonLength = length
                     }
 
+                // Get decimal progress for animation between tabs
                 val progress = progressFromFirstPage - floor(progressFromFirstPage)
+
+                // Determine start and end tab index
                 val start =
                     floor(progressFromFirstPage).toInt().coerceIn(0, ribbonSectionsLengths.size - 1)
                 val end =
                     ceil(progressFromFirstPage).toInt().coerceIn(0, ribbonSectionsLengths.size - 1)
 
+                // Calculate the active ribbon length
                 val ribbonLength =
-                    ribbonSectionsLengths[start]!! + ((ribbonSectionsLengths[end]!! - ribbonSectionsLengths[start]!!) * progress)
+                    ribbonSectionsLengths[start]!! +
+                            ((ribbonSectionsLengths[end]!! - ribbonSectionsLengths[start]!!) * progress)
 
+                // Total length up to start tab
                 val lengthUntilStart =
                     ribbonSectionsLengths.keys.sorted().map { ribbonSectionsLengths[it] ?: 0f }
                         .take(start).fold(0f) { acc, it -> acc - it }
 
+                // Total length up to end tab
                 val lengthUntilEnd =
                     ribbonSectionsLengths.keys.sorted().map { ribbonSectionsLengths[it] ?: 0f }
                         .take(end).fold(0f) { acc, it -> acc - it }
 
+                // Calculate phase offset for ribbon indicator
                 val phaseOffset =
                     lengthUntilStart + ((lengthUntilEnd - lengthUntilStart) * progress)
 
+                // Draw animated dashed indicator
                 drawPath(
-                    path = path, color = indicatorColor, style = Stroke(
-                        width = width, // 두께
+                    path = path,
+                    color = indicatorColor,
+                    style = Stroke(
+                        width = width, // Stroke thickness
                         cap = StrokeCap.Round,
                         join = StrokeJoin.Round,
                         pathEffect = PathEffect.dashPathEffect(
                             intervals = floatArrayOf(
-                                ribbonLength, currentRibbonLength
+                                ribbonLength, currentRibbonLength // On-off dash interval
                             ),
-                            phase = phaseOffset,
+                            phase = phaseOffset, // Dash starting offset
                         )
                     )
                 )

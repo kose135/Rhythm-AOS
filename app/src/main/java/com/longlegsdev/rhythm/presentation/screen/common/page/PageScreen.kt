@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.presentation.screen.main.page.ChannelPage
+import com.longlegsdev.rhythm.presentation.screen.main.page.TrackPage
 import com.longlegsdev.rhythm.presentation.screen.main.page.HomePage
 import com.longlegsdev.rhythm.presentation.screen.main.page.LyricsPage
 import com.longlegsdev.rhythm.presentation.screen.main.page.PlayerPage
@@ -22,7 +22,7 @@ sealed class PageScreen(@StringRes val title: Int, @DrawableRes val icon: Int?) 
 
     @Composable
     fun MainContent() = when (this) {
-        Channel -> ChannelPage()
+        Channel -> TrackPage()
         Home -> HomePage()
         Storage -> StoragePage()
         else -> HomePage()

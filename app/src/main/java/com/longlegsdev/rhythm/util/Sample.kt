@@ -120,7 +120,7 @@ val LYRICS = "빛을 쏟는 sky\n" +
         "눈 감은 순간 시간은 멈춰가\n" +
         "난 다시 떠올라"
 
-val TRACK_INFO = TrackEntity(
+val TRACK_Entity_INFO = TrackEntity(
     id = 0,
     title = "Title",
     url = "http://192.168.0.2:8100/cover/TAEYEON.jpg",

@@ -22,13 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
-import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 import com.longlegsdev.rhythm.util.Space
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun FavoriteChannelSection(
-    modifier: Modifier = Modifier,
     state: UiState<List<TrackEntity>>,
     onTrackClick: (TrackEntity) -> Unit
 ) {

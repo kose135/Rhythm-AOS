@@ -1,9 +1,8 @@
 package com.longlegsdev.rhythm.data.mapper
 
-import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.entity.TrackEntity
-import com.longlegsdev.rhythm.data.remote.model.Music
 import com.longlegsdev.rhythm.data.remote.model.Track
+import kotlin.collections.map
 
 object TrackMapper : EntityMapper<Track, TrackEntity> {
     override fun asEntity(domain: Track): TrackEntity {

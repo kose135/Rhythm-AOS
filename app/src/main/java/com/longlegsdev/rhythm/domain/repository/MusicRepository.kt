@@ -1,11 +1,11 @@
 package com.longlegsdev.rhythm.domain.repository
 
-import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.data.entity.MusicListEntity
-import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
 import com.longlegsdev.rhythm.domain.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 interface MusicRepository {
 
@@ -17,10 +17,12 @@ interface MusicRepository {
 
     suspend fun getRecentMusicList(): Flow<Result<List<MusicEntity>>>
 
-    suspend fun addFavoriteMusic(music: MusicEntity)
+    suspend fun addFavoriteMusic(musicId: Int)
 
     suspend fun deleteFavoriteMusic(musicId: Int)
 
     suspend fun getAllFavoriteMusicList(): Flow<Result<List<MusicEntity>>>
+
+    suspend fun isFavoritedMusic(musicId: Int): Flow<Boolean>
 
 }

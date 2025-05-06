@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -33,32 +32,26 @@ import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.BackTopBar
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
 import com.longlegsdev.rhythm.presentation.screen.main.section.trackdetail.TrackInfoSection
-import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.track.TrackViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun TrackDetailPage(
-    onBackClick: () -> Unit,
-    onChangeTrack: () -> Unit,
-    mainViewModel: MainViewModel = hiltViewModel(),
+    onBack: () -> Unit,
+    trackViewModel: TrackViewModel = hiltViewModel(),
     playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val trackInfo by mainViewModel.trackInfo.collectAsState()
-    val musicListState = mainViewModel.musicListState.value
+    val trackEntityInfo by trackViewModel.trackEntityInfo.collectAsState()
+    val isFavoriteTrack by trackViewModel.isFavoriteTrack.collectAsState()
+    val trackMusicState = trackViewModel.trackMusicState.value
 
     val scrollState = rememberLazyListState()
     val progress = remember {
         derivedStateOf {
             val offset = minOf(1f, scrollState.firstVisibleItemScrollOffset / 600f)
             offset
-        }
-    }
-
-    LaunchedEffect(trackInfo) {
-        mainViewModel.trackInfo.collect {
-            onChangeTrack()
         }
     }
 
@@ -69,7 +62,7 @@ fun TrackDetailPage(
     ) {
 
         BackTopBar(
-            onBackClick = onBackClick
+            onBackClick = onBack
         )
 
         LazyColumn(
@@ -84,14 +77,17 @@ fun TrackDetailPage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    trackInfo = trackInfo,
+                    trackEntityInfo = trackEntityInfo,
+                    isFavorite = isFavoriteTrack,
                     progress = progress.value,
-                    onFavoriteClick = { },
+                    onFavoriteClick = {
+                        trackViewModel.toggleFavoriteTrack(trackEntityInfo.id)
+                    },
                 )
             }
 
             when {
-                musicListState.isLoading -> item {
+                trackMusicState.isLoading -> item {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -102,7 +98,7 @@ fun TrackDetailPage(
                     }
                 }
 
-                musicListState.errorMessage != null -> item {
+                trackMusicState.errorMessage != null -> item {
                     Box(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -116,8 +112,8 @@ fun TrackDetailPage(
                     }
                 }
 
-                musicListState.onSuccess == true -> {
-                    val musicList = musicListState.data!!
+                trackMusicState.onSuccess == true -> {
+                    val musicList = trackMusicState.data!!
                     itemsIndexed(musicList) { index, music ->
                         MusicCard(
                             title = music.title,
@@ -125,6 +121,8 @@ fun TrackDetailPage(
                             artist = music.artist,
                             onMusicItemClick = {
                                 playerViewModel.play(musicList, index)
+
+                                onBack()
                             }
                         )
                     }

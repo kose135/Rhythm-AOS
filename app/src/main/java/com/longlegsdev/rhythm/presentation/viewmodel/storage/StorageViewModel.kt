@@ -12,7 +12,7 @@ import com.longlegsdev.rhythm.domain.doOnLoading
 import com.longlegsdev.rhythm.domain.doOnSuccess
 import com.longlegsdev.rhythm.domain.usecase.track.TrackUseCase
 import com.longlegsdev.rhythm.domain.usecase.music.MusicUseCase
-import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -33,10 +33,10 @@ class StorageViewModel @Inject constructor(
         mutableStateOf(UiState<List<MusicEntity>>())
     val favoriteMusicListState: State<UiState<List<MusicEntity>>> = _favoriteMusicListState
 
-    private val _favoriteTrackListState: MutableState<UiState<List<TrackEntity>>> =
+    private val _favoriteTrackEntityListState: MutableState<UiState<List<TrackEntity>>> =
         mutableStateOf(UiState<List<TrackEntity>>())
-    val favoriteTrackListState: State<UiState<List<TrackEntity>>> =
-        _favoriteTrackListState
+    val favoriteTrackEntityListState: State<UiState<List<TrackEntity>>> =
+        _favoriteTrackEntityListState
 
     init {
         fetchRecentMusicList()
@@ -87,16 +87,16 @@ class StorageViewModel @Inject constructor(
         viewModelScope.launch {
             trackUseCase.getAllFavorite()
                 .doOnSuccess { list ->
-                    _favoriteTrackListState.value = UiState(onSuccess = true, data = list)
+                    _favoriteTrackEntityListState.value = UiState(onSuccess = true, data = list)
                 }
                 .doOnFailure {
-                    _favoriteTrackListState.value =
+                    _favoriteTrackEntityListState.value =
                         UiState(errorMessage = it.localizedMessage, isLoading = false)
                 }
                 .doOnLoading {
-                    val data = _favoriteTrackListState.value.data
+                    val data = _favoriteTrackEntityListState.value.data
                     if (data == null || data.isEmpty()) {
-                        _favoriteTrackListState.value = UiState(isLoading = true)
+                        _favoriteTrackEntityListState.value = UiState(isLoading = true)
                     }
                 }.collect()
         }

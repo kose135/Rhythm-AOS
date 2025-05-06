@@ -90,7 +90,6 @@ class MusicPlayerManager @Inject constructor(
         } else {
             musicPlayer.play()
         }
-//            updateState()
     }
 
     fun next() {

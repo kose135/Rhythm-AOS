@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,17 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.longlegsdev.rhythm.R
-import com.longlegsdev.rhythm.data.entity.FavoriteMusicEntity
 import com.longlegsdev.rhythm.data.entity.MusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.FavoriteMusicCard
-import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
-import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 import com.longlegsdev.rhythm.util.Space
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun FavoriteMusicSection(
-    modifier: Modifier = Modifier,
     state: UiState<List<MusicEntity>>,
     onMusicClick: (Int) -> Unit
 ) {
@@ -86,8 +80,8 @@ fun FavoriteMusicSection(
                         albumImageUrl = albumImageUrl,
                         artist = artist,
                         duration = duration,
-                        onFavoriteMusicClick = { musicId ->
-                            onMusicClick(musicId)
+                        onFavoriteMusicClick = {
+                            onMusicClick(index)
                         }
                     )
                 }

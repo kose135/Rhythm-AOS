@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -23,9 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.MusicEntity
-import com.longlegsdev.rhythm.data.entity.RecentMusicEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.MusicCard
-import com.longlegsdev.rhythm.presentation.viewmodel.state.UiState
+import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 import com.longlegsdev.rhythm.util.Space
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -39,7 +38,7 @@ fun RecentlyPlayedMusicSection(
     val recentMusicList = state.data
 
     Column(
-        modifier = modifier
+        modifier = modifier.wrapContentSize()
     ) {
         Text(
             modifier = Modifier
@@ -67,7 +66,8 @@ fun RecentlyPlayedMusicSection(
         } else {
             LazyHorizontalGrid(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .height(400.dp),
                 rows = GridCells.Fixed(5),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),

@@ -17,9 +17,9 @@ import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 
 @Composable
 fun LyricsPage(
-    viewModel: PlayerViewModel = hiltViewModel()
+    playerViewModel: PlayerViewModel = hiltViewModel()
 ) {
-    val currentMusic by viewModel.currentMusic.collectAsState()
+    val currentMusic by playerViewModel.currentMusic.collectAsState()
     var align: AlignmentEvent by remember { mutableStateOf(AlignmentEvent.Left) }
 
     Column(

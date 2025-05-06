@@ -151,12 +151,6 @@ dependencies {
     val landscapist_version = "2.4.7"
     implementation("com.github.skydoves:landscapist-coil:$landscapist_version")
     implementation("com.github.skydoves:landscapist-palette:$landscapist_version")
-    // orbital
-    implementation("com.github.skydoves:orbital:0.4.0")
-
-
-    // 임시
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.0")
 
 }
 

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
 import com.longlegsdev.rhythm.util.Space
 import com.longlegsdev.rhythm.util.click
-import timber.log.Timber
 
 @Composable
 fun TrackCard(

@@ -4,10 +4,8 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +25,17 @@ import androidx.constraintlayout.compose.MotionLayout
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.presentation.screen.common.component.AlbumCoverImage
+import com.longlegsdev.rhythm.util.Space
+import com.longlegsdev.rhythm.util.click
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun TrackInfoSection(
     modifier: Modifier = Modifier,
-    trackInfo: TrackEntity,
+    trackEntityInfo: TrackEntity,
+    isFavorite: Boolean,
     progress: Float,
-    onFavoriteClick: (Boolean)-> Unit,
+    onFavoriteClick: () -> Unit,
 ) {
     val columnId = "contentColumn"
 
@@ -77,36 +78,40 @@ fun TrackInfoSection(
                 modifier = Modifier
                     .size(250.dp)
                     .clip(RoundedCornerShape(5.dp)),
-                url = trackInfo.url
-            )
-
-            Text(
-                text = trackInfo.title,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .basicMarquee(iterations = Int.MAX_VALUE)
-                    .padding(top = 8.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Visible
+                url = trackEntityInfo.url
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-//                Icon(
-//                    painter = if (trackInfo.liked)
-//                        painterResource(R.drawable.ic_like_filled)
-//                    else
-//                        painterResource(R.drawable.ic_like_outlined),
-//                    contentDescription = "Like"
-//                )
-//                Spacer(modifier = Modifier.width(4.dp))
-//                Text(text = "${trackInfo.likes}")
+                Text(
+                    text = trackEntityInfo.title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .basicMarquee(iterations = Int.MAX_VALUE)
+                        .alignBy { it.measuredHeight / 2 },
+                    maxLines = 1,
+                    overflow = TextOverflow.Visible
+                )
+
+                Space(width = 5.dp)
+
+                Icon(
+                    painter = if (isFavorite)
+                        painterResource(R.drawable.ic_favorite_filled)
+                    else
+                        painterResource(R.drawable.ic_favorite_outlined),
+                    contentDescription = "Track Favorite Icon",
+                    modifier = Modifier
+                        .click { onFavoriteClick() }
+                        .size(30.dp)
+                        .alignBy { it.measuredHeight / 2 },
+                )
             }
 
             Text(
-                text = trackInfo.description,
+                text = trackEntityInfo.description,
                 modifier = Modifier
                     .basicMarquee(iterations = Int.MAX_VALUE)
                     .padding(top = 8.dp),
