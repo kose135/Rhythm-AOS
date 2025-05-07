@@ -15,7 +15,7 @@ object TrackListMapper : EntityMapper<TrackList, TrackListEntity> {
 
     override fun asDomain(entity: TrackListEntity): TrackList {
         return TrackList(
-            status = "Success Channel Info",
+            status = "Success Track Info",
             total = entity.total,
             page = entity.page,
             size = entity.tracks.size,

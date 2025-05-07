@@ -10,16 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import com.longlegsdev.rhythm.presentation.screen.common.page.PageType
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
+import com.longlegsdev.rhythm.presentation.screen.common.page.PageType
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.PageSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.main.TabSection
 import com.longlegsdev.rhythm.presentation.theme.TopTabBackground
 import com.longlegsdev.rhythm.presentation.theme.TopTabSelected
 import com.longlegsdev.rhythm.presentation.theme.TopTabUnselected
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun MusicPage(

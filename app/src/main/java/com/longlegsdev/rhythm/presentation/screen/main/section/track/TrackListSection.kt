@@ -1,4 +1,4 @@
-package com.longlegsdev.rhythm.presentation.screen.main.section.channel
+package com.longlegsdev.rhythm.presentation.screen.main.section.track
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -78,7 +78,7 @@ fun TrackListSection(
                 }
 
                 state.onSuccess == true -> {
-                    val channels = state.data!!
+                    val tracks = state.data!!
 
                     LazyVerticalGrid(
                         modifier = Modifier.fillMaxSize(),
@@ -87,11 +87,11 @@ fun TrackListSection(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        itemsIndexed(channels) { index, channel ->
-                            val title = channel.title
-                            val coverImageUrl = channel.url
-                            val description = channel.description
-                            val size = channel.size
+                        itemsIndexed(tracks) { index, track ->
+                            val title = track.title
+                            val coverImageUrl = track.url
+                            val description = track.description
+                            val size = track.size
 
                             TrackCard(
                                 title = title,
@@ -100,7 +100,7 @@ fun TrackListSection(
                                 size = size,
                                 width = itemWidth,
                                 onTrackItemClick = {
-                                    onTrackClick(channel)
+                                    onTrackClick(track)
                                 }
                             )
                         }

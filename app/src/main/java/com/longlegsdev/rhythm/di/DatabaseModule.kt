@@ -6,7 +6,6 @@ import com.longlegsdev.rhythm.data.dao.FavoriteTrackDao
 import com.longlegsdev.rhythm.data.dao.FavoriteMusicDao
 import com.longlegsdev.rhythm.data.dao.RecentMusicDao
 import com.longlegsdev.rhythm.data.local.RhythmDatabase
-import com.longlegsdev.rhythm.util.Rhythm
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +43,7 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideFavoriteChannelDao(database: RhythmDatabase): FavoriteTrackDao {
+    fun provideFavoriteTrackDao(database: RhythmDatabase): FavoriteTrackDao {
         return database.favoriteTrackDao
     }
 

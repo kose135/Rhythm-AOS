@@ -1,6 +1,5 @@
 package com.longlegsdev.rhythm.presentation.screen.main.section.storage
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,15 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
 import com.longlegsdev.rhythm.presentation.viewmodel.common.state.UiState
 import com.longlegsdev.rhythm.util.Space
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun FavoriteChannelSection(
+fun FavoriteTrackSection(
     state: UiState<List<TrackEntity>>,
     onTrackClick: (TrackEntity) -> Unit
 ) {

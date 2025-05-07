@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.longlegsdev.rhythm.presentation.screen.main.section.storage.FavoriteChannelSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.storage.FavoriteMusicSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.storage.FavoriteTrackSection
 import com.longlegsdev.rhythm.presentation.screen.main.section.storage.RecentlyPlayedMusicSection
 import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
@@ -33,7 +33,7 @@ fun StoragePage(
 
     val recentMusicState = storageViewModel.recentMusicListState.value
     val favoriteMusicState = storageViewModel.favoriteMusicListState.value
-    val favoriteChannelState = storageViewModel.favoriteTrackEntityListState.value
+    val favoriteTrackState = storageViewModel.favoriteTrackEntityListState.value
 
     BoxWithConstraints(
         modifier = Modifier
@@ -76,8 +76,8 @@ fun StoragePage(
             Space(height = 15.dp)
 
             // 즐겨찾기 한 채널
-            FavoriteChannelSection(
-                state = favoriteChannelState,
+            FavoriteTrackSection(
+                state = favoriteTrackState,
                 onTrackClick = { track ->
                     trackViewModel.getMusicList(track)
                     mainViewModel.setShowTrackDetailPage(true)

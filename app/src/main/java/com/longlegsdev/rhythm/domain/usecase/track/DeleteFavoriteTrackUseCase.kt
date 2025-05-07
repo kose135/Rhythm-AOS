@@ -7,8 +7,8 @@ class DeleteFavoriteTrackUseCase @Inject constructor(
     private val trackRepository: TrackRepository
 ) {
     suspend operator fun invoke(
-        channelId: Int
+        trackId: Int
     ) = trackRepository.deleteFavoriteMusic(
-        trackId = channelId
+        trackId = trackId
     )
 }

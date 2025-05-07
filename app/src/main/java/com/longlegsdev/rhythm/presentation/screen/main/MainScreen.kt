@@ -1,10 +1,8 @@
 package com.longlegsdev.rhythm.presentation.screen.main
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,14 +14,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.longlegsdev.rhythm.presentation.screen.common.page.PageScreen
 import com.longlegsdev.rhythm.presentation.screen.main.component.MainScreenContent
-import com.longlegsdev.rhythm.presentation.viewmodel.main.event.HandlePlayEvents
 import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
+import com.longlegsdev.rhythm.presentation.viewmodel.main.event.HandlePlayEvents
 import com.longlegsdev.rhythm.presentation.viewmodel.main.event.HandlePlaybackEvents
 import com.longlegsdev.rhythm.presentation.viewmodel.player.PlayerViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun MainScreen(
     navController: NavHostController,
@@ -31,7 +27,7 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     playerViewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val pages = listOf(PageScreen.Channel, PageScreen.Home, PageScreen.Storage)
+    val pages = listOf(PageScreen.Track, PageScreen.Home, PageScreen.Storage)
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { pages.size }

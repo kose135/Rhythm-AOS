@@ -14,7 +14,7 @@ import dagger.hilt.components.SingletonComponent
 internal interface RepositoryModule {
 
     @Binds
-    fun bindChannelRepository(
+    fun bindTrackRepository(
         trackRepositoryImpl: TrackRepositoryImpl
     ): TrackRepository
 

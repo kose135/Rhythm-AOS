@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.longlegsdev.rhythm.presentation.screen.main.section.channel.TrackListSection
+import com.longlegsdev.rhythm.presentation.screen.main.section.track.TrackListSection
 import com.longlegsdev.rhythm.presentation.viewmodel.main.MainViewModel
 import com.longlegsdev.rhythm.presentation.viewmodel.track.TrackViewModel
 import timber.log.Timber

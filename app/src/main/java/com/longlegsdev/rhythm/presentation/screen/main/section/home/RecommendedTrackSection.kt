@@ -15,13 +15,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.longlegsdev.rhythm.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.longlegsdev.rhythm.R
 import com.longlegsdev.rhythm.data.entity.TrackEntity
 import com.longlegsdev.rhythm.presentation.screen.common.card.TrackCard
 import com.longlegsdev.rhythm.presentation.screen.common.component.LoadingProgress
@@ -86,19 +86,19 @@ fun RecommendedTrackSection(
                 }
 
                 state.onSuccess == true -> {
-                    val channels = state.data!!
+                    val tracks = state.data!!
 
                     LazyRow(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        itemsIndexed(channels) { index, channel ->
-                            val channelId = channel.id
-                            val title = channel.title
-                            val coverImageUrl = channel.url
-                            val description = channel.description
-                            val size = channel.size
+                        itemsIndexed(tracks) { index, track ->
+                            val trackId = track.id
+                            val title = track.title
+                            val coverImageUrl = track.url
+                            val description = track.description
+                            val size = track.size
 
                             TrackCard(
                                 title = title,
@@ -107,7 +107,7 @@ fun RecommendedTrackSection(
                                 size = size,
                                 width = itemWidth,
                                 onTrackItemClick = {
-                                    onTrackClick(channel)
+                                    onTrackClick(track)
                                 }
                             )
                         }
